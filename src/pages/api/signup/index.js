@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     let usernameExists = (await prisma.verify.findUnique({ where: { email }})) || (await prisma.user.findUnique({ where: { email }}));
     if (usernameExists) return res.status(200).json({ error: "Username already exists", success: false });
 
-    // send confirmation email, add to temporary signup database
+    // add to temporary signup database
     await prisma.verify.create({
         data: {
             email,
@@ -53,6 +53,8 @@ export default async function handler(req, res) {
     .catch(e => {
         return res.status(500).json({ success: false });
     });
+
+    // send confirmation email
 
     return res.status(200).json({success: true });
 }
