@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 /* 
-NORMAL EMAIL NON-GOOGLE SIGNUP 
+NORMAL EMAIL NON-GOOGLE SIGNUP
 */
 
 const prisma = new PrismaClient();
