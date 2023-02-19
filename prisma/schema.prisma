@@ -10,19 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// For accounts pending verification
 model Verify {
-  email String @unique
+  email    String @unique
   username String @unique
+
   firstName String
-  lastName String
-  password String
+  lastName  String
+
+  verificationKey            String   @unique
+  verificationExpirationTime DateTime
 }
 
 model User {
   id Int @id @default(autoincrement())
-  email String @unique
+
+  email    String @unique
   username String @unique
+
   firstName String
-  lastName String
+  lastName  String
+
   password String
 }
