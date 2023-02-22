@@ -6,6 +6,9 @@ import validator from "email-validator";
 SENT WHEN USER PUTS IN EMAIL BEFORE ANY OTHER INFO
 */
 
+const prisma = new PrismaClient();
+
+// for emails
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
@@ -14,18 +17,38 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const prisma = new PrismaClient();
+function checkMethod(req, res) {
+  if (req.method != "POST") {
+    res.status(400).json({ error: "Expected post request.", success: false });
+    return false;
+  }
 
-export default async function handler(req, res) {
-  if (req.method != "POST") return res.status(400).json({ error: "Expected post request.", success: false });
+  return true;
+}
 
+function checkEmail(req, res) {
   let email = req.body.email;
 
-  if (!email) return res.status(400).json({ error: "Missing email.", success: false });
+  if (!email) {
+    res.status(400).json({ error: "Missing email.", success: false });
+    return false;
+  }
 
-  email = email.toLowerCase();
+  if (!validator.validate(email)) {
+    res.status(400).json({ error: "Invalid email.", success: false });
+    return false;
+  }
 
-  if (!validator.validate(email)) return res.status(400).json({ error: "Invalid email.", success: false });
+  req.body.email = req.body.email.toLowerCase();
+
+  return true;
+}
+
+export default async function handler(req, res) {
+  if (!checkMethod(req, res)) return;
+  if (!checkEmail(req, res)) return;
+
+  let email = req.body.email;
 
   // check if email already in use
   let emailExists = await prisma.user.findUnique({
