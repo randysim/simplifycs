@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
-const prisma = PrismaClient();
+const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
     if (req.method != "POST") return res.status(400).json({ success: false, error: "Expected post request." });
@@ -24,6 +24,7 @@ export default async function handler(req, res) {
         if (err) return res.status(500);
 
         if (match) {
+            console.log(`${email} logged in! auth token: ${user.authToken}`);
             return res.status(200).json({ success: true, authToken: user.authToken });
         } else {
             return res.status(200).json({ success: false, error: "Passwords do not match."});
