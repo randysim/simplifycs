@@ -105,6 +105,19 @@ function checkPassword(req, res) {
   return true;
 }
 
+function genAuthToken() {
+  let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let length = 16;
+
+  let token = "";
+
+  for (let i = 0; i < length; ++i) {
+    token += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return token;
+}
+
 export default async function handler(req, res) {
   if (!checkMethod(req, res)) return;
   if (!checkEmail(req, res)) return;
@@ -149,6 +162,7 @@ export default async function handler(req, res) {
   // Hash password
   let passwordSalt = await bcrypt.genSalt(12);
   let passwordHashed = await bcrypt.hash(password, passwordSalt);
+  let authToken = genAuthToken();
 
   await prisma.user.create({
     data: {
@@ -157,7 +171,8 @@ export default async function handler(req, res) {
       firstName: firstName,
       lastName: lastName,
       password: passwordHashed,
-      passwordSalt: passwordSalt
+      passwordSalt: passwordSalt,
+      authToken: authToken
     }
   });
 

@@ -31,4 +31,5 @@ model User {
 
   password     String
   passwordSalt String
+  authToken    String 
 }
