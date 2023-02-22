@@ -47,7 +47,6 @@ export default function Signup() {
     }
 
     let input = event.target.value;
-    console.log(event.target);
 
     if (event.key == "Enter") {
       setError("");
@@ -115,7 +114,7 @@ export default function Signup() {
               return;
             }
           }
-          
+
           break;
         }
       }
