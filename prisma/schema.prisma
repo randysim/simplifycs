@@ -12,13 +12,11 @@ datasource db {
 
 // For accounts pending verification
 model Verify {
-  email    String @unique
-  username String @unique
+  email String @unique
 
-  firstName String
-  lastName  String
+  verificationKey String
 
-  verificationKey            String   @unique
+  // When the verification expires
   verificationExpirationTime DateTime
 }
 
@@ -31,5 +29,6 @@ model User {
   firstName String
   lastName  String
 
-  password String
+  password     String
+  passwordSalt String
 }
