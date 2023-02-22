@@ -35,7 +35,7 @@ function checkEmail(req, res) {
   }
 
   if (!validator.validate(email)) {
-    res.status(400).json({ error: "Invalid email.", success: false });
+    res.status(200).json({ error: "Invalid email.", success: false });
     return false;
   }
 
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     }
   }) !== null;
 
-  if (emailExists) return res.status(400).json({ error: "Email already in use.", success: false });
+  if (emailExists) return res.status(200).json({ error: "Email already in use.", success: false });
 
   // see if pending verification already exists
   let pendingVerification = await prisma.verify.findUnique({
