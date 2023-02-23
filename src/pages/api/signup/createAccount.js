@@ -40,7 +40,9 @@ function checkVerificationKey(req, res) {
   let verificationKey = req.body.verificationKey;
 
   if (!verificationKey) {
-    res.status(400).json({ error: "Missing verification key.", success: false });
+    res
+      .status(400)
+      .json({ error: "Missing verification key.", success: false });
     return false;
   }
 
@@ -62,12 +64,22 @@ function checkNames(req, res) {
   }
 
   if (!firstName.match(/^['a-zA-Z]{2,}$/)) {
-    res.status(400).json({ error: "First name must match the following regex: /^['a-zA-Z]{2,}$/", success: false });
+    res
+      .status(400)
+      .json({
+        error: "First name must match the following regex: /^['a-zA-Z]{2,}$/",
+        success: false,
+      });
     return false;
   }
 
   if (!lastName.match(/^['a-zA-Z]{2,}$/)) {
-    res.status(400).json({ error: "Last name must match the following regex: /^['a-zA-Z]{2,}$/", success: false });
+    res
+      .status(400)
+      .json({
+        error: "Last name must match the following regex: /^['a-zA-Z]{2,}$/",
+        success: false,
+      });
     return false;
   }
 
@@ -83,7 +95,12 @@ function checkUsername(req, res) {
   }
 
   if (!username.match(/^[\-\_a-zA-Z0-9]{4,}$/)) {
-    return res.status(400).json({ error: "Username must match the following regex: /^[\-\_a-zA-Z0-9]{4,}$/", success: false });
+    return res
+      .status(400)
+      .json({
+        error: "Username must match the following regex: /^[-_a-zA-Z0-9]{4,}$/",
+        success: false,
+      });
     return false;
   }
 
@@ -99,7 +116,12 @@ function checkPassword(req, res) {
   }
 
   if (password.length < 8) {
-    res.status(400).json({ error: "Password must be at least 8 characters.", success: false });
+    res
+      .status(400)
+      .json({
+        error: "Password must be at least 8 characters.",
+        success: false,
+      });
     return false;
   }
 
@@ -137,27 +159,33 @@ export default async function handler(req, res) {
   // Check if verification is valid
   let pendingVerification = await prisma.verify.findUnique({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
 
   if (!pendingVerification) {
-    return res.status(400).json({ error: "Invalid verification.", success: false });
+    return res
+      .status(400)
+      .json({ error: "Invalid verification.", success: false });
   }
 
   if (pendingVerification.verificationKey !== verificationKey) {
-    return res.status(400).json({ error: "Invalid verification key.", success: false });
+    return res
+      .status(400)
+      .json({ error: "Invalid verification key.", success: false });
   }
 
   if (new Date() > pendingVerification.verificationExpirationTime) {
-    return res.status(400).json({ error: "Verification expired.", success: false });
+    return res
+      .status(400)
+      .json({ error: "Verification expired.", success: false });
   }
 
   // Delete verification thing
   await prisma.verify.delete({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
 
   // Hash password
@@ -172,10 +200,13 @@ export default async function handler(req, res) {
       firstName: firstName,
       lastName: lastName,
       passwordHashed: passwordHashed,
-      authToken: authToken
-    }
+      authToken: authToken,
+    },
   });
 
-  res.setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' }));
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("authentication", authToken, { path: "/" })
+  );
   res.status(200).json({ message: "Account created.", success: true });
 }
