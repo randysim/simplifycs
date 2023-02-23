@@ -29,7 +29,6 @@ model User {
   firstName String
   lastName  String
 
-  password     String
-  passwordSalt String
-  authToken    String 
+  passwordHashed String
+  authToken      String 
 }
