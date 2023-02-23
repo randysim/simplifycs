@@ -12,4 +12,4 @@ jobs:
       - name: Prettier Action
         uses: creyD/prettier_action@v4.3
         with:
-            prettier_options: --write "src/**/*.js"
+            prettier_options: --write src/**/*.js
