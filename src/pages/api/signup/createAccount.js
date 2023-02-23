@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import validator from "email-validator";
+import cookie from "cookie";
 
 /*
 ACTUALLY CREATE ACCOUNT
@@ -107,7 +108,7 @@ function checkPassword(req, res) {
 
 function genAuthToken() {
   let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let length = 16;
+  let length = 64;
 
   let token = "";
 
@@ -170,11 +171,11 @@ export default async function handler(req, res) {
       username: username,
       firstName: firstName,
       lastName: lastName,
-      password: passwordHashed,
-      passwordSalt: passwordSalt,
+      passwordHashed: passwordHashed,
       authToken: authToken
     }
   });
 
-  return res.status(200).json({ message: "Account created.", success: true });
+  res.setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' }));
+  res.status(200).json({ message: "Account created.", success: true });
 }

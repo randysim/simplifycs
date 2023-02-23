@@ -1,7 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import cookie from "cookie";
 
 const prisma = new PrismaClient();
+
+function genAuthToken() {
+  let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let length = 64;
+
+  let token = "";
+
+  for (let i = 0; i < length; ++i) {
+    token += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return token;
+}
 
 export default async function handler(req, res) {
     if (req.method != "POST") return res.status(400).json({ success: false, error: "Expected post request." });
@@ -18,16 +32,25 @@ export default async function handler(req, res) {
         }
     });
 
-    if (user == null) return res.status(200).json({ success: false, error: "Invalid Email." });
+    if (user == null) return res.status(400).json({ success: false, error: "Invalid Email." });
 
-    bcrypt.compare(password, user.password, (err, match) => {
-        if (err) return res.status(500);
+    const match = await bcrypt.compare(password, user.passwordHashed);
 
-        if (match) {
-            console.log(`${email} logged in! auth token: ${user.authToken}`);
-            return res.status(200).json({ success: true, authToken: user.authToken });
-        } else {
-            return res.status(200).json({ success: false, error: "Passwords do not match."});
-        }
+    if (!match) {
+      return res.status(400).json({ success: false, error: "Passwords do not match."});
+    }
+
+    let authToken = genAuthToken();
+
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        authToken: authToken
+      },
     });
+
+    res.status(200).json({ message: "Logged in.", success: true });
+    res.setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' }));
 }
