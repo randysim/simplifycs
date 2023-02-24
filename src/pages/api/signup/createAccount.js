@@ -176,6 +176,5 @@ export default async function handler(req, res) {
     }
   });
 
-  res.setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' }));
-  res.status(200).json({ message: "Account created.", success: true });
+  res.status(200).setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' })).json({ message: "Account created.", success: true });
 }
