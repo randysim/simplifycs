@@ -10,11 +10,11 @@ const prisma = new PrismaClient();
 
 // for emails
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  service: "Gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 function checkMethod(req, res) {
@@ -51,19 +51,23 @@ export default async function handler(req, res) {
   let email = req.body.email;
 
   // check if email already in use
-  let emailExists = await prisma.user.findUnique({
-    where: {
-      email: email
-    }
-  }) !== null;
+  let emailExists =
+    (await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    })) !== null;
 
-  if (emailExists) return res.status(200).json({ error: "Email already in use.", success: false });
+  if (emailExists)
+    return res
+      .status(200)
+      .json({ error: "Email already in use.", success: false });
 
   // see if pending verification already exists
   let pendingVerification = await prisma.verify.findUnique({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
 
   if (pendingVerification !== null) {
@@ -74,30 +78,37 @@ export default async function handler(req, res) {
           email: email,
         },
         data: {
-          verificationExpirationTime: new Date(new Date().getTime() + 5 * 60000)
+          verificationExpirationTime: new Date(
+            new Date().getTime() + 5 * 60000
+          ),
         },
       });
 
-      return res.status(200).json({ message: "Verification key already sent, check email.", success: true });
+      return res.status(200).json({
+        message: "Verification key already sent, check email.",
+        success: true,
+      });
     } else {
       // if already expired, delete old verification thing
       await prisma.verify.delete({
         where: {
-          email: email
-        }
+          email: email,
+        },
       });
     }
   }
 
   // create verification object
-  const verificationKey = Math.floor(100000 + Math.random() * 900000).toString();
+  const verificationKey = Math.floor(
+    100000 + Math.random() * 900000
+  ).toString();
 
   await prisma.verify.create({
     data: {
       email: email,
       verificationKey: verificationKey,
-      verificationExpirationTime: new Date(new Date().getTime() + 5 * 60000) // + 5 min
-    }
+      verificationExpirationTime: new Date(new Date().getTime() + 5 * 60000), // + 5 min
+    },
   });
 
   // send confirmation email
@@ -108,5 +119,7 @@ export default async function handler(req, res) {
     text: verificationKey
   })*/
   console.log(`SIMULATED Email sent to ${email}. Content: ${verificationKey}`);
-  return res.status(200).json({ message: "Verification key sent.", success: true });
+  return res
+    .status(200)
+    .json({ message: "Verification key sent.", success: true });
 }
