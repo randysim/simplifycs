@@ -84,12 +84,10 @@ export default async function handler(req, res) {
         },
       });
 
-      return res
-        .status(200)
-        .json({
-          message: "Verification key already sent, check email.",
-          success: true,
-        });
+      return res.status(200).json({
+        message: "Verification key already sent, check email.",
+        success: true,
+      });
     } else {
       // if already expired, delete old verification thing
       await prisma.verify.delete({

@@ -64,22 +64,18 @@ function checkNames(req, res) {
   }
 
   if (!firstName.match(/^['a-zA-Z]{2,}$/)) {
-    res
-      .status(400)
-      .json({
-        error: "First name must match the following regex: /^['a-zA-Z]{2,}$/",
-        success: false,
-      });
+    res.status(400).json({
+      error: "First name must match the following regex: /^['a-zA-Z]{2,}$/",
+      success: false,
+    });
     return false;
   }
 
   if (!lastName.match(/^['a-zA-Z]{2,}$/)) {
-    res
-      .status(400)
-      .json({
-        error: "Last name must match the following regex: /^['a-zA-Z]{2,}$/",
-        success: false,
-      });
+    res.status(400).json({
+      error: "Last name must match the following regex: /^['a-zA-Z]{2,}$/",
+      success: false,
+    });
     return false;
   }
 
@@ -95,12 +91,10 @@ function checkUsername(req, res) {
   }
 
   if (!username.match(/^[\-\_a-zA-Z0-9]{4,}$/)) {
-    return res
-      .status(400)
-      .json({
-        error: "Username must match the following regex: /^[-_a-zA-Z0-9]{4,}$/",
-        success: false,
-      });
+    return res.status(400).json({
+      error: "Username must match the following regex: /^[-_a-zA-Z0-9]{4,}$/",
+      success: false,
+    });
     return false;
   }
 
@@ -116,12 +110,10 @@ function checkPassword(req, res) {
   }
 
   if (password.length < 8) {
-    res
-      .status(400)
-      .json({
-        error: "Password must be at least 8 characters.",
-        success: false,
-      });
+    res.status(400).json({
+      error: "Password must be at least 8 characters.",
+      success: false,
+    });
     return false;
   }
 
@@ -204,9 +196,11 @@ export default async function handler(req, res) {
     },
   });
 
-  res.setHeader(
-    "Set-Cookie",
-    cookie.serialize("authentication", authToken, { path: "/" })
-  );
-  res.status(200).json({ message: "Account created.", success: true });
+  res
+    .status(200)
+    .setHeader(
+      "Set-Cookie",
+      cookie.serialize("authentication", authToken, { path: "/" })
+    )
+    .json({ message: "Account created.", success: true });
 }
