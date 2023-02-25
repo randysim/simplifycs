@@ -38,7 +38,9 @@ function checkVerificationKey(req, res) {
   let verificationKey = req.body.verificationKey;
 
   if (!verificationKey) {
-    res.status(400).json({ error: "Missing verification key.", success: false });
+    res
+      .status(400)
+      .json({ error: "Missing verification key.", success: false });
     return false;
   }
 
@@ -55,8 +57,8 @@ export default async function handler(req, res) {
 
   let pendingVerification = await prisma.verify.findUnique({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
 
   if (pendingVerification == null) {
@@ -65,21 +67,25 @@ export default async function handler(req, res) {
   }
 
   if (new Date() > pendingVerification.verificationExpirationTime) {
-    return res.status(400).json({ error: "Verification key expired.", success: false });
+    return res
+      .status(400)
+      .json({ error: "Verification key expired.", success: false });
   }
 
   if (pendingVerification.verificationKey === verificationKey) {
     await prisma.verify.update({
       where: {
-        email: email
+        email: email,
       },
       data: {
-        verificationExpirationTime: new Date(new Date().getTime() + 5 * 60000)
+        verificationExpirationTime: new Date(new Date().getTime() + 5 * 60000),
       },
     });
 
     return res.status(200).json({ message: "Email verified.", success: true });
   }
 
-  return res.status(400).json({ error: "Invalid verification key.", success: false });
+  return res
+    .status(400)
+    .json({ error: "Invalid verification key.", success: false });
 }
