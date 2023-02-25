@@ -30,5 +30,5 @@ model User {
   lastName  String
 
   passwordHashed String
-  authToken      String 
+  authToken      String @unique
 }
