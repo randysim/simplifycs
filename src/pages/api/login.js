@@ -59,5 +59,11 @@ export default async function handler(req, res) {
     },
   });
 
-  res.status(200).setHeader("Set-Cookie", cookie.serialize("authentication", authToken, { path: '/' })).json({ message: "Logged in.", success: true });
+  res
+    .status(200)
+    .setHeader(
+      "Set-Cookie",
+      cookie.serialize("authentication", authToken, { path: "/" })
+    )
+    .json({ message: "Logged in.", success: true });
 }
