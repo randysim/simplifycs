@@ -22,6 +22,7 @@ const UserProvider = ({ children }) => {
 
     // Attempt Sign In if not signed in
     if (!userState.signedIn) {
+<<<<<<< HEAD
       axios.get("api/login")
         .then(res => {
           let data = res.data;
@@ -37,9 +38,16 @@ const UserProvider = ({ children }) => {
             router.push("/");
           }
         })
+=======
+      axios.get("api/login").then((res) => {
+        let data = res.data;
+        if (data.success) {
+          console.log(`Cookie Sign In`);
+          setUserState({ signedIn: true });
+        }
+      });
+>>>>>>> 1b4f75f215b2ae9ee8f717b0781b5773fc8e10f0
     }
-
-    
   });
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
