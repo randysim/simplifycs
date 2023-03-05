@@ -35,7 +35,7 @@ export default function LoginForm() {
         return;
       }
 
-      user.setUserState({ signedIn: true, authToken: body.authToken });
+      user.setUserState({ signedIn: true, });
       router.push("/dashboard");
     });
   };
