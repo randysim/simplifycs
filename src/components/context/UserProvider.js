@@ -1,5 +1,6 @@
 import UserContext from "./UserContext";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import axios from "axios";
 
@@ -7,6 +8,7 @@ const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState({
     signedIn: false,
   });
+  const router = useRouter();
 
   /* ATTEMPT SIGN IN WITH COOKIE */
 
@@ -26,6 +28,13 @@ const UserProvider = ({ children }) => {
           if (data.success) {
             console.log(`Cookie Sign In`);
             setUserState({ signedIn: true });
+
+            // if certain pages but has cookie login, go to dashboard
+            if (
+              ["/", "/login"].includes(router.pathname)
+            ) router.push("/dashboard");
+          } else {
+            router.push("/");
           }
         })
     }
