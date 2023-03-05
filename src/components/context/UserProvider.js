@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState({
     signedIn: false,
-    authToken: "",
   });
 
   /* ATTEMPT SIGN IN WITH COOKIE */
