@@ -35,7 +35,7 @@ export default function LoginForm() {
         return;
       }
 
-      user.setUserState({ signedIn: true, });
+      user.setUserState({ signedIn: true });
       router.push("/dashboard");
     });
   };

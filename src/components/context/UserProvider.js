@@ -20,17 +20,14 @@ const UserProvider = ({ children }) => {
 
     // Attempt Sign In if not signed in
     if (!userState.signedIn) {
-      axios.get("api/login")
-        .then(res => {
-          let data = res.data;
-          if (data.success) {
-            console.log(`Cookie Sign In`);
-            setUserState({ signedIn: true });
-          }
-        })
+      axios.get("api/login").then((res) => {
+        let data = res.data;
+        if (data.success) {
+          console.log(`Cookie Sign In`);
+          setUserState({ signedIn: true });
+        }
+      });
     }
-
-    
   });
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
