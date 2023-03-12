@@ -18,24 +18,6 @@ function genAuthToken() {
 }
 
 export default async function handler(req, res) {
-  // ATTEMPT COOKIE SIGN IN
-  if (req.method == "GET") {
-    let cookies = cookie.parse(req.headers.cookie);
-    if (cookies.authentication) {
-      let user = await prisma.user.findUnique({
-        where: {
-          authToken: cookies.authentication,
-        },
-      });
-
-      if (user) {
-        return res.status(200).json({ message: "Logged In.", success: true });
-      } else {
-        return res.status(200).json({ message: "No Cookie", success: false });
-      }
-    }
-  }
-
   if (req.method != "POST")
     return res
       .status(400)
@@ -54,6 +36,8 @@ export default async function handler(req, res) {
       email: email,
     },
   });
+
+  console.log(user);
 
   if (user == null)
     return res.status(400).json({ success: false, error: "Invalid Email." });
