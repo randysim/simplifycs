@@ -5,42 +5,38 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 const UserProvider = ({ children }) => {
-  const [userState, setUserState] = useState({
-    signedIn: false,
-  });
+  const [userState, setUserState] = useState({ signedIn: false });
   const router = useRouter();
 
   /* ATTEMPT SIGN IN WITH COOKIE */
 
-  const value = {
-    userState,
-    setUserState,
-  };
-
   useEffect(() => {
-    console.log(`Provider Refreshed - signedIn: ${userState.signedIn}`);
+    console.log(`Provider Refreshed - ${JSON.stringify(userState)}`);
 
     // Attempt Sign In if not signed in
     if (!userState.signedIn) {
-      axios.get("api/login")
-        .then(res => {
-          let data = res.data;
-          if (data.success) {
-            console.log(`Cookie Sign In`);
-            setUserState({ signedIn: true });
+      axios.get("/api/getuser").then((res) => {
+        let data = res.data;
 
-            // if certain pages but has cookie login, go to dashboard
-            if (
-              ["/", "/login"].includes(router.pathname)
-            ) router.push("/dashboard");
-          } else {
-            router.push("/");
+        if (data.success) {
+          setUserState({ signedIn: true, ...data.userInfo });
+
+          // if certain pages but has cookie login, go to dashboard
+          if (["/", "/login", "/signup"].includes(router.pathname)) {
+            router.push("/dashboard");
           }
-        });
+        } else if (!["/login", "/signup"].includes(router.pathname)) {
+          router.push("/login");
+        }
+      });
     }
   });
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={[userState, setUserState]}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserProvider;
