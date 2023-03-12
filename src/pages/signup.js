@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Signup.module.css";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 function Prompt({ prompt, handler, level, visible, disabled }) {
   return (
@@ -28,6 +29,7 @@ function Prompt({ prompt, handler, level, visible, disabled }) {
 export default function Signup() {
   const [inputLevel, setInputLevel] = useState(1);
   const [infoCollected, setInfoCollected] = useState({});
+  const router = useRouter();
 
   async function post(url, content) {
     return fetch(url, {
@@ -123,6 +125,8 @@ export default function Signup() {
               setError(resp.error);
               return;
             }
+
+            router.push("/dashboard");
           }
 
           break;
