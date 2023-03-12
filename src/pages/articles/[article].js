@@ -1,6 +1,7 @@
-import { useRouter } from 'next/router';
+import styles from "@/styles/Article.module.css";
+import { useRouter } from "next/router";
 import { PrismaClient } from "@prisma/client";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 const prisma = new PrismaClient();
 
@@ -16,18 +17,24 @@ export async function getServerSideProps(context) {
   if (!article) {
     return {
       redirect: {
-        destination: "/articles"
-      }
-    }
+        destination: "/articles",
+      },
+    };
   }
 
   return {
     props: {
-      content: article.content
-    }
+      title: article.title,
+      content: article.content,
+    },
   };
 }
 
-export default function Post({content}) {
-  return <p style={{ color: "white" }}>Post: {content}</p>
+export default function Post({ title, content }) {
+  return (
+    <>
+      <p className={styles.title}>{title}</p>
+      <ReactMarkdown className={styles.article}>{content}</ReactMarkdown>
+    </>
+  );
 }
