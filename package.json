@@ -24,7 +24,8 @@
     "nodemailer": "^6.9.1",
     "prisma": "^4.10.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.5"
   },
   "devDependencies": {
     "eslint": "8.34.0",
