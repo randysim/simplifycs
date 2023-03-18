@@ -1,8 +1,31 @@
 import Head from "next/head";
 import styles from "@/styles/Signup.module.css";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
-function Prompt({ prompt, handler, level, visible, disabled }) {
+function Prompt({ setInputLevel, prompt, handler, level, visible }) {
+  const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
+  function selectNext() {
+    let next = document.querySelector(`#input${level + 1}`);
+
+    if (next) {
+      setTimeout(() => {
+        next.focus();
+      }, 5);
+
+      setInputLevel(level + 1);
+    }
+  }
+
+  function onKeyPress(event) {
+    if (event.key == "Enter") {
+      let input = event.target.value;
+      handler({ event, input, setError, setDisabled, selectNext });
+    }
+  }
+
   return (
     <div
       className={`${styles.inputLine} ${visible ? "" : styles.inputLineHidden}`}
@@ -13,14 +36,14 @@ function Prompt({ prompt, handler, level, visible, disabled }) {
         maxLength={40 - prompt.length}
         size={40 - prompt.length}
         className={styles.input}
-        onKeyPress={handler}
+        onKeyPress={onKeyPress}
         level={level}
         prompt={prompt}
         id={`input${level}`}
         disabled={disabled}
       ></input>
 
-      <p className={styles.errorMessage} id={`error${level}`}></p>
+      <p className={styles.errorMessage}>{error}</p>
     </div>
   );
 }
@@ -28,6 +51,7 @@ function Prompt({ prompt, handler, level, visible, disabled }) {
 export default function Signup() {
   const [inputLevel, setInputLevel] = useState(1);
   const [infoCollected, setInfoCollected] = useState({});
+  const router = useRouter();
 
   async function post(url, content) {
     return fetch(url, {
@@ -39,21 +63,29 @@ export default function Signup() {
     }).then((resp) => resp.json());
   }
 
-  async function handler(event) {
-    function setError(error) {
-      let e = document.querySelector(
-        `#error${parseInt(event.target.getAttribute("level"))}`
-      );
-      e.innerText = error;
-    }
+  useEffect(() => {
+    document.querySelector("#input1").focus();
+  });
 
-    let input = event.target.value;
-
-    if (event.key == "Enter") {
-      setError("");
-
-      switch (event.target.getAttribute("prompt")) {
-        case "Email": {
+  return (
+    <div
+      className={styles.console}
+      onBlur={(event) => {
+        if (event.relatedTarget == null) {
+          console.log("uh oh stinky");
+          event.target.focus();
+        }
+      }}
+    >
+      <p>$ python signup.py</p>
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           let resp = await post("/api/signup/sendVerificationCode", {
             email: input,
           });
@@ -64,9 +96,22 @@ export default function Signup() {
           }
 
           setInfoCollected({ ...infoCollected, email: input });
-          break;
-        }
-        case "Verification Key": {
+          setDisabled(true);
+          selectNext();
+        }}
+        visible={inputLevel >= 1}
+        level={1}
+        setInputLevel={setInputLevel}
+        prompt="Email"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           let resp = await post("/api/signup/checkVerificationCode", {
             email: infoCollected.email,
             verificationKey: input,
@@ -78,9 +123,22 @@ export default function Signup() {
           }
 
           setInfoCollected({ ...infoCollected, verificationKey: input });
-          break;
-        }
-        case "First Name": {
+          setDisabled(true);
+          selectNext();
+        }}
+        visible={inputLevel >= 2}
+        level={2}
+        setInputLevel={setInputLevel}
+        prompt="Verification Key"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           if (!input.match(/^['a-zA-Z]{2,}$/)) {
             setError(
               "First name must match the following regex: /^['a-zA-Z]{2,}$/"
@@ -89,9 +147,21 @@ export default function Signup() {
           }
 
           setInfoCollected({ ...infoCollected, firstName: input });
-          break;
-        }
-        case "Last Name": {
+          selectNext();
+        }}
+        visible={inputLevel >= 3}
+        level={3}
+        setInputLevel={setInputLevel}
+        prompt="First Name"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           if (!input.match(/^['a-zA-Z]{2,}$/)) {
             setError(
               "Last name must match the following regex: /^['a-zA-Z]{2,}$/"
@@ -100,22 +170,58 @@ export default function Signup() {
           }
 
           setInfoCollected({ ...infoCollected, lastName: input });
-          break;
-        }
-        case "Username": {
+          selectNext();
+        }}
+        visible={inputLevel >= 3}
+        level={4}
+        setInputLevel={setInputLevel}
+        prompt="Last Name"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           setInfoCollected({ ...infoCollected, username: input });
-          break;
-        }
-        case "Password": {
+          selectNext();
+        }}
+        visible={inputLevel >= 3}
+        level={5}
+        setInputLevel={setInputLevel}
+        prompt="Username"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           if (input.length < 8) {
             setError("Password must be at least 8 characters.");
             return;
           }
 
           setInfoCollected({ ...infoCollected, password: input });
-          break;
-        }
-        case "Create Account? (y/n)": {
+          selectNext();
+        }}
+        visible={inputLevel >= 3}
+        level={6}
+        setInputLevel={setInputLevel}
+        prompt="Password"
+      />
+      <Prompt
+        handler={async ({
+          event,
+          input,
+          setError,
+          setDisabled,
+          selectNext,
+        }) => {
           if (input.toLowerCase() == "y") {
             let resp = await post("/api/signup/createAccount", infoCollected);
 
@@ -123,76 +229,13 @@ export default function Signup() {
               setError(resp.error);
               return;
             }
+
+            router.push("/dashboard");
           }
-
-          break;
-        }
-      }
-
-      event.target.blur();
-
-      // get the next prompt
-      let next = document.querySelector(
-        `#input${parseInt(event.target.getAttribute("level")) + 1}`
-      );
-      if (next) {
-        setTimeout(() => {
-          next.focus();
-        }, 5);
-
-        // only reveal the next input if this one is the last one
-        if (parseInt(event.target.getAttribute("level")) == inputLevel) {
-          setInputLevel(inputLevel + 1);
-        }
-      }
-    }
-  }
-
-  return (
-    <div className={styles.console}>
-      <p>$ python signup.py</p>
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 1}
-        disabled={inputLevel >= 2}
-        level={1}
-        prompt="Email"
-      />
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 2}
-        disabled={inputLevel >= 3}
-        level={2}
-        prompt="Verification Key"
-      />
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 3}
-        level={3}
-        prompt="First Name"
-      />
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 4}
-        level={4}
-        prompt="Last Name"
-      />
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 5}
-        level={5}
-        prompt="Username"
-      />
-      <Prompt
-        handler={handler}
-        visible={inputLevel >= 6}
-        level={6}
-        prompt="Password"
-      />
-      <Prompt
-        handler={handler}
+        }}
         visible={inputLevel >= 7}
         level={7}
+        setInputLevel={setInputLevel}
         prompt="Create Account? (y/n)"
       />
     </div>

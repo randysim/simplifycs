@@ -28,7 +28,7 @@ export default function Login() {
 
     axios.post("api/login", { email, password }).then((res) => {
       let body = res.data;
-      
+
       if (!body.success) {
         // ERROR (do some snackbar thing)
         console.log(body.error);
