@@ -1,6 +1,6 @@
 .console {
   font-family: Consolas;
-  font-size: 14px;
+  font-size: 25px;
 
   background: #000000;
   color: #ffffff;
@@ -18,7 +18,7 @@
 
 .input {
   font-family: Consolas;
-  font-size: 14px;
+  font-size: 25px;
 
   background: #000000;
   color: #ffffff;
@@ -30,7 +30,7 @@
 .errorMessage {
   color: red;
   position: absolute;
-  left: 335px;
+  left: 450px;
 }
 
 .inputLine {
