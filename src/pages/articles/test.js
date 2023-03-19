@@ -1,9 +1,9 @@
 import styles from "@/styles/Article.module.css";
 
 import ReactMarkdown from "react-markdown";
-import gfm from 'remark-gfm';
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import gfm from "remark-gfm";
 
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 //one day customizable code style preferences
 import * as CodeStyles from "react-syntax-highlighter/dist/cjs/styles/prism";
 
@@ -13,19 +13,32 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItem from "@mui/material/ListItem";
+import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
 
 export default function Post({ title, content }) {
-  let components={
-    code({node, inline, className, children, ...props}) {
-      const match = /language-(\w+)/.exec(className || '')
+  const components = {
+    h1: ({...props}) => <Typography variant="h1" {...props} />,
+    h2: ({...props}) => <Typography variant="h2" {...props} />,
+    h3: ({...props}) => <Typography variant="h3" {...props} />,
+    h4: ({...props}) => <Typography variant="h4" {...props} />,
+    h5: ({...props}) => <Typography variant="h5" {...props} />,
+    h6: ({...props}) => <Typography variant="h6" {...props} />,
+    p: ({...props}) => <Typography {...props} />,
+    a: ({...props}) => <Link {...props} />,
+
+    code: ({ node, inline, className, children, ...props }) => {
+      const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
-          children={String(children).replace(/\n$/, '')}
+          children={String(children).replace(/\n$/, "")}
           language={match[1]}
           PreTag="div"
           showLineNumbers={true}
           CodeTag={Typography}
-          codeTagProps={{variant: "code"}}
+          codeTagProps={{ variant: "code" }}
           style={CodeStyles.vscDarkPlus}
           {...props}
         />
@@ -33,48 +46,32 @@ export default function Post({ title, content }) {
         <code className={className} {...props}>
           {children}
         </code>
-      )
+      );
     },
-    h1({...props}) {
-      return <Typography variant="h1" {...props} />
-    },
-    h2({...props}) {
-      return <Typography variant="h2" {...props} />
-    },
-    h3({...props}) {
-      return <Typography variant="h3" {...props} />
-    },
-    h4({...props}) {
-      return <Typography variant="h4" {...props} />
-    },
-    h5({...props}) {
-      return <Typography variant="h5" {...props} />
-    },
-    h6({...props}) {
-      return <Typography variant="h6" {...props} />
-    },
-    a({href, ...props}) {
-      return <Link href={href} {...props} />
-    },
-    li({...props}) {
-      return (
-        <Box component="li" sx={{ mt: 1 }}>
-          <Typography variant="h3" children={[<p>&bull;</p>].concat(props.children)} />
-        </Box>
-      )
-    },
-    ol({...props}) {
-      return <List {...props} />
-    }
-  };
+
+    ol: ({...props}) => <List sx={{ listStyleType: 'a' /*idk why putting any letter here works but an empty string doesnt*/, pl: 2 }} {...props} />,
+    ul: ({...props}) => <List nestedListStyle={{ marginLeft: 18 }} sx={{ listStyleType: 'disc', pl: 2 }} {...props} />,
+    li: ({...props}) => <ListItem nestedLevel={5} sx={{ padding: 0, display: 'list-item' }} {...props} />,
+
+    blockquote: ({...props}) => <Typography sx={{ fontStyle: "italic", borderLeft: "4px solid grey" }} {...props} />,
+
+    table: ({...props}) => <Table {...props} />,
+
+    th: ({...props}) => <TableCell sx={{border: 1}}><Typography {...props} /></TableCell>,
+    td: ({...props}) => <TableCell sx={{border: 1}}><Typography {...props} /></TableCell>
+  }
 
   return (
     <>
       <p className={styles.title}>Idk anymore</p>
-      <ReactMarkdown
-        remarkPlugins={[gfm]}
-        components={components}
-      >{`
+        <ReactMarkdown remarkPlugins={[gfm]} components={components}>
+          {MARKDOWN_TEXT}
+        </ReactMarkdown>
+      </>
+  );
+}
+
+const MARKDOWN_TEXT = `
 ---
 __Advertisement :)__
 
@@ -319,7 +316,4 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 ::: warning
 *here be dragons*
 :::
-      `}</ReactMarkdown>
-    </>
-  );
-}
+`
