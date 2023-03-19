@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
-import cookie from "cookie";
 
 const prisma = new PrismaClient();
 
