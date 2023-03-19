@@ -81,7 +81,7 @@ const ThemeProvider = (props) => {
             fontSize: "1.5rem",
             fontWeight: 400,
             margin: "0.5rem 0",
-          }
+          },
         },
       }),
     [prefersDarkMode]
