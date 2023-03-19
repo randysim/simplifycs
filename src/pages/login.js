@@ -1,6 +1,3 @@
-import { useContext } from "react";
-import UserContext from "../components/context/UserContext";
-
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -15,9 +12,15 @@ import Container from "@mui/material/Container";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+import useUser from "@/lib/useUser";
+
 export default function Login() {
-  const user = useContext(UserContext);
+  const { signedIn, userInfo } = useUser();
   const router = useRouter();
+
+  if (signedIn) {
+    router.push("/dashboard");
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
