@@ -9,18 +9,43 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Grid 
-        container 
+      <Grid
+        container
         spacing={2}
-        justifyContent="center" 
-        sx={{ width: "100%", height: "auto", padding: "50px"}} bgcolor="#AF98B9"
+        justifyContent="center"
+        sx={{ width: "100%", height: "auto", padding: "50px" }}
+        bgcolor="#AF98B9"
       >
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
-        <CourseCard id={1} title={"Intro to Python"} description={"Beginner Python Course!"} />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
+        <CourseCard
+          id={1}
+          title={"Intro to Python"}
+          description={"Beginner Python Course!"}
+        />
       </Grid>
     </div>
   );
