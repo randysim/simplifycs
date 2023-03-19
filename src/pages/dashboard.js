@@ -1,14 +1,14 @@
-import { useContext } from "react";
-import UserContext from "../components/context/UserContext";
+import useUser from "@/lib/useUser";
 
 import CourseCard from "@/components/dashboard/CourseCard";
 import { Grid } from "@mui/material";
 
 export default function Dashboard() {
-  const [userState, setUserState] = useContext(UserContext);
+  const { signedIn, userInfo } = useUser();
 
   return (
     <div>
+      Hello {JSON.stringify({ signedIn, userInfo })}
       <Grid
         container
         spacing={2}

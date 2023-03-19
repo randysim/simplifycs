@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 const ThemeProvider = (props) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersDarkMode = true; //useMediaQuery("(prefers-color-scheme: dark)");
 
   const theme = React.useMemo(
     () =>
@@ -74,6 +74,11 @@ const ThemeProvider = (props) => {
           },
           h6: {
             fontSize: "1rem",
+            fontWeight: 400,
+            margin: "0.5rem 0",
+          },
+          code: {
+            fontSize: "1.5rem",
             fontWeight: 400,
             margin: "0.5rem 0",
           },
