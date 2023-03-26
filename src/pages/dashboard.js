@@ -18,14 +18,13 @@ export default function Dashboard() {
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
-    let mounted = true;
     fetchCourses()
       .then(crs => {
-        if (mounted)
           setCourses(crs);
       });
-    return () => mounted = false;
-  });
+  }, []);
+
+  console.log(courses);
 
   return (
     <div>
@@ -37,7 +36,7 @@ export default function Dashboard() {
         sx={{ width: "100%", height: "auto", padding: "50px" }}
         bgcolor="#AF98B9"
       >
-        {courses.map(c => <CourseCard title={c.name} description={c.description} key={c.id} />)}
+        {courses.map(c => <CourseCard id={c.id} title={c.name} description={c.description} key={c.id} />)}
       </Grid>
     </div>
   );
