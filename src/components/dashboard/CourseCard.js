@@ -1,6 +1,9 @@
 import { Card, Typography, Divider, Grid } from "@mui/material";
+import { useRouter } from "next/router";
 
 function CourseCard({ id, title, description }) {
+  const router = useRouter();
+
   return (
     <Grid item>
       <Card
@@ -11,6 +14,9 @@ function CourseCard({ id, title, description }) {
           minHeight: 200,
           maxHeight: 300,
           padding: "10px",
+        }}
+        onClick={() => {
+          router.push(`courses/${id}`);
         }}
       >
         <Typography
