@@ -15,8 +15,6 @@ export default function useUser() {
     if (data.success) {
       value.signedIn = true;
       value.userInfo = data.userInfo;
-    } else {
-      router.push("/login");
     }
   }
 

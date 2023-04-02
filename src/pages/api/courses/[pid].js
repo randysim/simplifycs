@@ -53,8 +53,9 @@ export default async function handler(req, res) {
 
   if (!courses[pid]) return res.status(400).json({ success: false, error: "Invalid Course ID" });
 
+  if (!courses[pid])
+    return res.status(400).json({ success: false, error: "Invalid Course ID" });
+
   // temporary till we figure out how we're going to add courses
-  return res
-    .status(200)
-    .json({ success: true, course: courses[pid]});
+  return res.status(200).json({ success: true, course: courses[pid] });
 }
