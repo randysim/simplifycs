@@ -22,7 +22,6 @@ export default function Dashboard() {
     });
   }, []);
 
-  console.log(courses);
 
   return (
     <div>

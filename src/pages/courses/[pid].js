@@ -5,13 +5,14 @@ import { useState, useEffect } from "react";
 import useUser from "@/lib/useUser";
 
 import React from "react";
+import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 
 const getCourseData = async (id) => {
   if (id) {
     let data = await axios.get(`http://localhost:3000/api/courses/${id}`);
     let body = data.data;
 
-    if (body.success) return body.course;
+    if (body.success) return body;
   }
 };
 
@@ -30,19 +31,57 @@ export default function Course() {
 
   const renderCourseData = () => {
     return (
-      <React.Fragment>
-        <h1>{courseData.name}</h1>
-        <p>{courseData.description}</p>
-        <span>
-          {courseData.units.map((u) => (
-            <p>
-              {u.name} - {u.id}
-            </p>
-          ))}
-        </span>
-      </React.Fragment>
+      <Grid 
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        minWidth="600px"
+      >
+          <Grid 
+            item
+            sx={{ width: "80%" }}
+          >
+            <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
+              <Box width="100%">
+                <Typography sx={{ fontSize: 30}}> {courseData.course.name} </Typography>
+                <Typography sx={{ fontSize: 14}}> {courseData.course.description} </Typography>
+              </Box>
+              <Divider sx={{ my: 1 }} />
+              <Grid
+                container
+                spacing={0}
+                width="60%"
+              >
+                {Object.entries(courseData.units).map(([id, u]) => (
+                  <Grid item xs={12} sx={{bgcolor: "gray", width: "100%", minWidth: "500px", minHeight: "200px", cursor: "pointer", borderRadius: "5px", marginTop: "15px" }}key={id}>
+                    <Typography sx={{ fontSize: 20}} textAlign="center"> Unit: {u.name} </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid item minWidth="450px" minHeight="450px" width="40%">
+                <Box 
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center" width="100%" height="100%"
+                >
+                  <Card sx={{cursor: "pointer",
+                    
+                    width: "90%",
+                    height: "400px",
+                    background: "white",
+                    color: "black",
+                    padding: "10px"}}>
+                    <Typography sx={{ fontSize: 20}}>Course Progress</Typography>
+                  </Card>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
     );
   };
 
-  return <div>{courseData ? renderCourseData() : <p>{pid}</p>}</div>;
+  return <Box paddingTop="50px">{courseData ? renderCourseData() : <p>{pid}</p>}</Box>;
 }
