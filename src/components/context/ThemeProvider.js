@@ -46,44 +46,44 @@ const ThemeProvider = (props) => {
         },
         typography: {
           fontFamily: `'Roboto Condensed', sans-serif`,
-          htmlFontSize: 16,
+          fontSize: 16,
           h1: {
-            fontSize: "3rem",
+            fontSize: 48,
             fontWeight: 700,
             margin: "0.5rem 0",
           },
           h2: {
-            fontSize: "2.6rem",
+            fontSize: 42,
             fontWeight: 700,
             margin: "0.5rem 0",
           },
           h3: {
-            fontSize: "2.2rem",
+            fontSize: 35,
             fontWeight: 500,
             margin: "0.5rem 0",
           },
           h4: {
-            fontSize: "1.8rem",
+            fontSize: 29,
             fontWeight: 500,
             margin: "0.5rem 0",
           },
           h5: {
-            fontSize: "1.4rem",
+            fontSize: 22,
             fontWeight: 400,
             margin: "0.5rem 0",
           },
           h6: {
-            fontSize: "1rem",
+            fontSize: 16,
             fontWeight: 400,
             margin: "0.5rem 0",
           },
           code: {
-            fontSize: "1.5rem",
+            fontSize: 16,
             fontWeight: 400,
             margin: "0.5rem 0",
           },
           p: {
-            fontSize: "1rem",
+            fontSize: 16,
             fontWeight: 400,
             margin: "0.5rem 0",
           },

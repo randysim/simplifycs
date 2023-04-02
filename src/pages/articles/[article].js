@@ -1,11 +1,11 @@
 import styles from "@/styles/Article.module.css";
 import { useRouter } from "next/router";
 import { PrismaClient } from "@prisma/client";
-import ReactMarkdown from "react-markdown";
+import RenderMarkdown from "@/components/articles/RenderMarkdown.js";
 
 const prisma = new PrismaClient();
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   let articleTitle = context.query.article;
 
   let article = await prisma.article.findUnique({
@@ -30,11 +30,11 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Post({ title, content }) {
+export default function Article({ title, content }) {
   return (
     <>
       <p className={styles.title}>{title}</p>
-      <ReactMarkdown className={styles.article}>{content}</ReactMarkdown>
+      <RenderMarkdown className={styles.article}>{content}</RenderMarkdown>
     </>
   );
 }
