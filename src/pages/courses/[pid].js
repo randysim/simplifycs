@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import useUser from "@/lib/useUser";
 
 import React from "react";
-import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography, Divider, Link as MUILink } from "@mui/material";
+import Link from "next/link"
 
 const getCourseData = async (id) => {
   if (id) {
@@ -24,9 +25,13 @@ export default function Course() {
   const [courseData, setCourseData] = useState(null);
 
   useEffect(() => {
-    getCourseData(pid).then((crs) => {
-      setCourseData(crs);
-    });
+    getCourseData(pid)
+      .then((crs) => {
+        setCourseData(crs);
+      })
+      .catch(e => {
+        router.push("/dashboard");
+      })
   }, [router]);
 
   const renderCourseData = () => {
@@ -56,7 +61,20 @@ export default function Course() {
               >
                 {Object.entries(courseData.units).map(([id, u]) => (
                   <Grid item xs={12} sx={{bgcolor: "gray", width: "100%", minWidth: "500px", minHeight: "200px", cursor: "pointer", borderRadius: "5px", marginTop: "15px" }}key={id}>
-                    <Typography sx={{ fontSize: 20}} textAlign="center"> Unit: {u.name} </Typography>
+                    <Box width="100%" height="20%"> 
+                      <Typography sx={{ fontSize: 20}} textAlign="center"> Unit: {u.name} </Typography>
+                    </Box>
+                    <Grid container width="100%" height="80%">
+                      {u.lessons.map((l, i) => {
+                        return (
+                          <Box key={i} width="25%" height="25%" display="flex" alignItems="center" justifyContent="center">
+                            <Link href={`units/${l.id}`} color="primary.contrastText">
+                            <MUILink color="primary.contrastText">{l.name}</MUILink>
+                            </Link>
+                          </Box>
+                        )
+                      })}
+                    </Grid>
                   </Grid>
                 ))}
               </Grid>
