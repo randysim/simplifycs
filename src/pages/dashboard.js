@@ -4,6 +4,8 @@ import CourseCard from "@/components/dashboard/CourseCard";
 import { Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 
+import { useRouter } from "next/router";
+
 import axios from "axios";
 
 const fetchCourses = async () => {
@@ -13,8 +15,18 @@ const fetchCourses = async () => {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
   const { signedIn, userInfo } = useUser();
   const [courses, setCourses] = useState([]);
+
+  // issue with useUser
+  useEffect(() => {
+    console.log(signedIn);
+    if (!signedIn) {
+      router.push("/login");
+    }
+  }, [router, signedIn]);
+  
 
   useEffect(() => {
     fetchCourses().then((crs) => {
