@@ -1,9 +1,7 @@
+import CodeComponentStatic from "./CodeComponentStatic.js";
+
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
-
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-//one day customizable code style preferences
-import * as CodeStyles from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -26,17 +24,17 @@ const components = {
 
   code: ({ node, inline, className, children }) => {
     const match = /language-(\w+)/.exec(className || "");
-    return !inline && match ? (
-      <SyntaxHighlighter
-        children={String(children).replace(/\n$/, "")}
-        language={match[1]}
-        PreTag="div"
-        showLineNumbers={true}
-        CodeTag={Typography}
-        codeTagProps={{ variant: "code" }}
-        style={CodeStyles.vscDarkPlus}
-        children={children}
-      />
+    let supportedLanguages = ["python", "java", "scheme"];
+
+    return (!inline && match) ? (
+      supportedLanguages.includes(match[1]) ? (
+        <CodeComponentStatic
+          initialCode={String(children).replace(/\n$/, "")}
+          language={match[1]}
+        />
+      ) : (
+        <p>Supported languages: {supportedLanguages.map(language => `"${language}"`).join(", ")}</p>
+      )
     ) : (
       <code className={className}>
         {children}

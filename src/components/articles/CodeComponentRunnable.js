@@ -1,31 +1,27 @@
-import Editor from "@monaco-editor/react";
 import { useState } from "react";
+import Editor from '@monaco-editor/react';
+import axios from "axios";
+
+//https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
 export default function CodeComponentRunnable({ initialCode, language }) {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState("");
 
-  let editorNumLines = Math.min(Math.max(code.split("\n").length, output.split("\n").length), 25);
-
-  async function executeCode() {
-    let resp = await fetch("/api/runCode", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        language, code
-      }),
-    }).then((resp) => resp.json());
-
-    setOutput(resp.run.output);
+  function executeCode() {
+    axios.post("/api/runCode", {
+      language: language,
+      code: code
+    }).then(res => {
+      setOutput(res.data.run.output);
+    });
   }
 
   return (
     <>
       <div style={{display: "flex"}}>
         <Editor
-          height={editorNumLines * 25 + 40}
+          height={500}
           width="50vw"
           language={language}
           theme="vs-dark"
@@ -34,13 +30,15 @@ export default function CodeComponentRunnable({ initialCode, language }) {
           options={{
             fontSize: 16,
             minimap: {
-              enabled: false
-            }
+              enabled: false,
+            },
+            contextmenu: false, //dont show weird thing on right click
+            copyWithSyntaxHighlighting: false, //text copies normally
           }}
         />
 
-        <div style={{width: "50vw", fontSize: 16, color: "white", height: editorNumLines * 25 + 40, background: "black", overflowY: "scroll"}}>
-          <p style={{ whiteSpace: "pre-line" }}>{output}</p>
+        <div style={{width: "50vw", fontSize: 16, color: "white", height: 500, background: "black", overflowY: "scroll", cursor: "col-resize"}}>
+          <p style={{whiteSpace: "pre-line"}}>{output}</p>
         </div>
       </div>
 

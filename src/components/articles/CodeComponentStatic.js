@@ -1,25 +1,29 @@
-import Editor from "@monaco-editor/react";
+import Editor from '@monaco-editor/react';
+
+//https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
 export default function CodeComponentStatic({ initialCode, language }) {
-  let editorNumLines = Math.min(initialCode.split("\n").length, 25);
-
-  //todo: ctrl+f is kinda weird because all keypresses are prevented
-
   return (
-    <div onKeyDown={event => event.preventDefault()}>
-      <Editor
-        height={editorNumLines * 25 + 40}
-        width="50vw"
-        language={language}
-        theme="vs-dark"
-        value={initialCode}
-        options={{
-          fontSize: 16,
-          minimap: {
-            enabled: false
-          }
-        }}
-      />
-    </div>
-  );
+    <Editor
+      height={500}
+      width="50vw"
+      language={language}
+      theme="vs-dark"
+      value={initialCode}
+      options={{
+        fontSize: 16,
+        minimap: {
+          enabled: false,
+        },
+        contextmenu: false, //dont show weird thing on right click
+        copyWithSyntaxHighlighting: false, //text copies normally
+        readOnly: true,
+      }}
+      onMount={(editor, monaco) => {
+        //prevent "Cannot edit in read-only editor" message
+        //this probably isnt the right way to do this
+        editor.onDidAttemptReadOnlyEdit = function(event) {}
+      }}
+    />
+  )
 }
