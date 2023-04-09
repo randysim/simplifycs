@@ -1,4 +1,5 @@
 import CodeComponentStatic from "./CodeComponentStatic.js";
+import CodeComponentRunnable from "./CodeComponentRunnable.js";
 
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
@@ -26,19 +27,20 @@ const components = {
     const match = /language-(\w+)/.exec(className || "");
     let supportedLanguages = ["python", "java", "scheme"];
 
-    return (!inline && match) ? (
+    return !inline && match ? (
       supportedLanguages.includes(match[1]) ? (
-        <CodeComponentStatic
+        <CodeComponentRunnable
           initialCode={String(children).replace(/\n$/, "")}
           language={match[1]}
         />
       ) : (
-        <p>Supported languages: {supportedLanguages.map(language => `"${language}"`).join(", ")}</p>
+        <p>
+          Supported languages:{" "}
+          {supportedLanguages.map((language) => `"${language}"`).join(", ")}
+        </p>
       )
     ) : (
-      <code className={className}>
-        {children}
-      </code>
+      <code className={className}>{children}</code>
     );
   },
 

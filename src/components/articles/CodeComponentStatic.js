@@ -1,4 +1,4 @@
-import Editor from '@monaco-editor/react';
+import Editor from "@monaco-editor/react";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
@@ -17,13 +17,18 @@ export default function CodeComponentStatic({ initialCode, language }) {
         },
         contextmenu: false, //dont show weird thing on right click
         copyWithSyntaxHighlighting: false, //text copies normally
+        lineHeight: 20,
+        padding: {
+          top: 10,
+          bottom: 10,
+        },
         readOnly: true,
       }}
       onMount={(editor, monaco) => {
         //prevent "Cannot edit in read-only editor" message
         //this probably isnt the right way to do this
-        editor.onDidAttemptReadOnlyEdit = function(event) {}
+        editor.onDidAttemptReadOnlyEdit = function (event) {};
       }}
     />
-  )
+  );
 }

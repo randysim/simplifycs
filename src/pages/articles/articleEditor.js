@@ -8,9 +8,12 @@ export default function ArticleEditor() {
   return (
     <>
       <div className={styles.editor}>
-        <textarea className={styles.input} onChange={(event) => {
-          setContent(event.target.value);
-        }} />
+        <textarea
+          className={styles.input}
+          onChange={(event) => {
+            setContent(event.target.value);
+          }}
+        />
       </div>
       <div className={styles.render}>
         <RenderMarkdown>{content}</RenderMarkdown>
