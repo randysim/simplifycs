@@ -15,8 +15,8 @@ import { useRouter } from "next/router";
 import useUser from "@/lib/useUser";
 
 export default function Login() {
-  const { signedIn, userInfo } = useUser();
-  const router = useRouter();
+  const { signedIn, userInfo } = useUser(true);
+  const router = useRouter(true);
 
   if (signedIn) {
     router.push("/dashboard");
