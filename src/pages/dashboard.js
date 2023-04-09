@@ -1,7 +1,7 @@
 import useUser from "@/lib/useUser";
 
 import CourseCard from "@/components/dashboard/CourseCard";
-import { Grid } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
@@ -19,25 +19,49 @@ export default function Dashboard() {
   const { signedIn, userInfo } = useUser();
   const [courses, setCourses] = useState([]);
 
-  // issue with useUser
-  useEffect(() => {
-    console.log(signedIn);
-    if (!signedIn) {
-      router.push("/login");
-    }
-  }, [router, signedIn]);
-  
-
   useEffect(() => {
     fetchCourses().then((crs) => {
       setCourses(crs);
     });
   }, []);
 
-
   return (
     <div>
-      Hello {JSON.stringify({ signedIn, userInfo })}
+      <Box
+        sx={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          sx={{
+            width: "500px",
+            height: "80%",
+            paddingLeft: "20px",
+            backgroundColor: "#AF98B9",
+            borderRadius: "10px",
+          }}
+        >
+          <Box sx={{ height: "50%", display: "flex" }}>
+            <Typography
+              sx={{
+                fontSize: "30px",
+                fontWeight: "600",
+                alignSelf: "flex-end",
+              }}
+            >
+              {userInfo.firstName} {userInfo.lastName}
+            </Typography>
+          </Box>
+          <Box sx={{ height: "50%", display: "flex" }}>
+            <Typography sx={{ fontSize: "15px", alignSelf: "flex-start" }}>
+              @{userInfo.username}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
       <Grid
         container
         spacing={2}
