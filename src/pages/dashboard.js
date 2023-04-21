@@ -25,18 +25,38 @@ export default function Dashboard() {
     });
   }, []);
 
-
   return (
     <div>
-      <Box sx={{ width: "100%", height: "200px", display: "flex", alignItems: "center"}}>
-        <Box sx={{ width: "500px", height: "80%", paddingLeft: "20px", backgroundColor: "#AF98B9", borderRadius: "10px"}}>
-          <Box sx={{ height: "50%", display: "flex"}}>
-            <Typography sx={{fontSize: "30px", fontWeight: "600", alignSelf: "flex-end"}}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          sx={{
+            width: "500px",
+            height: "80%",
+            paddingLeft: "20px",
+            backgroundColor: "#AF98B9",
+            borderRadius: "10px",
+          }}
+        >
+          <Box sx={{ height: "50%", display: "flex" }}>
+            <Typography
+              sx={{
+                fontSize: "30px",
+                fontWeight: "600",
+                alignSelf: "flex-end",
+              }}
+            >
               {userInfo.firstName} {userInfo.lastName}
             </Typography>
           </Box>
-          <Box sx= {{ height: "50%", display: "flex"}}>
-            <Typography sx={{ fontSize: "15px", alignSelf: "flex-start"}}>
+          <Box sx={{ height: "50%", display: "flex" }}>
+            <Typography sx={{ fontSize: "15px", alignSelf: "flex-start" }}>
               @{userInfo.username}
             </Typography>
           </Box>

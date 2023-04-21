@@ -31,11 +31,58 @@ model User {
 
   passwordHashed String
   authToken      String @unique
+
+  admin Boolean @default(false)
 }
 
-model Article {
+model Course {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  // will be in chronological order
+  units Unit[]
+}
+
+model Unit {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  // will be in chronological order
+  lessons  Lesson[]
+  Course   Course?  @relation(fields: [courseId], references: [id])
+  courseId Int?
+}
+
+model Lesson {
+  id         Int        @id @default(autoincrement())
+  // will be in chronological order
+  activities Activity[]
+  Unit       Unit?      @relation(fields: [unitId], references: [id])
+  unitId     Int?
+}
+
+model Activity {
   id Int @id @default(autoincrement())
 
-  title   String @unique
-  content String
+  title String @unique
+
+  // if type is ARTICLE, content will be article body. if type is VIDEO, will be url to youtube link. if type is QUIZ or TEST, will be quiz that we'll create - list question bank(s)
+  type     String
+  content  String
+  Lesson   Lesson? @relation(fields: [lessonId], references: [id])
+  lessonId Int?
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+  context String
+  prompt String
+  // FRQ or MCQ or MULTISELECT or CODE (code output)
+  type String
+  // (only for MCQ or MULTISELECT), comma delimeter for all
+  choices String
+  // acceptable responses. 
+  answers String
+  // category (name of category used to group together)
+  categories String
 }

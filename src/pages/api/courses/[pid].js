@@ -14,8 +14,8 @@ const courses = {
       },
       {
         name: "Data Types",
-        id: 45678
-      }
+        id: 45678,
+      },
     ],
   },
 };
@@ -34,10 +34,10 @@ const units = {
     name: "Data Types",
     description: "This set of lessons will teach you data types in python",
     lessons: [
-      { name: "Booleans", type: "ARTICLE", id: 3},
-      { name: "Ints", type: "ARTICLE", id: 4}
-    ]
-  }
+      { name: "Booleans", type: "ARTICLE", id: 3 },
+      { name: "Ints", type: "ARTICLE", id: 4 },
+    ],
+  },
 };
 
 // when user clicks on lesson, get specific one
@@ -63,7 +63,8 @@ export default async function handler(req, res) {
 
   const { pid } = req.query;
 
-  if (!courses[pid]) return res.status(400).json({ success: false, error: "Invalid Course ID" });
+  if (!courses[pid])
+    return res.status(400).json({ success: false, error: "Invalid Course ID" });
 
   if (!courses[pid])
     return res.status(400).json({ success: false, error: "Invalid Course ID" });
@@ -71,9 +72,11 @@ export default async function handler(req, res) {
   // temporary till we figure out how we're going to add courses
   let cUnits = {};
   for (let [key, value] of Object.entries(units)) {
-    if (courses[pid].units.find(u => u.id == key)) {
-      cUnits[key] = value; 
+    if (courses[pid].units.find((u) => u.id == key)) {
+      cUnits[key] = value;
     }
   }
-  return res.status(200).json({ success: true, course: courses[pid], units: cUnits });
+  return res
+    .status(200)
+    .json({ success: true, course: courses[pid], units: cUnits });
 }
