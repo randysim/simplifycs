@@ -7,6 +7,7 @@ import { Box, Typography, Grid, Snackbar, Button } from "@mui/material";
 import axios from "axios";
 
 import AdminCourseCard from "@/components/admin/AdminCourseCard";
+import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
 
 const fetchCourses = async () => {
   let d = await axios.get("api/getcourses");
@@ -20,6 +21,7 @@ export default function Admin() {
 
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
+  const [addDialogueOpen, setAddDialogue] = useState(false);
 
   useEffect(() => {
     fetchCourses().then((crs) => {
@@ -79,15 +81,41 @@ export default function Admin() {
             onEdit={() => {
               router.push(`/admin/${c.id}`)
             }}
+            onDelete={() => {
+              axios.post("api/admin/deletecourse", { id: c.id })
+                .then(res => {
+                  if (res.data.success) {
+                    setCourses(courses.filter(cor => cor.id != c.id));
+                  }
+                  setMessage(res.data.message);
+                })
+                .catch(e => {
+                  setMessage(e.message)
+                })
+            }}
           />
         ))}
-        <Button onClick={addCourse}>Add Course</Button>
+        <Button variant="outlined" sx={{ width: "80%", marginTop: "20px"}} onClick={() => {setAddDialogue(true)}} >Add Course</Button>
       </Grid>
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}
         onClose={() => { setMessage("") }}
         message={message}
+      />
+      <ConfirmationDialog 
+        title="Add Course?"
+        description="We will not be able to recover it once deleted."
+        open={addDialogueOpen}
+        onConfirm={() => {
+          addCourse()
+            .then(() => {
+              setAddDialogue(false);
+            });
+        }}
+        onClose={() => {
+          setAddDialogue(false);
+        }}
       />
     </Box>
   );
