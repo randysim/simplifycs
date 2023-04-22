@@ -1,5 +1,5 @@
 import {getMDXComponent} from 'mdx-bundler/client';
-import {bundleMDX} from 'mdx-bundler'
+import compileMDX from '@/lib/compileMDX.js';
 import {useMemo} from 'react';
 
 export default function TestCodeExecution({ code, frontmatter }) {
@@ -12,28 +12,19 @@ export default function TestCodeExecution({ code, frontmatter }) {
   );
 }
 
-export async function getServerSideProps() {
-  const mdxSource = `
+let mdxSource = `
 ---
 title: Sorting Algorithms
-description: A basic description of the "bubbe sort" algorithm
+description: A basic description of the "bubble sort" algorithm
 ---
 
 # Bubble sort
 Bubble sort is pretty cool. I'm not going to write about how it works, but here's an interactive component.
 
-import Demo from './demo'
-
-<Demo />
-  `.trim();
-
-  const result = await bundleMDX({
-    source: mdxSource,
-    files: {
-      './demo.tsx': `
+<Component name="Demo">
 import { useState } from 'react'
 
-function Demo() {
+export default function Demo() {
   const [list, setList] = useState([9, 3, 1, 5, 7, 2, 6, 4, 6, 1, 5, 10]);
   const [offset, setOffset] = useState(0);
 
@@ -72,17 +63,12 @@ function Demo() {
     </>
   )
 }
+</Component>
+<Demo />
+`;
 
-export default Demo
-      `,
-    },
-  })
-
-  const {code, frontmatter} = result;
-
+export async function getServerSideProps() {
   return {
-    props: {
-      code, frontmatter
-    }
-  };
+    props: await compileMDX(mdxSource)
+  }
 }
