@@ -76,7 +76,7 @@ export default function Unit() {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    router.push(`/${courseid}/${unitid}/${l.id}`);
+                    router.push(`/courses/${courseid}/${unitid}/${l.id}`);
                   }}
                 >
                   {l.type} - {l.name}

@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 import useUser from "@/lib/useUser";
 
 import { useEffect, useState } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Snackbar, Button } from "@mui/material";
 
 import axios from "axios";
 
-import CourseCard from "@/components/dashboard/CourseCard";
+import AdminCourseCard from "@/components/admin/AdminCourseCard";
 
 const fetchCourses = async () => {
   let d = await axios.get("api/getcourses");
@@ -19,6 +19,7 @@ export default function Admin() {
   const { signedIn, userInfo } = useUser();
 
   const [courses, setCourses] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchCourses().then((crs) => {
@@ -42,6 +43,22 @@ export default function Admin() {
             VIDEO: paste url
             QUIZ: quiz editor
     */
+  
+  const addCourse = async () => {
+    axios.post("api/admin/createcourse")
+      .then(res => {
+        if (res.data.success) {
+          setCourses([...courses, res.data.data]);
+          setMessage(`Course #${res.data.data.id} Added!`);
+        } else {
+          setMessage(res.data.message);
+        }
+      })
+      .catch(e => {
+        setMessage(e.message);
+      });
+  }
+  
   return (
     <Box>
       <Box sx={{ height: "100px" }}>
@@ -55,14 +72,23 @@ export default function Admin() {
         bgcolor="#AF98B9"
       >
         {courses.map((c) => (
-          <CourseCard
+          <AdminCourseCard
             id={c.id}
-            title={c.name}
-            description={c.description}
+            title={c.title}
             key={c.id}
+            onEdit={() => {
+              router.push(`/admin/${c.id}`)
+            }}
           />
         ))}
+        <Button onClick={addCourse}>Add Course</Button>
       </Grid>
+      <Snackbar
+        open={message.length > 0}
+        autoHideDuration={6000}
+        onClose={() => { setMessage("") }}
+        message={message}
+      />
     </Box>
   );
 }

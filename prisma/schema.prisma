@@ -36,16 +36,18 @@ model User {
 }
 
 model Course {
-  id    Int    @id @default(autoincrement())
-  title String @unique
+  id          Int    @id @default(autoincrement())
+  title       String @unique
+  description String
 
   // will be in chronological order
   units Unit[]
 }
 
 model Unit {
-  id    Int    @id @default(autoincrement())
-  title String @unique
+  id          Int    @id @default(autoincrement())
+  title       String @unique
+  description String
 
   // will be in chronological order
   lessons  Lesson[]
@@ -55,6 +57,7 @@ model Unit {
 
 model Lesson {
   id         Int        @id @default(autoincrement())
+  title      String
   // will be in chronological order
   activities Activity[]
   Unit       Unit?      @relation(fields: [unitId], references: [id])
@@ -74,15 +77,15 @@ model Activity {
 }
 
 model Question {
-  id Int @id @default(autoincrement())
-  context String
-  prompt String
+  id         Int    @id @default(autoincrement())
+  context    String
+  prompt     String
   // FRQ or MCQ or MULTISELECT or CODE (code output)
-  type String
+  type       String
   // (only for MCQ or MULTISELECT), comma delimeter for all
-  choices String
+  choices    String
   // acceptable responses. 
-  answers String
+  answers    String
   // category (name of category used to group together)
   categories String
 }

@@ -91,8 +91,7 @@ export default function Course() {
                       sx={{ fontSize: 20 }}
                       color="primary.contrastText"
                     >
-                      {" "}
-                      Unit: {u.name}{" "}
+                      Unit: {u.name}
                     </Link>
                   </Box>
                   <Grid container width="100%" height="80%">
