@@ -33,6 +33,8 @@ export default function AdminCourse() {
     const { courseid } = router.query;
     const { signedIn, userInfo } = useUser();
     const [courseData, setCourseData] = useState(null);
+
+    
     const [message, setMessage] = useState("");
     const [savable, setSavable] = useState(false);
     const [open, setOpen] = useState(false);
