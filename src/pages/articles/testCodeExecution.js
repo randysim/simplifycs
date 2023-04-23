@@ -1,7 +1,3 @@
-import {getMDXComponent} from 'mdx-bundler/client';
-import compileMDX from '@/lib/compileMDX.js';
-import {useMemo} from 'react';
-
 export default function TestCodeExecution({ code, frontmatter }) {
   const Component = useMemo(() => getMDXComponent(code), [code])
 
@@ -65,6 +61,10 @@ export default function Demo() {
 }
 </Component>
 <Demo />
+
+import CodeComponentStatic from "./CodeComponentStatic"
+
+<CodeComponentStatic language="python" initialCode="print('Hello World!')" />
 `;
 
 export async function getServerSideProps() {
