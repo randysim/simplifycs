@@ -10,7 +10,6 @@ export default async function handler(req, res) {
 
   let courses = await prisma.course.findMany({});
 
-  // temporary till we figure out how we're going to add courses
   return res.status(200).json({
     success: true,
     courses: courses,

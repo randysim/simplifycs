@@ -28,7 +28,7 @@ export default function AdminCourseCard({ id, title, onEdit, onDelete }) {
                 </Button>
             </Box>
             <ConfirmationDialog 
-                title="Are you sure you want to delete this course?"
+                title="Are you sure you want to delete this?"
                 description="We will not be able to recover it once deleted"
                 open={deleteDialogueOpen}
                 onConfirm={() => {

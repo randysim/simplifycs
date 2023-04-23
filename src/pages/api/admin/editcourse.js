@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 /*
 EDIT COURSE
 
-EDIT UNIT SEPARATELY, THIS IS JUST FOR "LINKING" COURSES
+EDIT UNIT SEPARATELY, THIS IS JUST FOR "LINKING" COURSES OR "DISCONNECTING"
 */
 export default async function handler(req, res) {
     if (req.method != "POST")
@@ -47,10 +47,7 @@ export default async function handler(req, res) {
     if (data.title) course.title = data.title;
     if (data.description) course.description = data.title;
 
-    // connect or create
-
-    // unit does not exist already
-    
+    // connect or create units that don't exist yet. disconnect units that were removed
     await prisma.course.update(
         {
             where: {
@@ -60,6 +57,9 @@ export default async function handler(req, res) {
                 title: course.title,
                 description: course.description,
                 units: {
+                    disconnect: course.units
+                    .filter(unit => !data.units.find(u => u.id == unit.id))
+                    .map(unit => { return { id: unit.id } }),
                     connectOrCreate: data.units
                         .filter(unit => !course.units.find(u => u.id == unit.id))
                         .map(unit => {

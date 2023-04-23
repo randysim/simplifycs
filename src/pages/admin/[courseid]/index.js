@@ -1,8 +1,11 @@
-import { Box, TextField, Typography, Button, Snackbar } from "@mui/material";
+import { Box, TextField, Typography, Button, Snackbar, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import useUser from "@/lib/useUser";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
+import AdminCourseCard from "@/components/admin/AdminCourseCard";
+import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
 
 const getCourseData = async (id) => {
     if (id) {
@@ -30,7 +33,7 @@ export default function AdminCourse() {
     useEffect(() => {
         getCourseData(courseid)
           .then((crs) => {
-            setCourseData(crs.course);
+            setCourseData(crs?.course);
           })
           .catch((e) => {
             console.log(e);
@@ -46,15 +49,10 @@ export default function AdminCourse() {
     const Save = async () => {
         axios.post("/api/admin/editcourse", { id: courseid, data: courseData })
             .then(res => {
-                console.log(res);
-                if (res.data.success) {
-
-                }
-
+                if (res.data.success) setSavable(false);
                 setMessage(res.data.message);
             })
             .catch(e => setMessage(e.message));
-        
     }
 
     const renderCourseData = () => {
@@ -63,19 +61,46 @@ export default function AdminCourse() {
                 <Box>
                     <Typography>{courseData.title}</Typography>
                 </Box>
-                <Box sx={{ display: "flex", width: "100%", flexWrap: "wrap"}}>
-                    <TextField id="outlined-basic" label="Title" variant="outlined" value={courseData.title} onChange={e => {
-                        setCourseData({ ...courseData, title: e.target.value })
-                        setSavable(true); 
-                    }} />
-                    <TextField id="outlined-basic" label="Description" variant="outlined" value={courseData.description} multiline rows={5} onChange={e => {
-                        setCourseData({ ...courseData, description: e.target.value })
-                        setSavable(true) 
-                    }} />
+                <Box sx={{ display: "flex", width: "100%", flexWrap: "wrap", height: "auto", padding: "50px"}}>
+                    <Box sx={{ width: "100%"}}>
+                        <TextField sx={{ width: "80%" }} id="outlined-basic" label="Title" variant="outlined" value={courseData.title} onChange={e => {
+                            setCourseData({ ...courseData, title: e.target.value })
+                            setSavable(true); 
+                        }} />
+                    </Box>
+                    <Box sx={{ width: "100%", marginTop: "20px"}}>
+                        <TextField sx={{ width: "80%" }} id="outlined-basic" label="Description" variant="outlined" value={courseData.description} multiline rows={5} onChange={e => {
+                            setCourseData({ ...courseData, description: e.target.value })
+                            setSavable(true) 
+                        }} />
+                    </Box>
                 </Box>
-                <Box>
-
-                </Box>
+                <Grid
+                    container
+                    spacing={2}
+                    justifyContent="center"
+                    sx={{ width: "100%", height: "auto", padding: "50px" }}
+                    bgcolor="#AF98B9"
+                >
+                    {
+                        courseData.units.map(unit => {
+                            return (
+                                <AdminCourseCard 
+                                    key={unit.id}
+                                    id={unit.id}
+                                    title={unit.title}
+                                    onEdit={() => {
+                                        router.push(`/admin/${courseid}/${unit.id}`);
+                                    }}
+                                    onDelete={() => {
+                                        setCourseData({ ...courseData, units: courseData.units.filter(u => u.id != unit.id)});
+                                        setSavable(true);
+                                    }}
+                                />
+                            )
+                        })
+                    }
+                </Grid>
                 {savable && <Button onClick={Save}>Save</Button>}
             </Box>
         )

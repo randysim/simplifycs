@@ -105,7 +105,7 @@ export default function Admin() {
       />
       <ConfirmationDialog 
         title="Add Course?"
-        description="We will not be able to recover it once deleted."
+        description="You can delete it later."
         open={addDialogueOpen}
         onConfirm={() => {
           addCourse()
