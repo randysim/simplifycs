@@ -22,6 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchCourses().then((crs) => {
       setCourses(crs);
+      console.log(crs);
     });
   }, []);
 
@@ -72,7 +73,7 @@ export default function Dashboard() {
         {courses.map((c) => (
           <CourseCard
             id={c.id}
-            title={c.name}
+            title={c.title}
             description={c.description}
             key={c.id}
           />

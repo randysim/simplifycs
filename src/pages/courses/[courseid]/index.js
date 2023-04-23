@@ -56,7 +56,7 @@ export default function Course() {
             <Box width="100%">
               <Typography sx={{ fontSize: 30 }}>
                 {" "}
-                {courseData.course.title}{" "}
+                {courseData.course.name}{" "}
               </Typography>
               <Typography sx={{ fontSize: 14 }}>
                 {" "}
@@ -91,8 +91,7 @@ export default function Course() {
                       sx={{ fontSize: 20 }}
                       color="primary.contrastText"
                     >
-                      {" "}
-                      Unit: {u.name}{" "}
+                      Unit: {u.name}
                     </Link>
                   </Box>
                   <Grid container width="100%" height="80%">

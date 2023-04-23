@@ -16,7 +16,7 @@ function CourseCard({ id, title, description }) {
           padding: "10px",
         }}
         onClick={() => {
-          router.push(`${id}`);
+          router.push(`courses/${id}`);
         }}
       >
         <Typography
