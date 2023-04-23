@@ -18,7 +18,7 @@ export default function AdminCourse() {
     const { courseid } = router.query;
     const { signedIn, userInfo } = useUser();
     const [courseData, setCourseData] = useState(null);
-    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState("");
     const [savable, setSavable] = useState(false);
     
     useEffect(() => {
@@ -30,34 +30,48 @@ export default function AdminCourse() {
     useEffect(() => {
         getCourseData(courseid)
           .then((crs) => {
-            setCourseData(crs);
+            setCourseData(crs.course);
           })
           .catch((e) => {
             console.log(e);
             router.push("/admin");
           });
       }, [router]);
-  
-    
 
     /* COURSE EDIT PAGE
         EDIT TITLE
         EDIT DESC
         CREATE UNITS
     */
-    const Save = () => {
-        setOpen(true);
+    const Save = async () => {
+        axios.post("/api/admin/editcourse", { id: courseid, data: courseData })
+            .then(res => {
+                console.log(res);
+                if (res.data.success) {
+
+                }
+
+                setMessage(res.data.message);
+            })
+            .catch(e => setMessage(e.message));
+        
     }
 
     const renderCourseData = () => {
         return (
             <Box>
                 <Box>
-                    <Typography>{courseData.course.title}</Typography>
+                    <Typography>{courseData.title}</Typography>
                 </Box>
                 <Box sx={{ display: "flex", width: "100%", flexWrap: "wrap"}}>
-                    <TextField id="outlined-basic" label="Name" variant="outlined" onChange={e => setSavable(true) } />
-                    <TextField id="outlined-basic" label="Description" variant="outlined" multiline rows={5} onChange={e => setSavable(true) } />
+                    <TextField id="outlined-basic" label="Title" variant="outlined" value={courseData.title} onChange={e => {
+                        setCourseData({ ...courseData, title: e.target.value })
+                        setSavable(true); 
+                    }} />
+                    <TextField id="outlined-basic" label="Description" variant="outlined" value={courseData.description} multiline rows={5} onChange={e => {
+                        setCourseData({ ...courseData, description: e.target.value })
+                        setSavable(true) 
+                    }} />
                 </Box>
                 <Box>
 
@@ -71,10 +85,10 @@ export default function AdminCourse() {
         <Box>
             {courseData ? renderCourseData() : <p>{courseid}</p>}
             <Snackbar
-                open={open}
+                open={message.length > 0}
                 autoHideDuration={6000}
-                onClose={() => { setOpen(false) }}
-                message="Changes Saved"
+                onClose={() => { setMessage("") }}
+                message={message}
             />
         </Box>
     );

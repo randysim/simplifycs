@@ -11,7 +11,20 @@ export default async function handler(req, res) {
 
   const { courseid } = req.query;
 
-  const course = await prisma.course.findUnique({ where: { id: parseInt(courseid) }, include: { units: true }});
+  const course = await prisma.course.findUnique({ 
+    where: { id: parseInt(courseid) }, 
+    include: { 
+      units: {
+        include: {
+          lessons: {
+            include: {
+              activities: true
+            }
+          }
+        }
+      }
+    }}
+  );
 
   if (!course)
     return res.status(400).json({ success: false, error: "Invalid Course ID" });
