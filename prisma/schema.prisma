@@ -51,7 +51,7 @@ model Unit {
 
   // will be in chronological order
   lessons  Lesson[]
-  Course   Course?  @relation(fields: [courseId], references: [id])
+  Course   Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId Int?
 }
 
@@ -60,7 +60,7 @@ model Lesson {
   title      String
   // will be in chronological order
   activities Activity[]
-  Unit       Unit?      @relation(fields: [unitId], references: [id])
+  Unit       Unit?      @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId     Int?
 }
 

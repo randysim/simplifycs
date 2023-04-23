@@ -45,9 +45,7 @@ export default async function handler(req, res) {
     .json({ message: "Invalid Course ID", success: false });
 
     if (data.title) course.title = data.title;
-    if (data.description) course.description = data.title;
-
-    console.log(data.units);
+    if (data.description) course.description = data.description;
 
     // connect or create units that don't exist yet. disconnect units that were removed
     await prisma.course.update(
