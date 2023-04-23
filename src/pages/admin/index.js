@@ -73,7 +73,9 @@ export default function Admin() {
         sx={{ width: "100%", height: "auto", padding: "50px" }}
         bgcolor="#AF98B9"
       >
-        {courses.map((c) => (
+        {courses.map((c) => {
+          
+          return (
           <AdminCourseCard
             id={c.id}
             title={c.title}
@@ -94,7 +96,7 @@ export default function Admin() {
                 })
             }}
           />
-        ))}
+        )})}
         <Button variant="outlined" sx={{ width: "80%", marginTop: "20px"}} onClick={() => {setAddDialogue(true)}} >Add Course</Button>
       </Grid>
       <Snackbar

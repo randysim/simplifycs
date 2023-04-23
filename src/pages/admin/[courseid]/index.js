@@ -14,7 +14,19 @@ const getCourseData = async (id) => {
   
       if (body.success) return body;
     }
-  };
+};
+function genAuthToken() {
+    let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let length = 12;
+  
+    let token = "";
+  
+    for (let i = 0; i < length; ++i) {
+      token += chars[Math.floor(Math.random() * chars.length)];
+    }
+  
+    return token;
+}
 
 export default function AdminCourse() {
     const router = useRouter();
@@ -23,6 +35,7 @@ export default function AdminCourse() {
     const [courseData, setCourseData] = useState(null);
     const [message, setMessage] = useState("");
     const [savable, setSavable] = useState(false);
+    const [open, setOpen] = useState(false);
     
     useEffect(() => {
         if (Object.keys(userInfo).length && !userInfo.admin) {
@@ -49,7 +62,13 @@ export default function AdminCourse() {
     const Save = async () => {
         axios.post("/api/admin/editcourse", { id: courseid, data: courseData })
             .then(res => {
-                if (res.data.success) setSavable(false);
+                if (res.data.success) {
+                    getCourseData(courseid)
+                    .then((crs) => {
+                        setCourseData(crs?.course);
+                    })
+                    setSavable(false);
+                }
                 setMessage(res.data.message);
             })
             .catch(e => setMessage(e.message));
@@ -100,8 +119,22 @@ export default function AdminCourse() {
                             )
                         })
                     }
+                    <Button variant="outlined" sx={{ width: "80%", marginTop: "20px"}} onClick={() => {setOpen(true)}} >Add Unit</Button>
                 </Grid>
                 {savable && <Button onClick={Save}>Save</Button>}
+                <ConfirmationDialog 
+                    title="Add Unit?"
+                    description="You can delete it after. (If you want)"
+                    open={open}
+                    onConfirm={() => {
+                        setCourseData({ ...courseData, units: [...courseData.units, { title: `PendingUnit-${genAuthToken()}`, description: "Pending" }]})
+                        setOpen(false);
+                        setSavable(true);
+                    }}
+                    onClose={() => {
+                        setOpen(false);
+                    }}
+                />
             </Box>
         )
     }

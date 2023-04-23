@@ -29,8 +29,6 @@ export default async function handler(req, res) {
     .status(400)
     .json({ message: "Missing Course ID.", success: false});
 
-    
-
     await prisma.course.delete({ where: { id: req.body.id }});
         
     return res

@@ -1,16 +1,12 @@
 import { Box, Button, Typography, Snackbar } from "@mui/material"
 import ConfirmationDialog from "../ui/ConfirmationDialog"
-import { useState } from "react"
-import axios from "axios";
-
-
+import { useState, Fragment } from "react"
 
 export default function AdminCourseCard({ id, title, onEdit, onDelete }) {
     const [deleteDialogueOpen, setDeleteDialogue] = useState(false);
-    const [message, setMessage] = useState("");
 
-    return (
-        <Box sx={{ width: "90%", height: "80px", background: "black", marginTop: "10px", borderRadius: "10px", display: "flex", justifyContent: "space-around"}}>
+    const renderCard = () => {
+        return (<Box sx={{ width: "90%", height: "80px", background: "black", marginTop: "10px", borderRadius: "10px", display: "flex", justifyContent: "space-around"}}>
             <Box sx={{ height: "100%", display: "flex", alignItems: "center", width: "25%", justifyContent: "center"}}>
                 <Typography>Title: {title}</Typography>
             </Box>
@@ -39,6 +35,20 @@ export default function AdminCourseCard({ id, title, onEdit, onDelete }) {
                     setDeleteDialogue(false);
                 }}
             />
-        </Box>
+        </Box>)
+    }
+
+    const renderPending = () => {
+        return (
+            <Box sx={{ width: "90%", height: "80px", background: "black", marginTop: "10px", borderRadius: "10px", display: "flex", justifyContent: "space-around"}} >
+                PENDING
+            </Box>
+        )
+    }
+
+    return (
+        <Fragment>
+            { id ? renderCard() : renderPending()}
+        </Fragment>
     )
 }
