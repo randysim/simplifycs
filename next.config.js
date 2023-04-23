@@ -5,6 +5,7 @@ const nextConfig = {
     config.experiments.topLevelAwait = true;
     return config;
   },
+  experimental: { esmExternals: true },
 };
 
 module.exports = nextConfig;

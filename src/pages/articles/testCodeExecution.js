@@ -1,5 +1,5 @@
 export default function TestCodeExecution({ code, frontmatter }) {
-  const Component = useMemo(() => getMDXComponent(code), [code])
+  const Component = useMemo(() => getMDXComponent(code), [code]);
 
   return (
     <>
@@ -69,6 +69,6 @@ import CodeComponentStatic from "./CodeComponentStatic"
 
 export async function getServerSideProps() {
   return {
-    props: await compileMDX(mdxSource)
-  }
+    props: await compileMDX(mdxSource),
+  };
 }
