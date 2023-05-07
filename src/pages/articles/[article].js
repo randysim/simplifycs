@@ -1,9 +1,7 @@
 import styles from "@/styles/Article.module.css";
 import { useRouter } from "next/router";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db.js";
 import RenderMDX from "@/components/articles/RenderMDX.js";
-
-const prisma = new PrismaClient();
 
 export async function getServerSideProps(context) {
   let articleTitle = context.query.article;

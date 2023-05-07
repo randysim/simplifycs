@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db.js";
 import bcrypt from "bcrypt";
 import cookie from "cookie";
-
-const prisma = new PrismaClient();
 
 function genAuthToken() {
   let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
