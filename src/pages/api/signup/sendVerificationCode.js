@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db.js";
 import nodemailer from "nodemailer";
 import validator from "email-validator";
 
 /*
 SENT WHEN USER PUTS IN EMAIL BEFORE ANY OTHER INFO
 */
-
-const prisma = new PrismaClient();
 
 // for emails
 const transporter = nodemailer.createTransport({

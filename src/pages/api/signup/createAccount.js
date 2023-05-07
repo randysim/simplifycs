@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db.js";
 import bcrypt from "bcrypt";
 import validator from "email-validator";
 import cookie from "cookie";
@@ -6,8 +6,6 @@ import cookie from "cookie";
 /*
 ACTUALLY CREATE ACCOUNT
 */
-
-const prisma = new PrismaClient();
 
 function checkMethod(req, res) {
   if (req.method != "POST") {

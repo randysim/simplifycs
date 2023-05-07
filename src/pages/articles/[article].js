@@ -1,18 +1,18 @@
 import styles from "@/styles/Article.module.css";
 import { useRouter } from "next/router";
-import { PrismaClient } from "@prisma/client";
-import ReactMarkdown from "react-markdown";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
+import RenderMDX from "@/components/articles/RenderMDX.js";
 
 export async function getServerSideProps(context) {
   let articleTitle = context.query.article;
 
-  let article = await prisma.article.findUnique({
+  let article = await prisma.article.findMany({
     where: {
       title: articleTitle,
     },
   });
+
+  article = article[0];
 
   if (!article) {
     return {
@@ -25,16 +25,16 @@ export async function getServerSideProps(context) {
   return {
     props: {
       title: article.title,
-      content: article.content,
+      compiledMDX: article.compiledMDX,
     },
   };
 }
 
-export default function Post({ title, content }) {
+export default function Article({ title, compiledMDX }) {
   return (
     <>
       <p className={styles.title}>{title}</p>
-      <ReactMarkdown className={styles.article}>{content}</ReactMarkdown>
+      <RenderMDX className={styles.article}>{compiledMDX}</RenderMDX>
     </>
   );
 }
