@@ -15,7 +15,6 @@ export default function CodeComponentRunnable({ initialCode, language }) {
         code: code,
       })
       .then((res) => {
-        console.log(res.data);
         setOutput(res.data.run.output);
       });
   }

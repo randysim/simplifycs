@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db.js";
 import validator from "email-validator";
 
 /*
 CHECK IF VERIFICATION KEY IS VALID SO ACCOUNT CREATION LOOKS MODERN
 */
-
-const prisma = new PrismaClient();
 
 function checkMethod(req, res) {
   if (req.method != "POST") {

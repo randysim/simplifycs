@@ -36,6 +36,8 @@ model User {
 model Article {
   id Int @id @default(autoincrement())
 
-  title   String @unique
+  title   String
   content String
+
+  compiledMDX String
 }

@@ -1,18 +1,24 @@
 .editor {
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: 40%;
+  left: 20%;
 }
 
 .render {
   position: absolute;
   height: 100%;
-  width: 50%;
-  left: 50%;
+  width: 40%;
+  left: 60%;
 }
 
-.input {
-  width: 100%;
+.articleList {
+  position: absolute;
+  width: 20%;
   height: 100%;
-  font-size: 18px;
+}
+
+.saveArticleButton {
+  position: absolute;
+  bottom: 0;
 }

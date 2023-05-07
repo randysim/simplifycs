@@ -3,40 +3,43 @@ import styles from "@/styles/ArticleEditor.module.css";
 import { useState, useEffect } from "react";
 import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
-import { initializeMonacoMdx } from "@mdx-js/monaco";
 
-export default function ArticleEditor() {
-  const [content, setContent] = useState("# Hello World!");
+export default function ArticleEditor({ content, onChange, onSave }) {
   const [rendered, setRendered] = useState(<p>Loading...</p>);
 
+  async function rerender() {
+    let res = await axios.post("/api/articles/editor/compileMDX", {
+      source: content,
+    });
+
+    try {
+      let component = res.data.code ? (
+        await getMDXComponent(res.data.code)
+      ) : (
+        <p>Compilation Error!?! {res.data.error}</p>
+      );
+      setRendered(component);
+    } catch (e) {
+      setRendered(<p>Runtime Error?!? {e.toString()}</p>);
+    }
+  }
+
   useEffect(() => {
-    (async () => {
-      let res = await axios.post("http://localhost:3000/api/compileMDX", {
-        source: content,
-      });
-      try {
-        let component = res.data.code ? (
-          await getMDXComponent(res.data.code)
-        ) : (
-          <p>Compilation Error!?! {res.data.error}</p>
-        );
-        setRendered(component);
-      } catch (e) {
-        setRendered(<p>Runtime Error?!? {e.toString()}</p>);
-      }
-    })();
-  }, [content]);
+    rerender();
+  }, []);
 
   return (
     <>
       <div className={styles.editor}>
+        <button onClick={rerender}>Rerender</button>
+
         <Editor
           height={500}
-          width="50vw"
+          width="40vw"
           language=""
           theme="vs-dark"
           value={content}
-          onChange={setContent}
+          onChange={onChange}
           options={{
             fontSize: 16,
             minimap: {
