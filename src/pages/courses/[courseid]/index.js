@@ -34,7 +34,7 @@ export default function Course() {
   useEffect(() => {
     getCourseData(courseid)
       .then((crs) => {
-        setCourseData(crs);
+        setCourseData(crs?.course);
       })
       .catch((e) => {
         router.push("/dashboard");
@@ -54,13 +54,9 @@ export default function Course() {
         <Grid item sx={{ width: "80%" }}>
           <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
             <Box width="100%">
-              <Typography sx={{ fontSize: 30 }}>
-                {" "}
-                {courseData.course.name}{" "}
-              </Typography>
+              <Typography sx={{ fontSize: 30 }}>{courseData.title}</Typography>
               <Typography sx={{ fontSize: 14 }}>
-                {" "}
-                {courseData.course.description}{" "}
+                {courseData.description}
               </Typography>
             </Box>
             <Divider sx={{ my: 1 }} />
@@ -110,7 +106,7 @@ export default function Course() {
                             href={`${courseid}/${id}/${l.id}`}
                             color="primary.contrastText"
                           >
-                            {l.name}
+                            {l.title}
                           </Link>
                         </Box>
                       );

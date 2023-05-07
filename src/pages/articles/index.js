@@ -1,7 +1,7 @@
 import prisma from "@/lib/db.js";
 
 export async function getServerSideProps(context) {
-  let articles = await prisma.article.findMany();
+  let articles = await prisma.activity.findMany({ where: { type: "ARTICLE" } });
 
   return {
     props: {

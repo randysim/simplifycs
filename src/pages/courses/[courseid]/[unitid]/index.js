@@ -27,7 +27,7 @@ export default function Unit() {
     console.log("COURSEID: " + courseid);
     getCourseData(courseid)
       .then((crs) => {
-        setCourseData(crs);
+        setCourseData(crs?.course);
       })
       .catch((e) => {
         router.push("/dashboard");
@@ -36,6 +36,7 @@ export default function Unit() {
 
   const renderUnitData = () => {
     let unit = courseData.units[unitid];
+    console.log(unit);
     return (
       <Box>
         <Box
@@ -48,7 +49,7 @@ export default function Unit() {
           }}
           bgcolor="primary.main"
         >
-          <Typography sx={{ fontSize: "40px" }}>Unit: {unit.name}</Typography>
+          <Typography sx={{ fontSize: "40px" }}>Unit: {unit.title}</Typography>
         </Box>
         <Box sx={{ width: "100%", height: "auto" }}>
           <Box>
@@ -79,7 +80,8 @@ export default function Unit() {
                     router.push(`/courses/${courseid}/${unitid}/${l.id}`);
                   }}
                 >
-                  {l.type} - {l.name}
+                  {/* unit lesson component later */}
+                  {l.title}
                 </Box>
               );
             })}
