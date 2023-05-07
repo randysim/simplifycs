@@ -45,10 +45,11 @@ export default function Admin() {
             VIDEO: paste url
             QUIZ: quiz editor
     */
-  
+
   const addCourse = async () => {
-    axios.post("api/admin/createcourse")
-      .then(res => {
+    axios
+      .post("api/admin/createcourse")
+      .then((res) => {
         if (res.data.success) {
           setCourses([...courses, res.data.data]);
           setMessage(`Course #${res.data.data.id} Added!`);
@@ -56,11 +57,11 @@ export default function Admin() {
           setMessage(res.data.message);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         setMessage(e.message);
       });
-  }
-  
+  };
+
   return (
     <Box>
       <Box sx={{ height: "100px" }}>
@@ -74,46 +75,56 @@ export default function Admin() {
         bgcolor="#AF98B9"
       >
         {courses.map((c) => {
-          
           return (
-          <AdminCourseCard
-            id={c.id}
-            title={c.title}
-            key={c.id}
-            onEdit={() => {
-              router.push(`/admin/${c.id}`)
-            }}
-            onDelete={() => {
-              axios.post("api/admin/deletecourse", { id: c.id })
-                .then(res => {
-                  if (res.data.success) {
-                    setCourses(courses.filter(cor => cor.id != c.id));
-                  }
-                  setMessage(res.data.message);
-                })
-                .catch(e => {
-                  setMessage(e.message)
-                })
-            }}
-          />
-        )})}
-        <Button variant="outlined" sx={{ width: "80%", marginTop: "20px"}} onClick={() => {setAddDialogue(true)}} >Add Course</Button>
+            <AdminCourseCard
+              id={c.id}
+              title={c.title}
+              key={c.id}
+              onEdit={() => {
+                router.push(`/admin/${c.id}`);
+              }}
+              onDelete={() => {
+                axios
+                  .post("api/admin/deletecourse", { id: c.id })
+                  .then((res) => {
+                    if (res.data.success) {
+                      setCourses(courses.filter((cor) => cor.id != c.id));
+                    }
+                    setMessage(res.data.message);
+                  })
+                  .catch((e) => {
+                    setMessage(e.message);
+                  });
+              }}
+            />
+          );
+        })}
+        <Button
+          variant="outlined"
+          sx={{ width: "80%", marginTop: "20px" }}
+          onClick={() => {
+            setAddDialogue(true);
+          }}
+        >
+          Add Course
+        </Button>
       </Grid>
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}
-        onClose={() => { setMessage("") }}
+        onClose={() => {
+          setMessage("");
+        }}
         message={message}
       />
-      <ConfirmationDialog 
+      <ConfirmationDialog
         title="Add Course?"
         description="You can delete it later."
         open={addDialogueOpen}
         onConfirm={() => {
-          addCourse()
-            .then(() => {
-              setAddDialogue(false);
-            });
+          addCourse().then(() => {
+            setAddDialogue(false);
+          });
         }}
         onClose={() => {
           setAddDialogue(false);
