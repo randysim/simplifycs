@@ -9,6 +9,7 @@ export async function getServerSideProps(context) {
   let article = await prisma.article.findMany({
     where: {
       title: articleTitle,
+      type: "ARTICLE"
     },
   });
 

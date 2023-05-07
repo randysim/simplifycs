@@ -34,7 +34,7 @@ export default function Course() {
   useEffect(() => {
     getCourseData(courseid)
       .then((crs) => {
-        setCourseData(crs);
+        setCourseData(crs?.course);
       })
       .catch((e) => {
         router.push("/dashboard");
@@ -55,12 +55,10 @@ export default function Course() {
           <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
             <Box width="100%">
               <Typography sx={{ fontSize: 30 }}>
-                {" "}
-                {courseData.course.name}{" "}
+                {courseData.title}
               </Typography>
               <Typography sx={{ fontSize: 14 }}>
-                {" "}
-                {courseData.course.description}{" "}
+                {courseData.description}
               </Typography>
             </Box>
             <Divider sx={{ my: 1 }} />
@@ -96,6 +94,7 @@ export default function Course() {
                   </Box>
                   <Grid container width="100%" height="80%">
                     {u.lessons.map((l, i) => {
+                      
                       return (
                         <Box
                           key={i}
@@ -110,7 +109,7 @@ export default function Course() {
                             href={`${courseid}/${id}/${l.id}`}
                             color="primary.contrastText"
                           >
-                            {l.name}
+                            {l.title}
                           </Link>
                         </Box>
                       );
