@@ -31,6 +31,10 @@ export default function Signup() {
   const [infoCollected, setInfoCollected] = useState({});
   const router = useRouter();
 
+  useEffect(() => {
+    document.querySelector("#input1").focus();
+  }, []);
+
   async function post(url, content) {
     return fetch(url, {
       method: "POST",
