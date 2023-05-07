@@ -10,8 +10,8 @@ export default async function handler(req, res) {
     data: {
       title: "New Article",
       content: "# Hello World!",
-      compiledMDX: (await compileMDX("# Hello World!")).code
-    }
+      compiledMDX: (await compileMDX("# Hello World!")).code,
+    },
   });
 
   res.status(200).json({ success: true, message: "Article created" });

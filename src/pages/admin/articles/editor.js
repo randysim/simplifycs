@@ -10,19 +10,32 @@ export default function ArticleEditor() {
 
   return (
     <>
-      <ArticlesList selectArticle={({id, title, content}) => {
-        setContent(content);
-        setArticleId(id);
-      }} selectedArticle={articleId} />
-      <ArticleRenderer content={content} onChange={setContent} />
-      <button className={styles.saveArticleButton} onClick={() => {
-        axios.post("/api/articles/editor/updateArticle", {
-          id: articleId,
-          data: {
-            content: content
-          }
-        });
-      }} disabled={articleId == -1}>Save Current Article</button>
+      <ArticlesList
+        selectArticle={({ id, title, content }) => {
+          setContent(content);
+          setArticleId(id);
+        }}
+        selectedArticle={articleId}
+      />
+      <ArticleRenderer
+        content={content}
+        articleId={articleId}
+        onChange={setContent}
+      />
+      <button
+        className={styles.saveArticleButton}
+        onClick={() => {
+          axios.post("/api/articles/editor/updateArticle", {
+            id: articleId,
+            data: {
+              content: content,
+            },
+          });
+        }}
+        disabled={articleId == -1}
+      >
+        Save Current Article
+      </button>
     </>
   );
 }

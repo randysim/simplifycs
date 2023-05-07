@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 
-export default function ArticleEditor({ content, onChange, onSave }) {
+export default function ArticleEditor({
+  content,
+  articleId,
+  onChange,
+  onSave,
+}) {
   const [rendered, setRendered] = useState(<p>Loading...</p>);
 
   async function rerender() {
@@ -24,9 +29,10 @@ export default function ArticleEditor({ content, onChange, onSave }) {
     }
   }
 
+  //automatically rerender when new article selected
   useEffect(() => {
     rerender();
-  }, []);
+  }, [articleId]);
 
   return (
     <>
