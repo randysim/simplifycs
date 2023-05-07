@@ -23,6 +23,7 @@ export default async function handler(req, res) {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
+        admin: user.admin,
       };
 
       let message = {

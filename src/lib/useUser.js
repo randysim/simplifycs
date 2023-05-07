@@ -5,7 +5,7 @@ import axios from "axios";
 
 const fetcher = (...args) => axios.get(...args).then((res) => res.data);
 
-export default function useUser() {
+export default function useUser(noredirect) {
   const { data } = useSWR("/api/getuser", fetcher);
   const router = useRouter();
 
@@ -15,7 +15,7 @@ export default function useUser() {
     if (data.success) {
       value.signedIn = true;
       value.userInfo = data.userInfo;
-    } else {
+    } else if (!noredirect) {
       router.push("/login");
     }
   }
