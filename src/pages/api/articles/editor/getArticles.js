@@ -7,5 +7,10 @@ export default async function handler(req, res) {
       .json({ error: "Expected get request.", success: false });
   }
 
-  res.status(200).json(await prisma.article.findMany());
+  res.status(200).json(await prisma.article.findMany({
+    select: {
+      title: true,
+      id: true
+    },
+  }));
 }

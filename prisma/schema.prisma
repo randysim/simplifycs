@@ -67,7 +67,7 @@ model Lesson {
 model Article {
   id Int @id @default(autoincrement())
 
-  title   String
+  title   String @unique
   content String
 
   compiledMDX String
@@ -93,7 +93,7 @@ model Question {
   type       String
   // (only for MCQ or MULTISELECT), comma delimeter for all
   choices    String
-  // acceptable responses. 
+  // acceptable responses.
   answers    String
   // category (name of category used to group together)
   categories String
