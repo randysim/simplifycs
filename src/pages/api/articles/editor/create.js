@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   await prisma.article.create({
     data: {
-      title: "New Article",
+      title: "New Article " + new Date().getTime(),
       content: "# Hello World!",
       compiledMDX: (await compileMDX("# Hello World!")).code,
     },

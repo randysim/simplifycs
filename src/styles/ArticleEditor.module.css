@@ -1,24 +1,51 @@
 .editor {
   position: absolute;
-  height: 100%;
-  width: 40%;
-  left: 20%;
+  top: 10%;
+  height: 90%;
+  width: 50%;
 }
 
 .render {
   position: absolute;
-  height: 100%;
-  width: 40%;
-  left: 60%;
+  top: 10%;
+  height: 90%;
+  width: 50%;
+  left: 50%;
 }
 
-.articleList {
+.saveButton {
   position: absolute;
-  width: 20%;
-  height: 100%;
+  top: 5px;
+  right: 5px;
+  background: grey;
+  border-radius: 5px;
+  padding: 3px;
 }
 
-.saveArticleButton {
+.rerenderButton {
   position: absolute;
-  bottom: 0;
+  top: 5px;
+  left: 5px;
+  background: grey;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 5px;
+  right: 65px;
+  background: grey;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30vw;
+  text-align: center;
+  color: white;
+  background: RGBA(0, 0, 0, 0);
 }

@@ -6,14 +6,12 @@ import RenderMDX from "@/components/articles/RenderMDX.js";
 export async function getServerSideProps(context) {
   let articleTitle = context.query.article;
 
-  let article = await prisma.article.findMany({
+  let article = await prisma.article.findUnique({
     where: {
       title: articleTitle,
       type: "ARTICLE",
     },
   });
-
-  article = article[0];
 
   if (!article) {
     return {
