@@ -38,13 +38,13 @@ export default async function handler(req, res) {
   console.log(user);
 
   if (user == null)
-    return res.status(400).json({ success: false, message: "Invalid Email." });
+    return res.status(200).json({ success: false, message: "Invalid Email." });
 
   const match = await bcrypt.compare(password, user.passwordHashed);
 
   if (!match) {
     return res
-      .status(400)
+      .status(200)
       .json({ success: false, message: "Passwords do not match." });
   }
 
