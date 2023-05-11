@@ -106,7 +106,7 @@ export default function AdminLessonCard({
           );
         })}
       </Grid>
-      {id &&
+      {id && (
         <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
           <Box
             sx={{
@@ -153,7 +153,7 @@ export default function AdminLessonCard({
             Add Activity
           </Button>
         </Box>
-      }
+      )}
       <ConfirmationDialog
         title="Delete Lesson?"
         description="It is probably not recoverable!"

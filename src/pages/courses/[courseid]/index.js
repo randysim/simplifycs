@@ -54,9 +54,7 @@ export default function Course() {
         <Grid item sx={{ width: "80%" }}>
           <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
             <Box width="100%">
-              <Typography sx={{ fontSize: 30 }}>
-                {courseData.title}
-              </Typography>
+              <Typography sx={{ fontSize: 30 }}>{courseData.title}</Typography>
               <Typography sx={{ fontSize: 14 }}>
                 {courseData.description}
               </Typography>

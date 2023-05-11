@@ -80,7 +80,7 @@ export default function Unit() {
                     router.push(`/courses/${courseid}/${unitid}/${l.id}`);
                   }}
                 >
-                  { /* unit lesson component later */}
+                  {/* unit lesson component later */}
                   {l.title}
                 </Box>
               );
