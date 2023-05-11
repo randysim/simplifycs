@@ -95,7 +95,6 @@ export default function AdminLessonCard({
         sx={{ width: "100%", height: "auto", padding: "50px" }}
       >
         {activities.map((activity) => {
-          
           return (
             <AdminActivityCard
               key={activity.id}

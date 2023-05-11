@@ -67,7 +67,7 @@ export default async function handler(req, res) {
               },
               create: {
                 title: lesson.title,
-                activities: {} // new lesson, will have 0 activities because you can't add activities to a lesson that doesn't exist yet
+                activities: {}, // new lesson, will have 0 activities because you can't add activities to a lesson that doesn't exist yet
               },
             };
           }),

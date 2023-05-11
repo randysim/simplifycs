@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return res
       .status(200)
       .json({ success: false, message: "Invalid Activity ID" });
-  let result = await prisma[activity.model].findUnique({ where: { id }});
+  let result = await prisma[activity.model].findUnique({ where: { id } });
 
   return res.status(200).json({ success: true, data: result });
 }
