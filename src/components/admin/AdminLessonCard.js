@@ -106,52 +106,54 @@ export default function AdminLessonCard({
           );
         })}
       </Grid>
-      <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
-        <Box
-          sx={{
-            width: "50%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TextField
-            sx={{ width: "80%" }}
-            id="outlined-basic"
-            label="ActivityID"
+      {id && (
+        <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
+          <Box
+            sx={{
+              width: "50%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              sx={{ width: "80%" }}
+              id="outlined-basic"
+              label="ActivityID"
+              variant="outlined"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </Box>
+          <Button
             variant="outlined"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </Box>
-        <Button
-          variant="outlined"
-          sx={{ width: "100%", marginTop: "20px" }}
-          onClick={() => {
-            if (activities.find((a) => a.id == query)) {
-              setMessage("Activity in lesson already");
-              setQuery("");
-              return;
-            }
-
-            axios
-              .post("/api/activity/getactivity", { id: parseInt(query) })
-              .then((res) => {
-                if (res.data.success) {
-                  // activity exists
-                  onActivityAdd(res.data.data);
-                } else {
-                  setMessage(res.data.message);
-                }
-
+            sx={{ width: "100%", marginTop: "20px" }}
+            onClick={() => {
+              if (activities.find((a) => a.id == query)) {
+                setMessage("Activity in lesson already");
                 setQuery("");
-              });
-          }}
-        >
-          Add Activity
-        </Button>
-      </Box>
+                return;
+              }
+
+              axios
+                .post("/api/activity/getactivity", { id: parseInt(query) })
+                .then((res) => {
+                  if (res.data.success) {
+                    // activity exists
+                    onActivityAdd(res.data.data);
+                  } else {
+                    setMessage(res.data.message);
+                  }
+
+                  setQuery("");
+                });
+            }}
+          >
+            Add Activity
+          </Button>
+        </Box>
+      )}
       <ConfirmationDialog
         title="Delete Lesson?"
         description="It is probably not recoverable!"

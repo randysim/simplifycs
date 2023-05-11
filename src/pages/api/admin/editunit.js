@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
 
 /*
 EDIT UNIT
@@ -46,7 +44,7 @@ export default async function handler(req, res) {
   if (data.title) unit.title = data.title;
   if (data.description) unit.description = data.description;
 
-  // works for updating lessons?? (i think)
+  // works for updating lessons?? (i think) <- please clean this up
   unit = await prisma.unit.update({
     where: {
       id, // unit with this id
@@ -69,36 +67,7 @@ export default async function handler(req, res) {
               },
               create: {
                 title: lesson.title,
-                activities: {
-                  disconnect: unit.lessons
-                    .find((l) => l.id == lesson.id)
-                    ?.activities.filter(
-                      (activity) =>
-                        !lesson.activities.find((a) => a.id == activity.id)
-                    )
-                    .map((activity) => {
-                      return { id: activity.id };
-                    }),
-                  connectOrCreate: lesson.activities
-                    .filter(
-                      (activity) =>
-                        !unit.lessons
-                          .find((l) => l.id == lesson.id)
-                          .activities.find((a) => a.id == activity.id)
-                    )
-                    .map((activity) => {
-                      return {
-                        where: {
-                          id: parseInt(activity.id || -1),
-                        },
-                        create: {
-                          title: activity.title,
-                          type: activity.type,
-                          content: activity.content,
-                        },
-                      };
-                    }),
-                },
+                activities: {}, // new lesson, will have 0 activities because you can't add activities to a lesson that doesn't exist yet
               },
             };
           }),
@@ -113,7 +82,7 @@ export default async function handler(req, res) {
     },
   });
 
-  // UPDATE LESSONS
+  // UPDATE ACTIVITIES WITHIN LESSONS
   for (let newLesson of data.lessons) {
     if (!newLesson.id) continue; // would have been created, no need to update
 
@@ -124,7 +93,7 @@ export default async function handler(req, res) {
       data: {
         title: newLesson.title,
         activities: {
-          disconnect: unit.lessons
+          disconnect: unit.lessons // remove activities no longer in the lesson
             .find((l) => l.id == newLesson.id)
             .activities.filter(
               (activity) =>
@@ -133,7 +102,7 @@ export default async function handler(req, res) {
             .map((activity) => {
               return { id: activity.id };
             }),
-          connect: newLesson.activities
+          connect: newLesson.activities // add activities that are not already in the lesson
             .filter(
               (activity) =>
                 !unit.lessons

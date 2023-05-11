@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
 
 /* CREATE AN EMPTY COURSE with empty values */
 export default async function handler(req, res) {
