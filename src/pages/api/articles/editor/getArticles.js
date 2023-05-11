@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   if (req.method != "GET") {
     return res
       .status(400)
-      .json({ error: "Expected get request.", success: false });
+      .json({ message: "Expected get request.", success: false });
   }
 
   res.status(200).json(await prisma.article.findMany());

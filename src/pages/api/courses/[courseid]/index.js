@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
 
 export default async function handler(req, res) {
   if (req.method != "GET")
     return res
       .status(400)
-      .json({ success: false, error: "Expected get request." });
+      .json({ success: false, message: "Expected get request." });
 
   const { courseid } = req.query;
 
@@ -26,7 +24,7 @@ export default async function handler(req, res) {
   });
 
   if (!course)
-    return res.status(400).json({ success: false, error: "Invalid Course ID" });
+    return res.status(400).json({ success: false, message: "Invalid Course ID" });
 
   return res.status(200).json({ success: true, course: course });
 }

@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
 
 export default async function handler(req, res) {
   if (req.method != "POST")
@@ -19,6 +17,7 @@ export default async function handler(req, res) {
     return res
       .status(200)
       .json({ success: false, message: "Invalid Activity ID" });
+  let result = await prisma[activity.model].findUnique({ where: { id }});
 
-  return res.status(200).json({ success: true, data: activity });
+  return res.status(200).json({ success: true, data: result });
 }

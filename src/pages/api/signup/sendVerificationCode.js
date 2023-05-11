@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 function checkMethod(req, res) {
   if (req.method != "POST") {
-    res.status(400).json({ error: "Expected post request.", success: false });
+    res.status(400).json({ message: "Expected post request.", success: false });
     return false;
   }
 
@@ -28,12 +28,12 @@ function checkEmail(req, res) {
   let email = req.body.email;
 
   if (!email) {
-    res.status(400).json({ error: "Missing email.", success: false });
+    res.status(400).json({ message: "Missing email.", success: false });
     return false;
   }
 
   if (!validator.validate(email)) {
-    res.status(200).json({ error: "Invalid email.", success: false });
+    res.status(200).json({ message: "Invalid email.", success: false });
     return false;
   }
 
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
   if (emailExists)
     return res
       .status(200)
-      .json({ error: "Email already in use.", success: false });
+      .json({ message: "Email already in use.", success: false });
 
   // see if pending verification already exists
   let pendingVerification = await prisma.verify.findUnique({

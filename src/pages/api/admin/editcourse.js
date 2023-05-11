@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db.js";
 
 /*
 EDIT COURSE
@@ -61,12 +59,12 @@ export default async function handler(req, res) {
       title: course.title,
       description: course.description,
       units: {
-        disconnect: course.units
+        disconnect: course.units // remove units that are no longer in the course (you can still access them)
           .filter((unit) => !data.units.find((u) => u.id == unit.id))
           .map((unit) => {
             return { id: unit.id };
           }),
-        connectOrCreate: data.units
+        connectOrCreate: data.units // add units that are now IN the course
           .filter((unit) => !course.units.find((u) => u.id == unit.id))
           .map((unit) => {
             return {

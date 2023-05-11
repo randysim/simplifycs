@@ -19,15 +19,15 @@ export default async function handler(req, res) {
   if (req.method != "POST")
     return res
       .status(400)
-      .json({ success: false, error: "Expected post request." });
+      .json({ success: false, message: "Expected post request." });
 
   let email = req.body.email;
   let password = req.body.password;
 
   if (!email)
-    return res.status(400).json({ success: false, error: "Missing Email." });
+    return res.status(400).json({ success: false, message: "Missing Email." });
   if (!password)
-    return res.status(400).json({ success: false, error: "Missing Password." });
+    return res.status(400).json({ success: false, message: "Missing Password." });
 
   let user = await prisma.user.findUnique({
     where: {
@@ -38,14 +38,14 @@ export default async function handler(req, res) {
   console.log(user);
 
   if (user == null)
-    return res.status(400).json({ success: false, error: "Invalid Email." });
+    return res.status(400).json({ success: false, message: "Invalid Email." });
 
   const match = await bcrypt.compare(password, user.passwordHashed);
 
   if (!match) {
     return res
       .status(400)
-      .json({ success: false, error: "Passwords do not match." });
+      .json({ success: false, message: "Passwords do not match." });
   }
 
   let authToken = genAuthToken();

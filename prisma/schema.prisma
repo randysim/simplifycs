@@ -65,15 +65,20 @@ model Lesson {
 }
 
 model Activity {
-  id Int @id @default(autoincrement())
-
-  title String @unique
-
-  // if type is ARTICLE, content will be article body. if type is VIDEO, will be url to youtube link. if type is QUIZ or TEST, will be quiz that we'll create - list question bank(s)
-  type     String
-  content  String
+  id       Int     @id @default(autoincrement())
+  title    String
+  model    String
   Lesson   Lesson? @relation(fields: [lessonId], references: [id])
   lessonId Int?
+}
+
+model Article {
+  id        Int      @id
+  title     String
+  author    String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Question {
