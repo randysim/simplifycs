@@ -14,13 +14,13 @@ export default function Editor() {
   }
 
   return (
-    <div className={styles.articleList} style={{color: "white"}}>
+    <div className={styles.articleList} style={{ color: "white" }}>
       <center>Articles</center>
       {(data || []).map((article, i) => (
         <div key={i}>
           <a
             href={`/admin/articles/editor/${article.id}`}
-            style={{marginRight: "5px"}}
+            style={{ marginRight: "5px" }}
           >
             {article.title}
           </a>

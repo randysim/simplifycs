@@ -3,7 +3,9 @@ import compileMDX from "@/lib/compileMDX.js";
 
 export default async function handler(req, res) {
   if (req.method != "POST") {
-    return res.status(400).json({ error: "Expected post request.", success: false });
+    return res
+      .status(400)
+      .json({ error: "Expected post request.", success: false });
   }
 
   await prisma.article.create({

@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      article: article
+      article: article,
     },
   };
 }
@@ -56,9 +56,13 @@ export default function ArticleEditor({ article }) {
   }
 
   async function updateTitle(newTitle) {
-    let articles = await axios.get("/api/articles/editor/getArticles").then(res => res.data);
+    let articles = await axios
+      .get("/api/articles/editor/getArticles")
+      .then((res) => res.data);
 
-    if (articles.some(article => article.title == newTitle && article.id != id)) {
+    if (
+      articles.some((article) => article.title == newTitle && article.id != id)
+    ) {
       let title = document.querySelector("#title");
       title.style.color = "red";
 
@@ -91,13 +95,24 @@ export default function ArticleEditor({ article }) {
 
   return (
     <>
-      <button onClick={rerender} className={styles.rerenderButton}>Rerender</button>
+      <button onClick={rerender} className={styles.rerenderButton}>
+        Rerender
+      </button>
 
-      <button onClick={saveArticle} className={styles.saveButton}>Save</button>
+      <button onClick={saveArticle} className={styles.saveButton}>
+        Save
+      </button>
 
-      <button onClick={deleteArticle} className={styles.deleteButton}>Delete</button>
+      <button onClick={deleteArticle} className={styles.deleteButton}>
+        Delete
+      </button>
 
-      <input id="title" className={styles.title} defaultValue={title} onBlur={(event) => updateTitle(event.target.value)}></input>
+      <input
+        id="title"
+        className={styles.title}
+        defaultValue={title}
+        onBlur={(event) => updateTitle(event.target.value)}
+      ></input>
 
       <div className={styles.editor}>
         <Editor

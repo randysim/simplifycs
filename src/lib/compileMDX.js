@@ -9,9 +9,10 @@ const builtInComponents = {
   "./CodeComponentRunnable.tsx": fs.readFileSync(
     "./src/components/articles/CodeComponentRunnable.js"
   ),
-  "./CodeComponent.tsx": fs.readFileSync(
-    "./src/components/articles/CodeComponent.js"
-  ).toString().replaceAll(".js", ".tsx") //js doesnt work for some reason
+  "./CodeComponent.tsx": fs
+    .readFileSync("./src/components/articles/CodeComponent.js")
+    .toString()
+    .replaceAll(".js", ".tsx"), //js doesnt work for some reason
 };
 
 export default async function compileMDX(mdxSource) {
@@ -33,7 +34,11 @@ import Component${i} from "./Component${i}"
   mdxSource = mdxSource.replace(
     /<(\s*CodeComponent[\S\s]*)>([\S\s]*)<\s*\/\s*CodeComponent\s*>/,
     (match, opening, code) => {
-      code = code.trimStart().replaceAll("\r", "\\r").replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+      code = code
+        .trimStart()
+        .replaceAll("\r", "\\r")
+        .replaceAll("\n", "\\n")
+        .replaceAll("\t", "\\t");
       return `
 <${opening} initialCode={\"${code}\"} />
       `;
