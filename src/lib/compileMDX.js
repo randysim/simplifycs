@@ -9,30 +9,42 @@ const builtInComponents = {
   "./CodeComponentRunnable.tsx": fs.readFileSync(
     "./src/components/articles/CodeComponentRunnable.js"
   ),
+  "./CodeComponent.tsx": fs.readFileSync(
+    "./src/components/articles/CodeComponent.js"
+  ).toString().replaceAll(".js", ".tsx") //js doesnt work for some reason
 };
 
 export default async function compileMDX(mdxSource) {
   let files = {};
 
+  let i = 0;
   mdxSource = mdxSource.replace(
-    /<\s*Component\s*name\s*=\s*"(.*)"\s*>([\S\s]*)<\s*\/\s*Component\s*>/,
-    (match, name, code) => {
-      files[`./${name}.tsx`] = code;
-      return `import ${name} from "./${name}"\n`; //need to add extra \n or the program will crash if there isnt a newline between the component declaration and the component usage
+    /<\s*component\s*>([\S\s]*)<\s*\/\s*component\s*>/,
+    (match, code) => {
+      files[`./Component${i}.tsx`] = code;
+      return `
+import Component${i} from "./Component${i}"
+
+<Component${i} />
+      `;
     }
   );
 
-  mdxSource = mdxSource
-    .split("\n")
-    .reduce((accumulator, currentValue, currentIndex, array) => {
-      accumulator += currentValue + "\n";
+  mdxSource = mdxSource.replace(
+    /<(\s*CodeComponent[\S\s]*)>([\S\s]*)<\s*\/\s*CodeComponent\s*>/,
+    (match, opening, code) => {
+      code = code.trimStart().replaceAll("\r", "\\r").replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+      return `
+<${opening} initialCode={\"${code}\"} />
+      `;
+    }
+  );
 
-      if (currentValue.startsWith("import") && array[currentIndex + 1] != "") {
-        accumulator += "\n";
-      }
+  mdxSource = `
+import CodeComponent from "./CodeComponent";
 
-      return accumulator;
-    }, "");
+${mdxSource}
+`;
 
   mdxSource = mdxSource.trim();
 
