@@ -116,7 +116,7 @@ export default async function handler(req, res) {
       },
     });
 
-    /* CORRECT ORDERING */
+    /* CORRECT ORDERING (NOT WORKING) */
     await prisma.lesson.update({ 
       where: {
         id: newLesson.id,
@@ -125,7 +125,7 @@ export default async function handler(req, res) {
         activities: {
           set: newLesson.activities.map(activity => ({ id: activity.id }))
         }
-      }
+      },
     })
   }
 
