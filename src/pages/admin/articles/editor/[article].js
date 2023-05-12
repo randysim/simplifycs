@@ -8,26 +8,25 @@ import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
 
 /* COPIED STUFF */
-function useKey(key, cb){
+function useKey(key, cb) {
   const callback = useRef(cb);
 
   useEffect(() => {
-      callback.current = cb;
-  })
-
+    callback.current = cb;
+  });
 
   useEffect(() => {
-      function handle(event){
-          if(event.code === key){
-              callback.current(event);
-          } else if (key === 'ctrls' && event.key === 's' && event.ctrlKey) {
-              callback.current(event);
-          }
+    function handle(event) {
+      if (event.code === key) {
+        callback.current(event);
+      } else if (key === "ctrls" && event.key === "s" && event.ctrlKey) {
+        callback.current(event);
       }
+    }
 
-      document.addEventListener('keydown',handle);
-      return () => document.removeEventListener("keydown",handle)
-  },[key])
+    document.addEventListener("keydown", handle);
+    return () => document.removeEventListener("keydown", handle);
+  }, [key]);
 }
 
 export async function getServerSideProps(context) {
@@ -64,12 +63,12 @@ export default function ArticleEditor({ article }) {
   const id = article.id;
 
   const [savable, setSavable] = useState(false);
-  useKey("ctrls", (e) => { 
+  useKey("ctrls", (e) => {
     e.preventDefault();
     if (savable) {
       saveArticle();
     }
-  })
+  });
 
   const [rendered, setRendered] = useState(<p>Loading...</p>);
   const router = useRouter();
@@ -118,7 +117,7 @@ export default function ArticleEditor({ article }) {
   async function saveArticle() {
     await axios.post(`/api/articles/editor/${id}/update`, {
       content: content,
-    })
+    });
     await updateTitle(title);
     setSavable(false);
     setMessage("Article Saved!");
@@ -135,21 +134,23 @@ export default function ArticleEditor({ article }) {
 
   return (
     <>
-      <button onClick={() => {
-        router.push("/admin/articles/editor")
-      }} className={styles.backButton}>
+      <button
+        onClick={() => {
+          router.push("/admin/articles/editor");
+        }}
+        className={styles.backButton}
+      >
         Back
       </button>
       <button onClick={rerender} className={styles.rerenderButton}>
         Rerender
       </button>
-      
+
       {savable && (
         <button onClick={saveArticle} className={styles.saveButton}>
-        Save
-      </button>
+          Save
+        </button>
       )}
-      
 
       <button onClick={deleteArticle} className={styles.deleteButton}>
         Delete
@@ -159,7 +160,7 @@ export default function ArticleEditor({ article }) {
         id="title"
         className={styles.title}
         value={title}
-        onChange={e => {
+        onChange={(e) => {
           setTitle(e.target.value);
           setSavable(true);
         }}

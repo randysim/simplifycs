@@ -85,7 +85,9 @@ export default function AdminCourse() {
   const renderCourseData = () => {
     return (
       <Box>
-        <Button variant="outlined" onClick={() => router.push("/admin")}>Back</Button>
+        <Button variant="outlined" onClick={() => router.push("/admin")}>
+          Back
+        </Button>
         <Box>
           <Typography>{courseData.title}</Typography>
         </Box>

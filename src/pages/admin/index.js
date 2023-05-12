@@ -109,7 +109,7 @@ export default function Admin() {
           Add Course
         </Button>
       </Grid>
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "center"}}>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <Button
           variant="outlined"
           sx={{ width: "80%", marginTop: "20px" }}
@@ -119,7 +119,7 @@ export default function Admin() {
         >
           Edit Articles
         </Button>
-        </Box>
+      </Box>
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}
