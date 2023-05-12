@@ -1,10 +1,34 @@
 import Editor from "@monaco-editor/react";
 import styles from "@/styles/ArticleEditor.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
+import { TextField, Snackbar } from "@mui/material";
+
+/* COPIED STUFF */
+function useKey(key, cb){
+  const callback = useRef(cb);
+
+  useEffect(() => {
+      callback.current = cb;
+  })
+
+
+  useEffect(() => {
+      function handle(event){
+          if(event.code === key){
+              callback.current(event);
+          } else if (key === 'ctrls' && event.key === 's' && event.ctrlKey) {
+              callback.current(event);
+          }
+      }
+
+      document.addEventListener('keydown',handle);
+      return () => document.removeEventListener("keydown",handle)
+  },[key])
+}
 
 export async function getServerSideProps(context) {
   let articleId = parseInt(context.query.article);
@@ -23,6 +47,9 @@ export async function getServerSideProps(context) {
     };
   }
 
+  article.createdAt = article.createdAt.toString();
+  article.updatedAt = article.updatedAt.toString();
+
   return {
     props: {
       article: article,
@@ -33,7 +60,16 @@ export async function getServerSideProps(context) {
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
   const [content, setContent] = useState(article.content);
+  const [message, setMessage] = useState("");
   const id = article.id;
+
+  const [savable, setSavable] = useState(false);
+  useKey("ctrls", (e) => { 
+    e.preventDefault();
+    if (savable) {
+      saveArticle();
+    }
+  })
 
   const [rendered, setRendered] = useState(<p>Loading...</p>);
   const router = useRouter();
@@ -71,6 +107,7 @@ export default function ArticleEditor({ article }) {
       }, 500);
 
       title.focus();
+      setMessage("Title must be unique");
     } else {
       axios.post(`/api/articles/editor/${id}/update`, {
         title: newTitle,
@@ -79,9 +116,12 @@ export default function ArticleEditor({ article }) {
   }
 
   async function saveArticle() {
-    axios.post(`/api/articles/editor/${id}/update`, {
+    await axios.post(`/api/articles/editor/${id}/update`, {
       content: content,
-    });
+    })
+    await updateTitle(title);
+    setSavable(false);
+    setMessage("Article Saved!");
   }
 
   async function deleteArticle() {
@@ -95,24 +135,35 @@ export default function ArticleEditor({ article }) {
 
   return (
     <>
+      <button onClick={() => {
+        router.push("/admin/articles/editor")
+      }} className={styles.backButton}>
+        Back
+      </button>
       <button onClick={rerender} className={styles.rerenderButton}>
         Rerender
       </button>
-
-      <button onClick={saveArticle} className={styles.saveButton}>
+      
+      {savable && (
+        <button onClick={saveArticle} className={styles.saveButton}>
         Save
       </button>
+      )}
+      
 
       <button onClick={deleteArticle} className={styles.deleteButton}>
         Delete
       </button>
 
-      <input
+      <TextField
         id="title"
         className={styles.title}
-        defaultValue={title}
-        onBlur={(event) => updateTitle(event.target.value)}
-      ></input>
+        value={title}
+        onChange={e => {
+          setTitle(e.target.value);
+          setSavable(true);
+        }}
+      />
 
       <div className={styles.editor}>
         <Editor
@@ -121,7 +172,10 @@ export default function ArticleEditor({ article }) {
           language=""
           theme="vs-dark"
           value={content}
-          onChange={setContent}
+          onChange={(val) => {
+            setContent(val);
+            setSavable(true);
+          }}
           options={{
             fontSize: 16,
             minimap: {
@@ -139,6 +193,14 @@ export default function ArticleEditor({ article }) {
       </div>
 
       <div className={styles.render}>{rendered}</div>
+      <Snackbar
+        open={message.length > 0}
+        autoHideDuration={6000}
+        onClose={() => {
+          setMessage("");
+        }}
+        message={message}
+      />
     </>
   );
 }

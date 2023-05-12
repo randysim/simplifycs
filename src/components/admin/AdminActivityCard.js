@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import ConfirmationDialog from "../ui/ConfirmationDialog";
+import { useRouter } from "next/router";
 
 // delete in activity editor
-export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
+export default function AdminActivityCard({ data, onEdit, onDelete, onUp, onDown }) {
+  let title = data.title;
+  let id = data.id;
+  let type = data.model;
+
+  const router = useRouter();
+  
   let [open, setOpen] = useState(false);
 
   return (
@@ -14,7 +21,7 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
       <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
         <Box
           sx={{
-            width: "25%",
+            width: "20%",
             height: "100%",
             display: "flex",
             justifyContent: "center",
@@ -25,7 +32,7 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
         </Box>
         <Box
           sx={{
-            width: "25%",
+            width: "20%",
             height: "100%",
             display: "flex",
             justifyContent: "center",
@@ -36,7 +43,7 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
         </Box>
         <Box
           sx={{
-            width: "25%",
+            width: "20%",
             height: "100%",
             display: "flex",
             justifyContent: "center",
@@ -45,7 +52,11 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
         >
           <Button
             onClick={() => {
-              onEdit(id);
+              if (type == "Article") {
+                router.push(`/admin/articles/editor/${id}`)
+              } else {
+                onEdit(id);
+              }
             }}
           >
             Edit
@@ -53,7 +64,7 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
         </Box>
         <Box
           sx={{
-            width: "25%",
+            width: "20%",
             height: "100%",
             display: "flex",
             justifyContent: "center",
@@ -66,6 +77,22 @@ export default function AdminActivityCard({ title, id, onEdit, onDelete }) {
             }}
           >
             Delete
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            width: "20%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Button onClick={() => onUp(id)}>
+            Up
+          </Button>
+          <Button onClick={() => onDown(id)}>
+            Down
           </Button>
         </Box>
       </Box>

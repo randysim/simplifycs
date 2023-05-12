@@ -22,10 +22,19 @@
   padding: 3px;
 }
 
-.rerenderButton {
+.backButton {
   position: absolute;
   top: 5px;
   left: 5px;
+  background: grey;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.rerenderButton {
+  position: absolute;
+  top: 5px;
+  left: 60px;
   background: grey;
   border-radius: 5px;
   padding: 3px;

@@ -77,6 +77,7 @@ model Article {
   title     String
   author    String
   content   String
+  compiledMDX String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
