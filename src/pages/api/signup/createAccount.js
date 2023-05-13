@@ -9,7 +9,7 @@ ACTUALLY CREATE ACCOUNT
 
 function checkMethod(req, res) {
   if (req.method != "POST") {
-    res.status(400).json({ error: "Expected post request.", success: false });
+    res.status(400).json({ message: "Expected post request.", success: false });
     return false;
   }
 
@@ -20,12 +20,12 @@ function checkEmail(req, res) {
   let email = req.body.email;
 
   if (!email) {
-    res.status(400).json({ error: "Missing email.", success: false });
+    res.status(400).json({ message: "Missing email.", success: false });
     return false;
   }
 
   if (!validator.validate(email)) {
-    res.status(400).json({ error: "Invalid email.", success: false });
+    res.status(400).json({ message: "Invalid email.", success: false });
     return false;
   }
 
@@ -40,7 +40,7 @@ function checkVerificationKey(req, res) {
   if (!verificationKey) {
     res
       .status(400)
-      .json({ error: "Missing verification key.", success: false });
+      .json({ message: "Missing verification key.", success: false });
     return false;
   }
 
@@ -52,18 +52,18 @@ function checkNames(req, res) {
   let lastName = req.body.lastName;
 
   if (!firstName) {
-    res.status(400).json({ error: "Missing first name.", success: false });
+    res.status(400).json({ message: "Missing first name.", success: false });
     return false;
   }
 
   if (!lastName) {
-    res.status(400).json({ error: "Missing last name.", success: false });
+    res.status(400).json({ message: "Missing last name.", success: false });
     return false;
   }
 
   if (!firstName.match(/^['a-zA-Z]{2,}$/)) {
     res.status(400).json({
-      error: "First name must match the following regex: /^['a-zA-Z]{2,}$/",
+      message: "First name must match the following regex: /^['a-zA-Z]{2,}$/",
       success: false,
     });
     return false;
@@ -71,7 +71,7 @@ function checkNames(req, res) {
 
   if (!lastName.match(/^['a-zA-Z]{2,}$/)) {
     res.status(400).json({
-      error: "Last name must match the following regex: /^['a-zA-Z]{2,}$/",
+      message: "Last name must match the following regex: /^['a-zA-Z]{2,}$/",
       success: false,
     });
     return false;
@@ -84,13 +84,13 @@ function checkUsername(req, res) {
   let username = req.body.username;
 
   if (!username) {
-    res.status(400).json({ error: "Missing username.", success: false });
+    res.status(400).json({ message: "Missing username.", success: false });
     return false;
   }
 
   if (!username.match(/^[\-\_a-zA-Z0-9]{4,}$/)) {
     return res.status(400).json({
-      error: "Username must match the following regex: /^[-_a-zA-Z0-9]{4,}$/",
+      message: "Username must match the following regex: /^[-_a-zA-Z0-9]{4,}$/",
       success: false,
     });
     return false;
@@ -103,13 +103,13 @@ function checkPassword(req, res) {
   let password = req.body.password;
 
   if (!password) {
-    res.status(400).json({ error: "Missing password.", success: false });
+    res.status(400).json({ message: "Missing password.", success: false });
     return false;
   }
 
   if (password.length < 8) {
     res.status(400).json({
-      error: "Password must be at least 8 characters.",
+      message: "Password must be at least 8 characters.",
       success: false,
     });
     return false;
@@ -156,19 +156,19 @@ export default async function handler(req, res) {
   if (!pendingVerification) {
     return res
       .status(400)
-      .json({ error: "Invalid verification.", success: false });
+      .json({ message: "Invalid verification.", success: false });
   }
 
   if (pendingVerification.verificationKey !== verificationKey) {
     return res
       .status(400)
-      .json({ error: "Invalid verification key.", success: false });
+      .json({ message: "Invalid verification key.", success: false });
   }
 
   if (new Date() > pendingVerification.verificationExpirationTime) {
     return res
       .status(400)
-      .json({ error: "Verification expired.", success: false });
+      .json({ message: "Verification expired.", success: false });
   }
 
   // Delete verification thing

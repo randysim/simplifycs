@@ -1,12 +1,16 @@
 import styles from "@/styles/ArticleEditor.module.css";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import useSWR from "swr";
+
+import { Box, Button } from "@mui/material";
 
 const fetcher = (...args) => axios.get(...args).then((res) => res.data);
 
 export default function Editor() {
   const { data, mutate } = useSWR("/api/articles/editor/getArticles", fetcher);
+  const router = useRouter();
 
   async function createNewArticle() {
     await axios.post("/api/articles/editor/create");
@@ -14,20 +18,29 @@ export default function Editor() {
   }
 
   return (
-    <div className={styles.articleList} style={{ color: "white" }}>
-      <center>Articles</center>
+    <Box sx={{ display: "flex", flexWrap: "wrap", margin: "20px" }}>
+      <Button variant="outlined" onClick={() => router.push("/admin")}>
+        Back
+      </Button>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        Articles
+      </Box>
       {(data || []).map((article, i) => (
-        <div key={i}>
-          <a
-            href={`/admin/articles/editor/${article.id}`}
-            style={{ marginRight: "5px" }}
+        <Box sx={{ width: "100%", marginBottom: "10px" }}>
+          <Button
+            onClick={() => {
+              router.push(`/admin/articles/editor/${article.id}`);
+            }}
+            key={i}
           >
             {article.title}
-          </a>
-        </div>
+          </Button>
+        </Box>
       ))}
 
-      <button onClick={createNewArticle}>Add New Article</button>
-    </div>
+      <Button onClick={createNewArticle} variant="outlined">
+        Add New Article
+      </Button>
+    </Box>
   );
 }

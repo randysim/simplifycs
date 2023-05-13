@@ -3,14 +3,37 @@ import compileMDX from "@/lib/compileMDX.js";
 
 export default async function handler(req, res) {
   if (req.method != "POST") {
-    return res
-      .status(400)
-      .json({ error: "Expected post request.", success: false });
+    res.status(400).json({ message: "Expected post request.", success: false });
   }
 
+  // admin check
+  let token = req.cookies.token;
+
+  if (!token)
+    return res.status(200).json({ message: "Not logged in.", success: false });
+  let user = await prisma.user.findUnique({
+    where: {
+      authToken: token,
+    },
+  });
+  if (!user)
+    return res.status(200).json({ message: "Login expired.", success: false });
+
+  if (!user.admin)
+    return res.status(400).json({ message: "Unauthorized", success: false });
+
+  let title = "New Article " + new Date().getTime();
+  let activity = await prisma.activity.create({
+    data: {
+      title,
+      model: "Article",
+    },
+  });
   await prisma.article.create({
     data: {
-      title: "New Article " + new Date().getTime(),
+      id: activity.id,
+      title,
+      author: `${user.firstName} ${user.lastName}`,
       content: "# Hello World!",
       compiledMDX: (await compileMDX("# Hello World!")).code,
     },

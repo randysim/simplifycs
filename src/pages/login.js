@@ -1,22 +1,27 @@
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  Button,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Snackbar,
+} from "@mui/material";
 
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 import useUser from "@/lib/useUser";
 
 export default function Login() {
   const { signedIn, userInfo } = useUser(true);
   const router = useRouter(true);
+
+  let [message, setMessage] = useState("");
 
   if (signedIn) {
     router.push("/dashboard");
@@ -29,23 +34,30 @@ export default function Login() {
     let email = data.get("email");
     let password = data.get("password");
 
-    axios.post("api/login", { email, password }).then((res) => {
-      let body = res.data;
+    if (!email) setMessage("Missing Email");
+    if (!password) setMessage("Missing Password");
 
-      if (!body.success) {
-        // ERROR (do some snackbar thing)
-        console.log(body.error);
+    axios
+      .post("api/login", { email, password })
+      .then((res) => {
+        let body = res.data;
 
-        return;
-      }
+        if (!body.success) {
+          // ERROR (do some snackbar thing)
+          setMessage(body.message);
 
-      router.push("/dashboard");
-    });
+          return;
+        }
+
+        router.push("/dashboard");
+      })
+      .catch((err) => {
+        setMessage(err.message);
+      });
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -99,6 +111,14 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={message.length > 0}
+        autoHideDuration={6000}
+        onClose={() => {
+          setMessage("");
+        }}
+        message={message}
+      />
     </Container>
   );
 }

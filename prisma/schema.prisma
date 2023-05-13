@@ -64,29 +64,22 @@ model Lesson {
   unitId     Int?
 }
 
-//ACTIVITY TYPES
-model Article {
-  id Int @id @default(autoincrement())
-
-  title   String @unique
-  content String
-
-  compiledMDX String
-}
-
-model Video {
-  id Int @id @default(autoincrement())
-
-  url String @unique
-}
-
 model Activity {
-  id Int @id @default(autoincrement())
-
-  type     String
-  otherId  Int
+  id       Int     @id @default(autoincrement())
+  title    String
+  model    String
   Lesson   Lesson? @relation(fields: [lessonId], references: [id])
   lessonId Int?
+}
+
+model Article {
+  id        Int      @id
+  title     String
+  author    String
+  content   String
+  compiledMDX String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Question {

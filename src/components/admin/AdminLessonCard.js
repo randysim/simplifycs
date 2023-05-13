@@ -22,6 +22,8 @@ export default function AdminLessonCard({
   onTitleChange,
   onActivityDelete,
   onActivityAdd,
+  onActivityUp,
+  onActivityDown,
 }) {
   let [open, setOpen] = useState(false);
   let [query, setQuery] = useState("");
@@ -98,46 +100,46 @@ export default function AdminLessonCard({
           return (
             <AdminActivityCard
               key={activity.id}
-              title={activity.title}
-              id={activity.id}
+              data={activity}
               onEdit={onEdit}
               onDelete={onActivityDelete}
+              onUp={onActivityUp}
+              onDown={onActivityDown}
             />
           );
         })}
       </Grid>
-      <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
-        <Box
-          sx={{
-            width: "50%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TextField
-            sx={{ width: "80%" }}
-            id="outlined-basic"
-            label="ActivityID"
+      {id && (
+        <Box sx={{ width: "100%", height: "40px", display: "flex" }}>
+          <Box
+            sx={{
+              width: "50%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              sx={{ width: "80%" }}
+              id="outlined-basic"
+              label="ActivityID"
+              variant="outlined"
+              value={query}
+              onChange={(e) => setQuery(parseInt(e.target.value) || "")}
+            />
+          </Box>
+          <Button
             variant="outlined"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </Box>
-        <Button
-          variant="outlined"
-          sx={{ width: "100%", marginTop: "20px" }}
-          onClick={() => {
-            if (activities.find((a) => a.id == query)) {
-              setMessage("Activity in lesson already");
-              setQuery("");
-              return;
-            }
+            sx={{ width: "100%", marginTop: "20px" }}
+            onClick={() => {
+              if (activities.find((a) => a.id == query)) {
+                setMessage("Activity in lesson already");
+                setQuery("");
+                return;
+              }
 
-            axios
-              .post("/api/activity/getactivity", { id: parseInt(query) })
-              .then((res) => {
+              axios.get(`/api/activity/getactivity?id=${query}`).then((res) => {
                 if (res.data.success) {
                   // activity exists
                   onActivityAdd(res.data.data);
@@ -147,11 +149,12 @@ export default function AdminLessonCard({
 
                 setQuery("");
               });
-          }}
-        >
-          Add Activity
-        </Button>
-      </Box>
+            }}
+          >
+            Add Activity
+          </Button>
+        </Box>
+      )}
       <ConfirmationDialog
         title="Delete Lesson?"
         description="It is probably not recoverable!"

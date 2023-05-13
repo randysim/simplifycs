@@ -5,6 +5,8 @@ import axios from "axios";
 import useUser from "@/lib/useUser";
 
 import { Box, Typography } from "@mui/material";
+import CourseHeader from "@/components/course/CourseHeader";
+import UnitLesson from "@/components/course/UnitLesson";
 
 const getCourseData = async (id) => {
   if (id) {
@@ -27,7 +29,7 @@ export default function Unit() {
     console.log("COURSEID: " + courseid);
     getCourseData(courseid)
       .then((crs) => {
-        setCourseData(crs);
+        setCourseData(crs?.course);
       })
       .catch((e) => {
         router.push("/dashboard");
@@ -36,20 +38,10 @@ export default function Unit() {
 
   const renderUnitData = () => {
     let unit = courseData.units[unitid];
+
     return (
       <Box>
-        <Box
-          sx={{
-            width: "100%",
-            height: "175px",
-            paddingLeft: "50px",
-            display: "flex",
-            alignItems: "center",
-          }}
-          bgcolor="primary.main"
-        >
-          <Typography sx={{ fontSize: "40px" }}>Unit: {unit.name}</Typography>
-        </Box>
+        <CourseHeader title={unit.title} bgcolor="primary.main" />
         <Box sx={{ width: "100%", height: "auto" }}>
           <Box>
             <Typography sx={{ fontSize: "20px", paddingLeft: "50px" }}>
@@ -65,23 +57,7 @@ export default function Unit() {
             }}
           >
             {unit.lessons.map((l, i) => {
-              return (
-                <Box
-                  sx={{
-                    width: "80%",
-                    minWidth: "400px",
-                    padding: "20px",
-                    border: "4px solid white",
-                    marginTop: "50px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    router.push(`/courses/${courseid}/${unitid}/${l.id}`);
-                  }}
-                >
-                  {l.type} - {l.name}
-                </Box>
-              );
+              return <UnitLesson router={router} data={l} key={i} />;
             })}
           </Box>
         </Box>

@@ -9,6 +9,7 @@ export async function getServerSideProps(context) {
   let article = await prisma.article.findUnique({
     where: {
       title: articleTitle,
+      type: "ARTICLE",
     },
   });
 
