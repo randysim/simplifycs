@@ -2,7 +2,7 @@ import { bundleMDX } from "mdx-bundler";
 import fs from "fs";
 
 //our own components that we can make available to mdx
-const builtInComponents = {
+let builtInComponents = {
   "./CodeComponentStatic.tsx": fs.readFileSync(
     "./src/components/articles/CodeComponentStatic.js"
   ),
@@ -20,7 +20,7 @@ export default async function compileMDX(mdxSource) {
 
   let i = 0;
   mdxSource = mdxSource.replace(
-    /<\s*component\s*>([\S\s]*)<\s*\/\s*component\s*>/,
+    /<\s*?component\s*?>([\S\s]*?)<\s*?\/\s*?component\s*?>/,
     (match, code) => {
       files[`./Component${i}.tsx`] = code;
       return `
@@ -32,15 +32,11 @@ import Component${i} from "./Component${i}"
   );
 
   mdxSource = mdxSource.replace(
-    /<(\s*CodeComponent[\S\s]*)>([\S\s]*)<\s*\/\s*CodeComponent\s*>/,
+    /<(\s*?CodeComponent[\S\s]*?)>([\S\s]*?)<\s*?\/\s*?CodeComponent\s*?>/,
     (match, opening, code) => {
-      code = code
-        .trimStart()
-        .replaceAll("\r", "\\r")
-        .replaceAll("\n", "\\n")
-        .replaceAll("\t", "\\t");
+      code = code.trimStart();
       return `
-<${opening} initialCode={\"${code}\"} />
+<${opening} initialCodeB64=\"${btoa(code)}\" />
       `;
     }
   );

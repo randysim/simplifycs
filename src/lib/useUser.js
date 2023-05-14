@@ -5,13 +5,15 @@ import axios from "axios";
 
 const fetcher = (...args) => axios.get(...args).then((res) => res.data);
 
-export default function useUser(noredirect) {
+export default function useUser(noredirect = false) {
   const { data } = useSWR("/api/getuser", fetcher);
   const router = useRouter();
 
-  let value = { signedIn: false, userInfo: {} };
+  let value = { signedIn: false, loading: true, userInfo: {} };
 
   if (data) {
+    value.loading = false;
+
     if (data.success) {
       value.signedIn = true;
       value.userInfo = data.userInfo;

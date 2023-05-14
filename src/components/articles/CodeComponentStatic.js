@@ -2,11 +2,11 @@ import Editor from "@monaco-editor/react";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
-export default function CodeComponentStatic({ initialCode, language }) {
+export default function CodeComponentStatic({ initialCode, language, height }) {
   return (
     <Editor
-      height={500}
-      width="50vw"
+      height={height || 500}
+      width="100%"
       language={language}
       theme="vs-dark"
       value={initialCode}
