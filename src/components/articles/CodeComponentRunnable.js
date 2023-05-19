@@ -4,7 +4,11 @@ import axios from "axios";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
-export default function CodeComponentRunnable({ initialCode, language, height }) {
+export default function CodeComponentRunnable({
+  initialCode,
+  language,
+  height,
+}) {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState("");
 
@@ -22,7 +26,9 @@ export default function CodeComponentRunnable({ initialCode, language, height })
   return (
     <>
       <div style={{ textAlign: "left" }}>
-        <button style={{ background: "black" }} onClick={executeCode}>Run {language}</button>
+        <button style={{ background: "black" }} onClick={executeCode}>
+          Run {language}
+        </button>
       </div>
 
       <Editor

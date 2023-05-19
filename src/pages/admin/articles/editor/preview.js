@@ -8,22 +8,34 @@ export const getServerSideProps = adminOnly(async (context) => {
 
     return {
       props: {
-        compiledMDX: code
-      }
+        compiledMDX: code,
+      },
     };
   } catch (e) {
     return {
       props: {
-        error: e.toString()
-      }
-    }
+        error: e.toString(),
+      },
+    };
   }
 });
 
 export default function Preview(props) {
   return (
-    <div style={{width: "60%", position: "absolute", left: "50%", transform: "translateX(-50%)", textAlign: "center"}}>
-      {props.error ? <p>Compilation Error: {props.error}</p> : <RenderMDX>{props.compiledMDX}</RenderMDX>}
+    <div
+      style={{
+        width: "60%",
+        position: "absolute",
+        left: "50%",
+        transform: "translateX(-50%)",
+        textAlign: "center",
+      }}
+    >
+      {props.error ? (
+        <p>Compilation Error: {props.error}</p>
+      ) : (
+        <RenderMDX>{props.compiledMDX}</RenderMDX>
+      )}
     </div>
   );
 }

@@ -5,6 +5,8 @@ export default function RenderMDX({ children }) {
   const Component = useMemo(() => getMDXComponent(children), [children]);
 
   return (
-    <Component />
+    <div class="prose prose-invert">
+      <Component />
+    </div>
   );
 }

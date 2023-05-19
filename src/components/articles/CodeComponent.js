@@ -5,14 +5,10 @@ export default function CodeComponent({ runnable, ...props }) {
   if (props.initialCodeB64) {
     props.initialCode = atob(props.initialCodeB64);
   }
-  
+
   if (runnable) {
-    return (
-      <CodeComponentRunnable {...props} />
-    );
+    return <CodeComponentRunnable {...props} />;
   } else {
-    return (
-      <CodeComponentStatic {...props} />
-    );
+    return <CodeComponentStatic {...props} />;
   }
 }

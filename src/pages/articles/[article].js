@@ -33,7 +33,15 @@ export default function Article({ title, compiledMDX }) {
   return (
     <>
       <p className={styles.title}>{title}</p>
-      <div style={{width: "60%", position: "absolute", left: "50%", transform: "translateX(-50%)", textAlign: "center"}}>
+      <div
+        style={{
+          width: "60%",
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
+          textAlign: "center",
+        }}
+      >
         <RenderMDX className={styles.article}>{compiledMDX}</RenderMDX>
       </div>
     </>

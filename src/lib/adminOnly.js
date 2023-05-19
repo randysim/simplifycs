@@ -1,7 +1,11 @@
 import prisma from "@/lib/db.js";
 
 //to be used surrounding getServerSideProps
-export default function adminOnly(next = () => { return { props: {} } } ) {
+export default function adminOnly(
+  next = () => {
+    return { props: {} };
+  }
+) {
   return async (context) => {
     let token = context.req.cookies.token;
 
