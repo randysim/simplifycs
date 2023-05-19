@@ -6,6 +6,8 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
+import RenderMDX from "@/components/articles/RenderMDX.js";
+import adminOnly from "@/lib/adminOnly.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -29,7 +31,7 @@ function useKey(key, cb) {
   }, [key]);
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = adminOnly(async (context) => {
   let articleId = parseInt(context.query.article);
 
   let article = await prisma.article.findUnique({
@@ -54,7 +56,7 @@ export async function getServerSideProps(context) {
       article: article,
     },
   };
-}
+});
 
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
@@ -70,25 +72,7 @@ export default function ArticleEditor({ article }) {
     }
   });
 
-  const [rendered, setRendered] = useState(<p>Loading...</p>);
   const router = useRouter();
-
-  async function rerender() {
-    let res = await axios.post("/api/articles/editor/compileMDX", {
-      source: content,
-    });
-
-    try {
-      let component = res.data.code ? (
-        await getMDXComponent(res.data.code)
-      ) : (
-        <p>Compilation Error!?! {res.data.error}</p>
-      );
-      setRendered(component);
-    } catch (e) {
-      setRendered(<p>Runtime Error?!? {e.toString()}</p>);
-    }
-  }
 
   async function updateTitle(newTitle) {
     let articles = await axios
@@ -128,10 +112,6 @@ export default function ArticleEditor({ article }) {
     router.push("/admin/articles/editor");
   }
 
-  useEffect(() => {
-    rerender();
-  }, []);
-
   return (
     <>
       <button
@@ -141,9 +121,6 @@ export default function ArticleEditor({ article }) {
         className={styles.backButton}
       >
         Back
-      </button>
-      <button onClick={rerender} className={styles.rerenderButton}>
-        Rerender
       </button>
 
       {savable && (
@@ -193,7 +170,16 @@ export default function ArticleEditor({ article }) {
         />
       </div>
 
-      <div className={styles.render}>{rendered}</div>
+      <div className={styles.render}>
+        <iframe
+          style={{ width: "100%", height: "100%" }}
+          src={`/admin/articles/editor/preview?source=${encodeURIComponent(
+            btoa(content)
+          )}`}
+          frameBorder="0"
+        />
+      </div>
+
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}

@@ -11,11 +11,10 @@ import {
   Button,
 } from "@mui/material";
 
-import useUser from "@/lib/useUser";
 import AdminLessonCard from "@/components/admin/AdminLessonCard";
 import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
 
-/* 
+/*
 UNIT EDITOR
 edit name:
 edit description:
@@ -48,18 +47,11 @@ function genAuthToken() {
 export default function AdminUnit() {
   const router = useRouter();
   const { courseid, unitid } = router.query;
-  const { signedIn, userInfo } = useUser();
   const [unitData, setUnitData] = useState(null);
 
   const [message, setMessage] = useState("");
   const [savable, setSavable] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(userInfo).length && !userInfo.admin) {
-      router.push("/");
-    }
-  }, [userInfo]);
 
   useEffect(() => {
     if (!courseid) return;
