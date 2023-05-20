@@ -73,25 +73,34 @@ model Activity {
 }
 
 model Article {
-  id        Int      @id
-  title     String
-  author    String
-  content   String
+  id          Int      @id
+
+  title       String   @unique
+  author      String
+
+  content     String
   compiledMDX String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Question {
   id         Int    @id @default(autoincrement())
+
   context    String
   prompt     String
+
   // FRQ or MCQ or MULTISELECT or CODE (code output)
   type       String
-  // (only for MCQ or MULTISELECT), comma delimeter for all
-  choices    String
+
+  // (only for MCQ or MULTISELECT)
+  choices    String[]
+
   // acceptable responses.
   answers    String
-  // category (name of category used to group together)
-  categories String
+}
+
+model Quiz {
+  id         Int    @id @default(autoincrement())
 }

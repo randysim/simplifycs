@@ -9,6 +9,9 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      code: ["'Roboto Mono', monospace"]
+    }
   },
   plugins: [
     require('@tailwindcss/typography'),
