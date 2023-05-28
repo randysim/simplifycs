@@ -129,11 +129,7 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
-<<<<<<< HEAD
-      <Snackbar 
-=======
       <Snackbar
->>>>>>> main
         open={message.length > 0}
         autoHideDuration={6000}
         onClose={() => {

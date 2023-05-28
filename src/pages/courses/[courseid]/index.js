@@ -11,10 +11,6 @@ import CourseHeader from "@/components/course/CourseHeader";
 import CourseUnit from "@/components/course/CourseUnit";
 import CourseProgress from "@/components/course/CourseProgress";
 
-import CourseHeader from "@/components/course/CourseHeader";
-import CourseUnit from "@/components/course/CourseUnit";
-import CourseProgress from "@/components/course/CourseProgress";
-
 const getCourseData = async (id) => {
   if (id) {
     let data = await axios.get(`http://localhost:3000/api/courses/${id}`);
