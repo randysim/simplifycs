@@ -5,20 +5,11 @@ import { useState, useEffect } from "react";
 import useUser from "@/lib/useUser";
 
 import React from "react";
-<<<<<<< HEAD
-import {
-  Box,
-  Card,
-  Grid,
-  Typography,
-} from "@mui/material";
-=======
 import { Box, Card, Grid, Typography } from "@mui/material";
 
 import CourseHeader from "@/components/course/CourseHeader";
 import CourseUnit from "@/components/course/CourseUnit";
 import CourseProgress from "@/components/course/CourseProgress";
->>>>>>> main
 
 import CourseHeader from "@/components/course/CourseHeader";
 import CourseUnit from "@/components/course/CourseUnit";
