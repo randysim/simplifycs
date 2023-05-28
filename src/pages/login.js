@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import { 
-  Button, 
-  TextField, 
-  FormControlLabel, 
-  Checkbox, 
-  Link, 
-  Grid, 
-  Box, 
-  Typography, 
-  Container,
-  Snackbar
-=======
 import {
   Button,
   TextField,
@@ -22,7 +9,6 @@ import {
   Typography,
   Container,
   Snackbar,
->>>>>>> main
 } from "@mui/material";
 
 import axios from "axios";
@@ -51,12 +37,8 @@ export default function Login() {
     if (!email) setMessage("Missing Email");
     if (!password) setMessage("Missing Password");
 
-<<<<<<< HEAD
-    axios.post("api/login", { email, password })
-=======
     axios
       .post("api/login", { email, password })
->>>>>>> main
       .then((res) => {
         let body = res.data;
 
