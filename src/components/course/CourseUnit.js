@@ -1,4 +1,4 @@
-import { Grid, Box, Link } from "@mui/material";
+import { Grid, Box, Link, Typography } from "@mui/material";
 
 export default function CourseUnit({ router, id, data }) {
   let { courseid } = router.query;
@@ -39,12 +39,9 @@ export default function CourseUnit({ router, id, data }) {
               justifyContent="center"
               sx={{ textDecoration: "underline" }}
             >
-              <Link
-                href={`${courseid}/${id}/${l.id}`}
-                color="primary.contrastText"
-              >
+              <Typography>
                 {l.title}
-              </Link>
+              </Typography>
             </Box>
           );
         })}

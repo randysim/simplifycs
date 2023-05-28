@@ -18,7 +18,7 @@ const getCourseData = async (id) => {
 
 export default function Lesson() {
   const router = useRouter();
-  const { courseid, unitid, lessonid } = router.query;
+  const { courseid, unitid, lessonid, activityid } = router.query;
 
   const { signedIn, userInfo } = useUser();
 
@@ -35,7 +35,7 @@ export default function Lesson() {
   }, [router]);
 
   const renderLesson = () => {
-    // have lessons on left, scrollable + main content on right
+    // have lessons on left, scrollable + activity content on the right
   };
 
   return <Box>{courseData ? renderLesson() : <p>{courseid}</p>}</Box>;
