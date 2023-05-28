@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { 
   Button, 
   TextField, 
@@ -9,6 +10,19 @@ import {
   Typography, 
   Container,
   Snackbar
+=======
+import {
+  Button,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Snackbar,
+>>>>>>> main
 } from "@mui/material";
 
 import axios from "axios";
@@ -37,7 +51,12 @@ export default function Login() {
     if (!email) setMessage("Missing Email");
     if (!password) setMessage("Missing Password");
 
+<<<<<<< HEAD
     axios.post("api/login", { email, password })
+=======
+    axios
+      .post("api/login", { email, password })
+>>>>>>> main
       .then((res) => {
         let body = res.data;
 
@@ -48,9 +67,9 @@ export default function Login() {
           return;
         }
 
-      router.push("/dashboard");
+        router.push("/dashboard");
       })
-      .catch(err => {
+      .catch((err) => {
         setMessage(err.message);
       });
   };
@@ -110,7 +129,11 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
+<<<<<<< HEAD
       <Snackbar 
+=======
+      <Snackbar
+>>>>>>> main
         open={message.length > 0}
         autoHideDuration={6000}
         onClose={() => {

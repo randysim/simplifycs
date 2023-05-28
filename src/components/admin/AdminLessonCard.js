@@ -22,6 +22,8 @@ export default function AdminLessonCard({
   onTitleChange,
   onActivityDelete,
   onActivityAdd,
+  onActivityUp,
+  onActivityDown,
 }) {
   let [open, setOpen] = useState(false);
   let [query, setQuery] = useState("");
@@ -95,14 +97,14 @@ export default function AdminLessonCard({
         sx={{ width: "100%", height: "auto", padding: "50px" }}
       >
         {activities.map((activity) => {
-          
           return (
             <AdminActivityCard
               key={activity.id}
-              title={activity.title}
-              id={activity.id}
+              data={activity}
               onEdit={onEdit}
               onDelete={onActivityDelete}
+              onUp={onActivityUp}
+              onDown={onActivityDown}
             />
           );
         })}
@@ -124,7 +126,7 @@ export default function AdminLessonCard({
               label="ActivityID"
               variant="outlined"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => setQuery(parseInt(e.target.value) || "")}
             />
           </Box>
           <Button
@@ -137,18 +139,16 @@ export default function AdminLessonCard({
                 return;
               }
 
-              axios
-                .post("/api/activity/getactivity", { id: parseInt(query) })
-                .then((res) => {
-                  if (res.data.success) {
-                    // activity exists
-                    onActivityAdd(res.data.data);
-                  } else {
-                    setMessage(res.data.message);
-                  }
+              axios.get(`/api/activity/getactivity?id=${query}`).then((res) => {
+                if (res.data.success) {
+                  // activity exists
+                  onActivityAdd(res.data.data);
+                } else {
+                  setMessage(res.data.message);
+                }
 
-                  setQuery("");
-                });
+                setQuery("");
+              });
             }}
           >
             Add Activity

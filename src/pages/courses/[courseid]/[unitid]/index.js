@@ -57,9 +57,7 @@ export default function Unit() {
             }}
           >
             {unit.lessons.map((l, i) => {
-              return (
-                <UnitLesson router={router} data={l} key={i} />
-              );
+              return <UnitLesson router={router} data={l} key={i} />;
             })}
           </Box>
         </Box>

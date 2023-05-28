@@ -7,7 +7,6 @@ import {
   Grid,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import useUser from "@/lib/useUser";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -38,18 +37,11 @@ function genAuthToken() {
 export default function AdminCourse() {
   const router = useRouter();
   const { courseid } = router.query;
-  const { signedIn, userInfo } = useUser();
   const [courseData, setCourseData] = useState(null);
 
   const [message, setMessage] = useState("");
   const [savable, setSavable] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(userInfo).length && !userInfo.admin) {
-      router.push("/");
-    }
-  }, [userInfo]);
 
   useEffect(() => {
     getCourseData(courseid)
@@ -85,6 +77,9 @@ export default function AdminCourse() {
   const renderCourseData = () => {
     return (
       <Box>
+        <Button variant="outlined" onClick={() => router.push("/admin")}>
+          Back
+        </Button>
         <Box>
           <Typography>{courseData.title}</Typography>
         </Box>

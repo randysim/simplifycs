@@ -6,14 +6,12 @@ import RenderMDX from "@/components/articles/RenderMDX.js";
 export async function getServerSideProps(context) {
   let articleTitle = context.query.article;
 
-  let article = await prisma.article.findMany({
+  let article = await prisma.article.findUnique({
     where: {
       title: articleTitle,
       type: "ARTICLE",
     },
   });
-
-  article = article[0];
 
   if (!article) {
     return {
@@ -35,7 +33,17 @@ export default function Article({ title, compiledMDX }) {
   return (
     <>
       <p className={styles.title}>{title}</p>
-      <RenderMDX className={styles.article}>{compiledMDX}</RenderMDX>
+      <div
+        style={{
+          width: "60%",
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
+          textAlign: "center",
+        }}
+      >
+        <RenderMDX className={styles.article}>{compiledMDX}</RenderMDX>
+      </div>
     </>
   );
 }

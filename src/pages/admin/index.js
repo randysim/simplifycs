@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import useUser from "@/lib/useUser";
 
 import { useEffect, useState } from "react";
 import { Box, Typography, Grid, Snackbar, Button } from "@mui/material";
@@ -17,7 +16,6 @@ const fetchCourses = async () => {
 
 export default function Admin() {
   const router = useRouter();
-  const { signedIn, userInfo } = useUser();
 
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
@@ -29,13 +27,7 @@ export default function Admin() {
     });
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(userInfo).length && !userInfo.admin) {
-      router.push("/");
-    }
-  }, [userInfo]);
-
-  /* 
+  /*
     COURSE EDIT PAGE (create units)
     - UNIT EDIT PAGE (create lessons, activities within lessons, delete activities (only from lesson, never delete from db), create tests (bigger quizzes))
         - ACTIVITY CREATION PAGE
@@ -109,6 +101,17 @@ export default function Admin() {
           Add Course
         </Button>
       </Grid>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Button
+          variant="outlined"
+          sx={{ width: "80%", marginTop: "20px" }}
+          onClick={() => {
+            router.push("/admin/articles/editor");
+          }}
+        >
+          Edit Articles
+        </Button>
+      </Box>
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}

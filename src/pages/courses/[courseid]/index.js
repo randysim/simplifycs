@@ -5,12 +5,20 @@ import { useState, useEffect } from "react";
 import useUser from "@/lib/useUser";
 
 import React from "react";
+<<<<<<< HEAD
 import {
   Box,
   Card,
   Grid,
   Typography,
 } from "@mui/material";
+=======
+import { Box, Card, Grid, Typography } from "@mui/material";
+
+import CourseHeader from "@/components/course/CourseHeader";
+import CourseUnit from "@/components/course/CourseUnit";
+import CourseProgress from "@/components/course/CourseProgress";
+>>>>>>> main
 
 import CourseHeader from "@/components/course/CourseHeader";
 import CourseUnit from "@/components/course/CourseUnit";
@@ -54,8 +62,11 @@ export default function Course() {
       >
         <Grid item sx={{ width: "100%" }}>
           <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
-            <CourseHeader title={courseData.title} description={courseData.description} />
-      
+            <CourseHeader
+              title={courseData.title}
+              description={courseData.description}
+            />
+
             <Grid container spacing={0} width="60%">
               {Object.entries(courseData.units).map(([id, u]) => (
                 <CourseUnit router={router} id={id} data={u} key={id} />
