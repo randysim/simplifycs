@@ -11,11 +11,10 @@ import {
   Button,
 } from "@mui/material";
 
-import useUser from "@/lib/useUser";
 import AdminLessonCard from "@/components/admin/AdminLessonCard";
 import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
 
-/* 
+/*
 UNIT EDITOR
 edit name:
 edit description:
@@ -48,18 +47,11 @@ function genAuthToken() {
 export default function AdminUnit() {
   const router = useRouter();
   const { courseid, unitid } = router.query;
-  const { signedIn, userInfo } = useUser();
   const [unitData, setUnitData] = useState(null);
 
   const [message, setMessage] = useState("");
   const [savable, setSavable] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(userInfo).length && !userInfo.admin) {
-      router.push("/");
-    }
-  }, [userInfo]);
 
   useEffect(() => {
     if (!courseid) return;
@@ -92,7 +84,12 @@ export default function AdminUnit() {
   const renderUnitEditor = () => {
     return (
       <Box>
-        <Button variant="outlined" onClick={() => router.push(`/admin/${courseid}`)}>Back</Button>
+        <Button
+          variant="outlined"
+          onClick={() => router.push(`/admin/${courseid}`)}
+        >
+          Back
+        </Button>
         <Box>
           <Typography>{unitData.title}</Typography>
         </Box>
@@ -203,16 +200,18 @@ export default function AdminUnit() {
                     });
                     setSavable(true);
                   }}
-                  onActivityUp={activityId => {
-                    let ind = lesson.activities.findIndex(activity => activity.id == activityId);
+                  onActivityUp={(activityId) => {
+                    let ind = lesson.activities.findIndex(
+                      (activity) => activity.id == activityId
+                    );
                     if (ind == -1) {
-                      setMessage("Error: Activity ID -1")
+                      setMessage("Error: Activity ID -1");
                       return;
                     }
                     if (ind <= 0) return;
-                    
-                    let before = lesson.activities.slice(0, ind-1);
-                    let after = lesson.activities.slice(ind+1);
+
+                    let before = lesson.activities.slice(0, ind - 1);
+                    let after = lesson.activities.slice(ind + 1);
 
                     setUnitData({
                       ...unitData,
@@ -220,27 +219,32 @@ export default function AdminUnit() {
                         ...unitData.lessons.filter((l) => l.id != lesson.id),
                         {
                           ...lesson,
-                          activities: [...before, lesson.activities[ind], lesson.activities[ind-1], ...after].filter(a => a)
-                        }
-                      ] 
-                    })
+                          activities: [
+                            ...before,
+                            lesson.activities[ind],
+                            lesson.activities[ind - 1],
+                            ...after,
+                          ].filter((a) => a),
+                        },
+                      ],
+                    });
 
                     setSavable(true);
                   }}
-
-                  onActivityDown={activityId => {
-                    
-                    let ind = lesson.activities.findIndex(activity => activity.id == activityId);
+                  onActivityDown={(activityId) => {
+                    let ind = lesson.activities.findIndex(
+                      (activity) => activity.id == activityId
+                    );
 
                     if (ind == -1) {
-                      setMessage("Error: Activity ID -1")
+                      setMessage("Error: Activity ID -1");
                       return;
                     }
-                    if (ind >= lesson.activities.length-1) return;
-                    
+                    if (ind >= lesson.activities.length - 1) return;
+
                     let before = lesson.activities.slice(0, ind);
-                    
-                    let after = lesson.activities.slice(ind+2);
+
+                    let after = lesson.activities.slice(ind + 2);
 
                     setUnitData({
                       ...unitData,
@@ -248,10 +252,15 @@ export default function AdminUnit() {
                         ...unitData.lessons.filter((l) => l.id != lesson.id),
                         {
                           ...lesson,
-                          activities: [...before, lesson.activities[ind+1], lesson.activities[ind], ...after].filter(a => a)
-                        }
-                      ]
-                    })
+                          activities: [
+                            ...before,
+                            lesson.activities[ind + 1],
+                            lesson.activities[ind],
+                            ...after,
+                          ].filter((a) => a),
+                        },
+                      ],
+                    });
 
                     setSavable(true);
                   }}

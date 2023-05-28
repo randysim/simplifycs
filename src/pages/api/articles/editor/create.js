@@ -23,11 +23,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: "Unauthorized", success: false });
 
   let title = "New Article " + new Date().getTime();
-  let activity = await prisma.activity.create({ 
+  let activity = await prisma.activity.create({
     data: {
       title,
-      model: "Article"
-    }
+      model: "Article",
+    },
   });
   await prisma.article.create({
     data: {
@@ -35,10 +35,9 @@ export default async function handler(req, res) {
       title,
       author: `${user.firstName} ${user.lastName}`,
       content: "# Hello World!",
-      compiledMDX: (await compileMDX("# Hello World!")).code
-    }
+      compiledMDX: (await compileMDX("# Hello World!")).code,
+    },
   });
-  
 
   res.status(200).json({ success: true, message: "Article created" });
 }

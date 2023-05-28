@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 export default function UnitLesson({ router, data }) {
   let { courseid, unitid } = router.query;
+
   return (
     <Box
       sx={{
@@ -12,12 +13,19 @@ export default function UnitLesson({ router, data }) {
         marginTop: "50px",
         cursor: "pointer",
       }}
+      /* 
       onClick={() => {
         router.push(`/courses/${courseid}/${unitid}/${data.id}`);
       }}
+      */
     >
       {/* unit lesson component later */}
-      {data.title}
+      <Typography>{data.title}</Typography>
+      <Box>
+        {data.activites.forEach((activity) => {
+          return <Box>{activity}</Box>;
+        })}
+      </Box>
     </Box>
   );
 }

@@ -4,7 +4,11 @@ import axios from "axios";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
-export default function CodeComponentRunnable({ initialCode, language }) {
+export default function CodeComponentRunnable({
+  initialCode,
+  language,
+  height,
+}) {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState("");
 
@@ -21,45 +25,47 @@ export default function CodeComponentRunnable({ initialCode, language }) {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <Editor
-          height={500}
-          width="50vw"
-          language={language}
-          theme="vs-dark"
-          value={code}
-          onChange={setCode}
-          options={{
-            fontSize: 16,
-            minimap: {
-              enabled: false,
-            },
-            contextmenu: false, //dont show weird thing on right click
-            copyWithSyntaxHighlighting: false, //text copies normally
-            lineHeight: 20,
-            padding: {
-              top: 10,
-              bottom: 10,
-            },
-          }}
-        />
-
-        <div
-          style={{
-            width: "50vw",
-            fontSize: 16,
-            color: "white",
-            height: 500,
-            background: "black",
-            overflowY: "scroll",
-            cursor: "col-resize",
-          }}
-        >
-          <p style={{ whiteSpace: "pre-line" }}>{output}</p>
-        </div>
+      <div style={{ textAlign: "left" }}>
+        <button style={{ background: "black" }} onClick={executeCode}>
+          Run {language}
+        </button>
       </div>
 
-      <button onClick={executeCode}>Run {language}</button>
+      <Editor
+        height={height || 500}
+        width="100%"
+        language={language}
+        theme="vs-dark"
+        value={code}
+        onChange={setCode}
+        options={{
+          fontSize: 16,
+          minimap: {
+            enabled: false,
+          },
+          contextmenu: false, //dont show weird thing on right click
+          copyWithSyntaxHighlighting: false, //text copies normally
+          lineHeight: 20,
+          padding: {
+            top: 10,
+            bottom: 10,
+          },
+        }}
+      />
+
+      <div
+        style={{
+          width: "100%",
+          fontSize: 16,
+          color: "white",
+          height: 200,
+          background: "black",
+          overflowY: "scroll",
+          cursor: "col-resize",
+        }}
+      >
+        <p style={{ whiteSpace: "pre-line", textAlign: "left" }}>{output}</p>
+      </div>
     </>
   );
 }
