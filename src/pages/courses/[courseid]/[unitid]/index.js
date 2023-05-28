@@ -37,7 +37,7 @@ export default function Unit() {
   }, [router]);
 
   const renderUnitData = () => {
-    let unit = courseData.units[unitid];
+    let unit = courseData.units.find(u => u.id == unitid);
 
     return (
       <Box>

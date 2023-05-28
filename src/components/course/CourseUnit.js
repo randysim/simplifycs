@@ -20,7 +20,7 @@ export default function CourseUnit({ router, id, data }) {
     >
       <Box width="100%" height="20%" display="flex" justifyContent="center">
         <Link
-          href={`${courseid}/${id}`}
+          href={`${courseid}/${data.id}`}
           sx={{ fontSize: 20 }}
           color="primary.contrastText"
         >

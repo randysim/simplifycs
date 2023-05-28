@@ -7,6 +7,9 @@ import { Box, Grid, Typography } from "@mui/material";
 
 import axios from "axios";
 
+import styles from "@/styles/Article.module.css";
+import RenderMDX from "@/components/articles/RenderMDX.js";
+
 const getCourseData = async (id) => {
   if (id) {
     let data = await axios.get(`http://localhost:3000/api/courses/${id}`);
@@ -16,6 +19,15 @@ const getCourseData = async (id) => {
   }
 };
 
+const getActivityData = async (id) => {
+  if (id) {
+    let data = await axios.get(`http://localhost:3000/api/activity/getactivity?id=${id}`)
+    let body = data.data;
+
+    if (body.success) return body;
+  }
+}
+
 export default function Lesson() {
   const router = useRouter();
   const { courseid, unitid, lessonid, activityid } = router.query;
@@ -23,6 +35,7 @@ export default function Lesson() {
   const { signedIn, userInfo } = useUser();
 
   const [courseData, setCourseData] = useState(null);
+  const [activityData, setActivityData] = useState(null);
 
   useEffect(() => {
     getCourseData(courseid)
@@ -34,9 +47,27 @@ export default function Lesson() {
       });
   }, [router]);
 
+  useEffect(() => {
+    getActivityData(activityid)
+      .then((ac) => {
+        setActivityData(ac?.data)
+      })
+      .catch((e) => {
+        router.push("/dashboard")
+      })
+  }, [router])
+
   const renderLesson = () => {
     // have lessons on left, scrollable + activity content on the right
+    let lesson = courseData.course.units.find(u => u.id == unitid).lessons.find(l => l.id == lessonid);
+    let activityIndex = lesson.activities.findIndex(a => a.id == activityid);
+    
+    return (
+      <Box>
+        <RenderMDX className={styles.article}>{activityData.compiledMDX}</RenderMDX>
+      </Box>
+    )
   };
 
-  return <Box>{courseData ? renderLesson() : <p>{courseid}</p>}</Box>;
+  return <Box>{(courseData && activityData) ? renderLesson() : <p>{courseid}</p>}</Box>;
 }
