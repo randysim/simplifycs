@@ -4,13 +4,19 @@ import ConfirmationDialog from "../ui/ConfirmationDialog";
 import { useRouter } from "next/router";
 
 // delete in activity editor
-export default function AdminActivityCard({ data, onEdit, onDelete, onUp, onDown }) {
+export default function AdminActivityCard({
+  data,
+  onEdit,
+  onDelete,
+  onUp,
+  onDown,
+}) {
   let title = data.title;
   let id = data.id;
   let type = data.model;
 
   const router = useRouter();
-  
+
   let [open, setOpen] = useState(false);
 
   return (
@@ -53,7 +59,7 @@ export default function AdminActivityCard({ data, onEdit, onDelete, onUp, onDown
           <Button
             onClick={() => {
               if (type == "Article") {
-                router.push(`/admin/articles/editor/${id}`)
+                router.push(`/admin/articles/editor/${id}`);
               } else {
                 onEdit(id);
               }
@@ -88,12 +94,8 @@ export default function AdminActivityCard({ data, onEdit, onDelete, onUp, onDown
             alignItems: "center",
           }}
         >
-          <Button onClick={() => onUp(id)}>
-            Up
-          </Button>
-          <Button onClick={() => onDown(id)}>
-            Down
-          </Button>
+          <Button onClick={() => onUp(id)}>Up</Button>
+          <Button onClick={() => onDown(id)}>Down</Button>
         </Box>
       </Box>
 

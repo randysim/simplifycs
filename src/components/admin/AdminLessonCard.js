@@ -23,12 +23,12 @@ export default function AdminLessonCard({
   onActivityDelete,
   onActivityAdd,
   onActivityUp,
-  onActivityDown
+  onActivityDown,
 }) {
   let [open, setOpen] = useState(false);
   let [query, setQuery] = useState("");
   let [message, setMessage] = useState("");
-  
+
   return (
     <Box
       sx={{
@@ -139,18 +139,16 @@ export default function AdminLessonCard({
                 return;
               }
 
-              axios
-                .get(`/api/activity/getactivity?id=${query}`)
-                .then((res) => {
-                  if (res.data.success) {
-                    // activity exists
-                    onActivityAdd(res.data.data);
-                  } else {
-                    setMessage(res.data.message);
-                  }
+              axios.get(`/api/activity/getactivity?id=${query}`).then((res) => {
+                if (res.data.success) {
+                  // activity exists
+                  onActivityAdd(res.data.data);
+                } else {
+                  setMessage(res.data.message);
+                }
 
-                  setQuery("");
-                });
+                setQuery("");
+              });
             }}
           >
             Add Activity

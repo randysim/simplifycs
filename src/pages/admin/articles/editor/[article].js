@@ -6,31 +6,32 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
+import RenderMDX from "@/components/articles/RenderMDX.js";
+import adminOnly from "@/lib/adminOnly.js";
 
 /* COPIED STUFF */
-function useKey(key, cb){
+function useKey(key, cb) {
   const callback = useRef(cb);
 
   useEffect(() => {
-      callback.current = cb;
-  })
-
+    callback.current = cb;
+  });
 
   useEffect(() => {
-      function handle(event){
-          if(event.code === key){
-              callback.current(event);
-          } else if (key === 'ctrls' && event.key === 's' && event.ctrlKey) {
-              callback.current(event);
-          }
+    function handle(event) {
+      if (event.code === key) {
+        callback.current(event);
+      } else if (key === "ctrls" && event.key === "s" && event.ctrlKey) {
+        callback.current(event);
       }
+    }
 
-      document.addEventListener('keydown',handle);
-      return () => document.removeEventListener("keydown",handle)
-  },[key])
+    document.addEventListener("keydown", handle);
+    return () => document.removeEventListener("keydown", handle);
+  }, [key]);
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = adminOnly(async (context) => {
   let articleId = parseInt(context.query.article);
 
   let article = await prisma.article.findUnique({
@@ -55,7 +56,7 @@ export async function getServerSideProps(context) {
       article: article,
     },
   };
-}
+});
 
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
@@ -64,32 +65,14 @@ export default function ArticleEditor({ article }) {
   const id = article.id;
 
   const [savable, setSavable] = useState(false);
-  useKey("ctrls", (e) => { 
+  useKey("ctrls", (e) => {
     e.preventDefault();
     if (savable) {
       saveArticle();
     }
-  })
+  });
 
-  const [rendered, setRendered] = useState(<p>Loading...</p>);
   const router = useRouter();
-
-  async function rerender() {
-    let res = await axios.post("/api/articles/editor/compileMDX", {
-      source: content,
-    });
-
-    try {
-      let component = res.data.code ? (
-        await getMDXComponent(res.data.code)
-      ) : (
-        <p>Compilation Error!?! {res.data.error}</p>
-      );
-      setRendered(component);
-    } catch (e) {
-      setRendered(<p>Runtime Error?!? {e.toString()}</p>);
-    }
-  }
 
   async function updateTitle(newTitle) {
     let articles = await axios
@@ -118,7 +101,7 @@ export default function ArticleEditor({ article }) {
   async function saveArticle() {
     await axios.post(`/api/articles/editor/${id}/update`, {
       content: content,
-    })
+    });
     await updateTitle(title);
     setSavable(false);
     setMessage("Article Saved!");
@@ -129,27 +112,22 @@ export default function ArticleEditor({ article }) {
     router.push("/admin/articles/editor");
   }
 
-  useEffect(() => {
-    rerender();
-  }, []);
-
   return (
     <>
-      <button onClick={() => {
-        router.push("/admin/articles/editor")
-      }} className={styles.backButton}>
+      <button
+        onClick={() => {
+          router.push("/admin/articles/editor");
+        }}
+        className={styles.backButton}
+      >
         Back
       </button>
-      <button onClick={rerender} className={styles.rerenderButton}>
-        Rerender
-      </button>
-      
+
       {savable && (
         <button onClick={saveArticle} className={styles.saveButton}>
-        Save
-      </button>
+          Save
+        </button>
       )}
-      
 
       <button onClick={deleteArticle} className={styles.deleteButton}>
         Delete
@@ -159,7 +137,7 @@ export default function ArticleEditor({ article }) {
         id="title"
         className={styles.title}
         value={title}
-        onChange={e => {
+        onChange={(e) => {
           setTitle(e.target.value);
           setSavable(true);
         }}
@@ -192,7 +170,16 @@ export default function ArticleEditor({ article }) {
         />
       </div>
 
-      <div className={styles.render}>{rendered}</div>
+      <div className={styles.render}>
+        <iframe
+          style={{ width: "100%", height: "100%" }}
+          src={`/admin/articles/editor/preview?source=${encodeURIComponent(
+            btoa(content)
+          )}`}
+          frameBorder="0"
+        />
+      </div>
+
       <Snackbar
         open={message.length > 0}
         autoHideDuration={6000}
