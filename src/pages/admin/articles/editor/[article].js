@@ -7,7 +7,6 @@ import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
 import RenderMDX from "@/components/articles/RenderMDX.js";
-import adminOnly from "@/lib/adminOnly.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -31,7 +30,7 @@ function useKey(key, cb) {
   }, [key]);
 }
 
-export const getServerSideProps = adminOnly(async (context) => {
+export async function getServerSideProps(context) {
   let articleId = parseInt(context.query.article);
 
   let article = await prisma.article.findUnique({

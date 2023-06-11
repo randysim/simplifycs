@@ -2,8 +2,6 @@ import { bundleMDX } from "mdx-bundler";
 import fs from "fs";
 
 export default async function compileMDX(mdxSource) {
-  let t = performance.now();
-
   let files = {};
 
   let i = 0;
@@ -42,8 +40,6 @@ ${mdxSource}
     files: { ...files },
     globals: {"CodeComponent": "myCodeComponent"}
   });
-
-  console.log(`TIME TO COMPILE ${performance.now() - t}`);
 
   return result;
 }

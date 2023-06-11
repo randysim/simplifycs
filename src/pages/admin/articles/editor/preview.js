@@ -1,8 +1,7 @@
 import compileMDX from "@/lib/compileMDX.js";
 import RenderMDX from "@/components/articles/RenderMDX.js";
-import adminOnly from "@/lib/adminOnly.js";
 
-export const getServerSideProps = adminOnly(async (context) => {
+export async function getServerSideProps(context) {
   try {
     let { code } = await compileMDX(atob(context.query.source));
 
