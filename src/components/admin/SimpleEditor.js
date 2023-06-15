@@ -3,6 +3,7 @@ import { List, arrayMove } from 'react-movable';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import renderArticleComponent from "@/lib/renderArticleComponent.js";
+import TextareaAutosize from 'react-textarea-autosize';
 
 const componentTypes = ["Paragraph", "Section", "Title", "Code", "Image", "Custom Component"];
 
@@ -31,15 +32,15 @@ const componentFields = {
 
 function Component({ data, setData }) {
   return (
-    <div style={{display: "flex"}}>
+    <div>
       {
         componentFields[data.type].map((option, i) => {
           if (option.type == "text") {
             return (
               <div key={i}>
                 <p>{option.name}</p>
-                <textarea
-                  style={{color: "black"}}
+                <TextareaAutosize
+                  style={{color: "black", width: "100%"}}
                   value={data[option.name]}
                   onChange={(event) => {
                     setData({
@@ -95,26 +96,30 @@ export default function SimpleEditor({ items, setItems }) {
           }
           renderList={({ children, props }) => <ul {...props}>{children}</ul>}
           renderItem={({ value, isDragged, props }) => (
-            value && <div {...props} style={{background: "grey", marginBottom: "20px", width: isDragged ? "50%" : "100%"}}>
-              <Dropdown
-                options={componentTypes}
-                onChange={({ value }) => {
-                  let newData = { type: value };
+            value && <div {...props}>
+              <div style={{padding: "10px"}}>
+                <div style={{background: "grey", width: "100%"}}>
+                  <Dropdown
+                    options={componentTypes}
+                    onChange={({ value }) => {
+                      let newData = { type: value };
 
-                  componentFields[value].forEach(field => {
-                    newData[field.name] = field.default;
-                  });
+                      componentFields[value].forEach(field => {
+                        newData[field.name] = field.default;
+                      });
 
-                  setData(props.key, newData);
-                }}
-                value={value.type}
-              />
+                      setData(props.key, newData);
+                    }}
+                    value={value.type}
+                  />
 
-              <Component data={value} setData={(newData) => { setData(props.key, newData) }} />
+                  <Component data={value} setData={(newData) => { setData(props.key, newData) }} />
 
-              <img width="20px" height="20px" src="/trash.svg" className="hover:scale-110" onClick={() => {
-                setItems(items.filter((item, i) => i != props.key));
-              }} />
+                  <img width="20px" height="20px" src="/trash.svg" className="hover:scale-110" onClick={() => {
+                    setItems(items.filter((item, i) => i != props.key));
+                  }} />
+                </div>
+              </div>
             </div>
           )}
           lockVertically={true}
@@ -128,6 +133,7 @@ export default function SimpleEditor({ items, setItems }) {
           items.map((item, i) => (
             <div className="child:m-0" key={Math.random()}>
               {renderArticleComponent(item)}
+              <br />
             </div>
           ))
         }
