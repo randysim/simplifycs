@@ -6,7 +6,7 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
-import RenderMDX from "@/components/articles/RenderMDX.js";
+import SimpleEditor from "@/components/admin/SimpleEditor.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -49,26 +49,24 @@ export async function getServerSideProps(context) {
 
   article.createdAt = article.createdAt.toString();
   article.updatedAt = article.updatedAt.toString();
+  article.content = JSON.parse(article.content);
 
   return {
     props: {
       article: article,
     },
   };
-});
+}
 
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
-  const [content, setContent] = useState(article.content);
+  const [items, setItems] = useState(article.content);
   const [message, setMessage] = useState("");
   const id = article.id;
 
-  const [savable, setSavable] = useState(false);
   useKey("ctrls", (e) => {
     e.preventDefault();
-    if (savable) {
-      saveArticle();
-    }
+    saveArticle();
   });
 
   const router = useRouter();
@@ -99,10 +97,9 @@ export default function ArticleEditor({ article }) {
 
   async function saveArticle() {
     await axios.post(`/api/articles/editor/${id}/update`, {
-      content: content,
+      content: JSON.stringify(items),
     });
     await updateTitle(title);
-    setSavable(false);
     setMessage("Article Saved!");
   }
 
@@ -122,11 +119,9 @@ export default function ArticleEditor({ article }) {
         Back
       </button>
 
-      {savable && (
-        <button onClick={saveArticle} className={styles.saveButton}>
-          Save
-        </button>
-      )}
+      <button onClick={saveArticle} className={styles.saveButton}>
+        Save
+      </button>
 
       <button onClick={deleteArticle} className={styles.deleteButton}>
         Delete
@@ -138,39 +133,11 @@ export default function ArticleEditor({ article }) {
         value={title}
         onChange={(e) => {
           setTitle(e.target.value);
-          setSavable(true);
         }}
       />
 
-      <div className={styles.editor}>
-        <Editor
-          height={500}
-          width="50vw"
-          language=""
-          theme="vs-dark"
-          value={content}
-          onChange={(val) => {
-            setContent(val);
-            setSavable(true);
-          }}
-          options={{
-            fontSize: 16,
-            minimap: {
-              enabled: false,
-            },
-            contextmenu: false, //dont show weird thing on right click
-            copyWithSyntaxHighlighting: false, //text copies normally
-            lineHeight: 20,
-            padding: {
-              top: 10,
-              bottom: 10,
-            },
-          }}
-        />
-      </div>
-
-      <div className={styles.render}>
-        <iframe style={{width: "100%", height: "100%"}} src={`/admin/articles/editor/preview?source=${encodeURIComponent(btoa(content))}`} frameBorder="0" />
+      <div style={{position: "absolute", top: "50px"}}>
+        <SimpleEditor items={items} setItems={setItems} />
       </div>
 
       <Snackbar

@@ -6,7 +6,7 @@ export default function CodeComponentStatic({ initialCode, language, height }) {
   return (
     <div className="font-code">
       <Editor
-        height={height || 20 * Math.min(code.split("\n").length, 15) + 40}
+        height={height || 20 * Math.min(initialCode.split("\n").length, 15) + 40}
         width="100%"
         language={language}
         theme="vs-dark"

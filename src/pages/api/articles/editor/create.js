@@ -1,5 +1,4 @@
 import prisma from "@/lib/db.js";
-import compileMDX from "@/lib/compileMDX.js";
 
 export default async function handler(req, res) {
   if (req.method != "POST") {
@@ -32,10 +31,9 @@ export default async function handler(req, res) {
   await prisma.article.create({
     data: {
       id: activity.id,
-      title,
+      title: title,
       author: `${user.firstName} ${user.lastName}`,
-      content: "# Hello World!",
-      compiledMDX: (await compileMDX("# Hello World!")).code,
+      content: "[]",
     },
   });
 

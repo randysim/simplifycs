@@ -2,7 +2,7 @@ import { useState } from "react";
 import { List, arrayMove } from 'react-movable';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import CodeComponent from "@/components/articles/CodeComponent.js";
+import renderArticleComponent from "@/lib/renderArticleComponent.js";
 
 const componentTypes = ["Paragraph", "Section", "Title", "Code", "Image", "Custom Component"];
 
@@ -73,35 +73,8 @@ function Component({ data, setData }) {
   );
 }
 
-function renderComponent(component) {
-  switch (component.type) {
-    case "Paragraph": {
-      return <p>{component.Content}</p>;
-    }
-    case "Section": {
-      return <h2>{component.Title}</h2>;
-    }
-    case "Title": {
-      return <h1>{component.Value}</h1>;
-    }
-    case "Code": {
-      return <CodeComponent runnable={component.Runnable} language={component.Language} initialCode={component.Code} />;
-    }
-    case "Image": {
-      return <img src={component.src} />
-    }
-    case "Custom Component": {
-      return <iframe srcdoc={component.Code} />
-    }
-  }
-}
 
-export default function Test() {
-  const [items, setItems] = useState([
-    {type: "Paragraph", Content: "Hello World"},
-    {type: "Code", Code: "print('hi')", Language: "python", Runnable: "False"}
-  ]);
-
+export default function SimpleEditor({ items, setItems }) {
   function setData(index, newData) {
     setItems(items.map((item, i) => {
       if (i == index) {
@@ -113,8 +86,8 @@ export default function Test() {
   }
 
   return (
-    <>
-      <div style={{position: "absolute", width: "50%", padding: "20px"}}>
+    <div style={{display: "flex"}}>
+      <div style={{width: "50vw", padding: "20px"}}>
         <List
           values={items}
           onChange={({ oldIndex, newIndex }) =>
@@ -150,15 +123,15 @@ export default function Test() {
         <button onClick={() => {setItems([...items, {type: "Paragraph", Content: "Hello World"}])}}>Add New Component</button>
       </div>
 
-      <div className="prose prose-invert max-w-none w-1/2 prose-h1:text-center" style={{position: "absolute", left: "50%", width: "50%", padding: "20px"}}>
+      <div className="prose prose-invert max-w-none w-1/2 prose-h1:text-center" style={{width: "50vw", padding: "20px"}}>
         {
           items.map((item, i) => (
             <div className="child:m-0" key={Math.random()}>
-              {renderComponent(item)}
+              {renderArticleComponent(item)}
             </div>
           ))
         }
       </div>
-    </>
+    </div>
   )
 }

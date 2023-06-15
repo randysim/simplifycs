@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import prisma from "@/lib/db.js";
-import RenderMDX from "@/components/articles/RenderMDX.js";
+import renderArticleComponent from "@/lib/renderArticleComponent.js";
 
 export async function getServerSideProps(context) {
   let articleTitle = context.query.article;
@@ -24,19 +24,24 @@ export async function getServerSideProps(context) {
   return {
     props: {
       title: article.title,
-      compiledMDX: article.compiledMDX,
+      items: JSON.parse(article.content),
     },
   };
 }
 
-export default function Article({ compiledMDX }) {
+export default function Article({ items }) {
   return (
-    <>
-      <div className="flex justify-center">
-        <div className="prose prose-invert max-w-none w-1/2 prose-headings:text-center">
-          <RenderMDX>{compiledMDX}</RenderMDX>
-        </div>
+    <div className="flex justify-center">
+      <div className="prose prose-invert max-w-none w-1/2 prose-h1:text-center" style={{width: "50vw", padding: "20px"}}>
+        {
+          items.map((item, i) => (
+            <div className="child:m-0" key={Math.random()}>
+              {renderArticleComponent(item)}
+              <br />
+            </div>
+          ))
+        }
       </div>
-    </>
+    </div>
   );
 }
