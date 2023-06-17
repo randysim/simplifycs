@@ -117,16 +117,16 @@ export default async function handler(req, res) {
     });
 
     /* CORRECT ORDERING (NOT WORKING) */
-    await prisma.lesson.update({ 
+    await prisma.lesson.update({
       where: {
         id: newLesson.id,
       },
       data: {
         activities: {
-          set: newLesson.activities.map(activity => ({ id: activity.id }))
-        }
+          set: newLesson.activities.map((activity) => ({ id: activity.id })),
+        },
       },
-    })
+    });
   }
 
   return res

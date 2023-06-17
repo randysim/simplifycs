@@ -20,16 +20,15 @@ export default async function handler(req, res) {
   });
 
   if (req.body.title) {
-    await prisma.activity.update({ 
+    await prisma.activity.update({
       where: {
         id: parseInt(req.query.article),
       },
       data: {
-        title: req.body.title
-      }
-    })
+        title: req.body.title,
+      },
+    });
   }
-  
 
   res.status(200).json({ success: true, message: "Article updated" });
 }
