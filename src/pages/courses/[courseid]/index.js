@@ -39,33 +39,37 @@ export default function Course() {
 
   const renderCourseData = () => {
     return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        minWidth="600px"
-      >
-        <Grid item sx={{ width: "100%" }}>
-          <Grid container sx={{ width: "100%", padding: 2 }} bgcolor="#333">
+        <Box sx={{ width: "100%", height: "auto", display: "flex", flexWrap: "wrap", overflow: "hidden" }}>
             <CourseHeader
               title={courseData.title}
               description={courseData.description}
             />
-
+            <Box
+              sx={{
+                paddingTop: "20px",
+                paddingBottom: "20px",
+                width: "40%",
+                minWidth: "450px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "center",
+                flexWrap: "wrap",
+                height: "auto",
+                rowGap: "20px"
+              }}
+            >
+              <CourseProgress router={router} />
+              <CourseProgress router={router} />
+            </Box>
             <Grid container spacing={0} width="60%">
-              {Object.entries(courseData.units).map(([id, u]) => (
-                <CourseUnit router={router} id={id} data={u} key={id} />
+              {Object.entries(courseData.units).map(([id, u], i) => (
+                <CourseUnit router={router} id={id} data={u} key={id} index={i} />
               ))}
             </Grid>
 
-            <Grid item minWidth="450px" minHeight="450px" width="40%">
-              <CourseProgress router={router} />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+            
+        </Box>
     );
   };
 

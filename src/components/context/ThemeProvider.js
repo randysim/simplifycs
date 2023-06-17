@@ -16,11 +16,11 @@ const ThemeProvider = (props) => {
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
           primary: {
-            main: "#e66767",
+            main: "#a29bfe",
             contrastText: "#fff",
           },
           secondary: {
-            main: "#546de5",
+            main: "#333",
             contrastText: "#fff",
           },
           button: {
