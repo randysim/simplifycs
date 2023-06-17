@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-export default function CourseHeader({ title, description, bgcolor }) {
+export default function CourseHeader({ title, description }) {
   return (
     <Box
       sx={{

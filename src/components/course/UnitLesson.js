@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Divider } from "@mui/material";
 
 export default function UnitLesson({ router, data }) {
   let { courseid, unitid } = router.query;
@@ -6,11 +6,15 @@ export default function UnitLesson({ router, data }) {
   return (
     <Box
       sx={{
-        width: "80%",
-        minWidth: "400px",
+        width: "90%",
+        minWidth: "450px",
         padding: "20px",
-        border: "4px solid white",
-        marginTop: "50px"
+        border: "1px solid gray",
+        marginTop: "50px",
+        borderRadius: "5px",
+        bgcolor: "secondary.main",
+        minHeight: "250px",
+        height: "auto"
       }}
       /* 
       onClick={() => {
@@ -19,24 +23,26 @@ export default function UnitLesson({ router, data }) {
       */
     >
       {/* unit lesson component later */}
-      <Typography>{data.title}</Typography>
-      <Box sx={{ width: "100%"}}>
+      <Box sx={{ width: "100%", height: "50px" }}>
+        <Typography sx={{ fontSize: "30px", fontWeight: "550"}}>{data.title}</Typography>
+      </Box>
+      <Divider variant="middle" />
+      <Box sx={{ width: "100%", height: "80%"}}>
         {data.activities.map(activity => {
           
           return (
             <Box
               sx={{
                 cursor: "pointer",
-                background: "red",
-                marginTop: "10px",
-                padding: "10px",
+                marginTop: "15px",
                 display: "flex",
-                justifyContent: "center"
+                textDecoration: "none",
+                '&:hover': { textDecoration: 'underline' }
               }} 
               key={activity.id}
               onClick={() => { router.push(`/courses/${courseid}/${unitid}/${data.id}/${activity.id}`) }}
             >
-              {activity.title} - {activity.model}
+              {activity.title}{/* - {activity.model}*/}
             </Box>
           )
         })}
