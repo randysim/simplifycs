@@ -163,12 +163,13 @@ export default function AdminUnit() {
                     setSavable(true);
                   }}
                   onTitleChange={(e) => {
+                    let items = [...unitData.lessons]; // shallow copies
+                    let item = {...items[i]}
+                    item.title = e.target.value;
+                    items[i] = item;
                     setUnitData({
                       ...unitData,
-                      lessons: [
-                        ...unitData.lessons.filter((l) => l.id != lesson.id),
-                        { ...lesson, title: e.target.value },
-                      ],
+                      lessons: items,
                     });
                     setSavable(true);
                   }}

@@ -63,7 +63,7 @@ export default function Lesson() {
     // have lessons on left, scrollable + activity content on the right
     let lesson = courseData.course.units.find(u => u.id == unitid).lessons.find(l => l.id == lessonid);
     let activityIndex = lesson.activities.findIndex(a => a.id == activityid);
-    console.log(activityData)
+
     return (
       <Box sx={{display: "flex", width: "100%", height: "100%"}}>
         <LessonSidebar courseid={courseid} unitid={unitid} lessonid={lessonid} activities={lesson.activities} currentActivityIndex={activityIndex} router={router} />
