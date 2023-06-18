@@ -17,17 +17,21 @@ export default function CourseUnit({ router, id, data, index }) {
       }}
       key={id}
     >
-      <Box 
-        width="100%" 
-        height="20%" 
-        display="flex" 
+      <Box
+        width="100%"
+        height="20%"
+        display="flex"
         alignItems="center"
         paddingLeft="20px"
-        sx={{ borderTopLeftRadius: "5px", borderTopRightRadius: "5px"}}
+        sx={{ borderTopLeftRadius: "5px", borderTopRightRadius: "5px" }}
       >
         <Link
           href={`${courseid}/${data.id}`}
-          sx={{ fontSize: 25, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+          sx={{
+            fontSize: 25,
+            textDecoration: "none",
+            "&:hover": { textDecoration: "underline" },
+          }}
           color="primary.contrastText"
           fontWeight="550"
         >
@@ -35,7 +39,12 @@ export default function CourseUnit({ router, id, data, index }) {
         </Link>
       </Box>
       <Divider variant="middle" sx={{ bgcolor: "primary.main" }} />
-      <Grid container width="100%" height="80%" sx={{ flexDirection: "column", flexWrap: "wrap"}}>
+      <Grid
+        container
+        width="100%"
+        height="80%"
+        sx={{ flexDirection: "column", flexWrap: "wrap" }}
+      >
         {data.lessons.map((l, i) => {
           return (
             <Box
@@ -47,8 +56,15 @@ export default function CourseUnit({ router, id, data, index }) {
               paddingLeft="40px"
             >
               <Link
-                href={`${courseid}${l.activities.length ? `/${data.id}/${l.id}/${l.activities[0].id}` : ""}`}
-                sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                href={`${courseid}${
+                  l.activities.length
+                    ? `/${data.id}/${l.id}/${l.activities[0].id}`
+                    : ""
+                }`}
+                sx={{
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "underline" },
+                }}
                 color="primary.contrastText"
                 fontSize="20px"
               >

@@ -12,7 +12,7 @@ export default function CourseHeader({ title, description }) {
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <Typography sx={{ fontSize: 60, fontWeight: "550" }}>{title}</Typography>

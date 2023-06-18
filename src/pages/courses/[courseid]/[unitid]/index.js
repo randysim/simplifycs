@@ -37,10 +37,18 @@ export default function Unit() {
   }, [router]);
 
   const renderUnitData = () => {
-    let unit = courseData.units.find(u => u.id == unitid);
+    let unit = courseData.units.find((u) => u.id == unitid);
 
     return (
-      <Box sx={{ width: "100%", height: "auto", display: "flex", flexWrap: "wrap", overflow: "hidden" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "auto",
+          display: "flex",
+          flexWrap: "wrap",
+          overflow: "hidden",
+        }}
+      >
         <CourseHeader
           title={courseData.title}
           description={courseData.description}
@@ -57,15 +65,15 @@ export default function Unit() {
             alignItems: "center",
             flexWrap: "wrap",
             height: "auto",
-            rowGap: "20px"
+            rowGap: "20px",
           }}
         >
           <CourseProgress router={router} />
         </Box>
         <Grid container spacing={0} width="60%">
-            {unit.lessons.map((l, i) => {
-              return <UnitLesson router={router} data={l} key={i} />;
-            })}
+          {unit.lessons.map((l, i) => {
+            return <UnitLesson router={router} data={l} key={i} />;
+          })}
         </Grid>
       </Box>
     );

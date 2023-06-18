@@ -164,7 +164,7 @@ export default function AdminUnit() {
                   }}
                   onTitleChange={(e) => {
                     let items = [...unitData.lessons]; // shallow copies
-                    let item = {...items[i]}
+                    let item = { ...items[i] };
                     item.title = e.target.value;
                     items[i] = item;
                     setUnitData({

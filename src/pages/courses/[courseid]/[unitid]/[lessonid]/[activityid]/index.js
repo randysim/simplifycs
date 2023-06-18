@@ -23,12 +23,14 @@ const getCourseData = async (id) => {
 
 const getActivityData = async (id) => {
   if (id) {
-    let data = await axios.get(`http://localhost:3000/api/activity/getactivity?id=${id}`)
+    let data = await axios.get(
+      `http://localhost:3000/api/activity/getactivity?id=${id}`
+    );
     let body = data.data;
 
     if (body.success) return body;
   }
-}
+};
 
 export default function Lesson() {
   const router = useRouter();
@@ -52,32 +54,45 @@ export default function Lesson() {
   useEffect(() => {
     getActivityData(activityid)
       .then((ac) => {
-        setActivityData(ac?.data)
+        setActivityData(ac?.data);
       })
       .catch((e) => {
-        router.push("/dashboard")
-      })
-  }, [router])
+        router.push("/dashboard");
+      });
+  }, [router]);
 
   const renderLesson = () => {
     // have lessons on left, scrollable + activity content on the right
-    let lesson = courseData.course.units.find(u => u.id == unitid).lessons.find(l => l.id == lessonid);
-    let activityIndex = lesson.activities.findIndex(a => a.id == activityid);
+    let lesson = courseData.course.units
+      .find((u) => u.id == unitid)
+      .lessons.find((l) => l.id == lessonid);
+    let activityIndex = lesson.activities.findIndex((a) => a.id == activityid);
 
     return (
-      <Box sx={{display: "flex", width: "100%", height: "100%"}}>
-        <LessonSidebar courseid={courseid} unitid={unitid} lessonid={lessonid} activities={lesson.activities} currentActivityIndex={activityIndex} router={router} />
+      <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
+        <LessonSidebar
+          courseid={courseid}
+          unitid={unitid}
+          lessonid={lessonid}
+          activities={lesson.activities}
+          currentActivityIndex={activityIndex}
+          router={router}
+        />
         <Box>
           <Box>
             <Typography>{activityData.title}</Typography>
             <Typography>By {activityData.author}</Typography>
             <Typography>Last Updated: {activityData.updatedAt}</Typography>
           </Box>
-          <RenderMDX className={styles.article}>{activityData.compiledMDX}</RenderMDX>
+          <RenderMDX className={styles.article}>
+            {activityData.compiledMDX}
+          </RenderMDX>
         </Box>
       </Box>
-    )
+    );
   };
 
-  return <Box>{(courseData && activityData) ? renderLesson() : <p>{courseid}</p>}</Box>;
+  return (
+    <Box>{courseData && activityData ? renderLesson() : <p>{courseid}</p>}</Box>
+  );
 }

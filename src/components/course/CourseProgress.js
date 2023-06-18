@@ -11,7 +11,7 @@ export default function CourseProgress({ router }) {
         background: "white",
         color: "black",
         borderRadius: "5px",
-        bgcolor: "secondary.main"
+        bgcolor: "secondary.main",
       }}
     >
       <Box
@@ -20,21 +20,27 @@ export default function CourseProgress({ router }) {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          height: "15%"
+          height: "15%",
         }}
       >
-        <Typography sx={{ fontSize: 30, fontWeight: "550", color: "secondary.contrastText" }}>Course Progress</Typography>
+        <Typography
+          sx={{
+            fontSize: 30,
+            fontWeight: "550",
+            color: "secondary.contrastText",
+          }}
+        >
+          Course Progress
+        </Typography>
       </Box>
       <Divider variant="middle" />
-      <Box 
+      <Box
         sx={{
           display: "flex",
           width: "100%",
-          height: "85%"
+          height: "85%",
         }}
-      >
-
-      </Box>
+      ></Box>
     </Box>
   );
 }
