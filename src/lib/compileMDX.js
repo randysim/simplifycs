@@ -1,20 +1,6 @@
 import { bundleMDX } from "mdx-bundler";
 import fs from "fs";
 
-//our own components that we can make available to mdx
-let builtInComponents = {
-  "./CodeComponentStatic.tsx": fs.readFileSync(
-    "./src/components/articles/CodeComponentStatic.js"
-  ),
-  "./CodeComponentRunnable.tsx": fs.readFileSync(
-    "./src/components/articles/CodeComponentRunnable.js"
-  ),
-  "./CodeComponent.tsx": fs
-    .readFileSync("./src/components/articles/CodeComponent.js")
-    .toString()
-    .replaceAll(".js", ".tsx"), //js doesnt work for some reason
-};
-
 export default async function compileMDX(mdxSource) {
   let files = {};
 
@@ -26,7 +12,7 @@ export default async function compileMDX(mdxSource) {
       return `
 import Component${i} from "./Component${i}"
 
-<Component${i} />
+<div style={{background: "#2C2C2C", borderRadius: "15px", border: "solid 1px white"}}><Component${i} /></div>
       `;
     }
   );
@@ -42,7 +28,7 @@ import Component${i} from "./Component${i}"
   );
 
   mdxSource = `
-import CodeComponent from "./CodeComponent";
+import CodeComponent from "CodeComponent";
 
 ${mdxSource}
 `;
@@ -51,7 +37,8 @@ ${mdxSource}
 
   const result = await bundleMDX({
     source: mdxSource,
-    files: { ...files, ...builtInComponents },
+    files: { ...files },
+    globals: {"CodeComponent": "myCodeComponent"}
   });
 
   return result;

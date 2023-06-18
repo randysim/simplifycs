@@ -1,8 +1,7 @@
 import compileMDX from "@/lib/compileMDX.js";
 import RenderMDX from "@/components/articles/RenderMDX.js";
-import adminOnly from "@/lib/adminOnly.js";
 
-export const getServerSideProps = adminOnly(async (context) => {
+export async function getServerSideProps(context) {
   try {
     let { code } = await compileMDX(atob(context.query.source));
 
@@ -22,20 +21,10 @@ export const getServerSideProps = adminOnly(async (context) => {
 
 export default function Preview(props) {
   return (
-    <div
-      style={{
-        width: "60%",
-        position: "absolute",
-        left: "50%",
-        transform: "translateX(-50%)",
-        textAlign: "center",
-      }}
-    >
-      {props.error ? (
-        <p>Compilation Error: {props.error}</p>
-      ) : (
-        <RenderMDX>{props.compiledMDX}</RenderMDX>
-      )}
+    <div className="flex justify-center">
+      <div className="prose prose-invert max-w-none w-1/2 prose-headings:text-center">
+        {props.error ? <p>Compilation Error: {props.error}</p> : <RenderMDX>{props.compiledMDX}</RenderMDX>}
+      </div>
     </div>
   );
 }

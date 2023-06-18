@@ -8,6 +8,16 @@ module.exports = {
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {},
-  plugins: [require("@tailwindcss/typography")],
+  theme: {
+    fontFamily: {
+      code: ["'Roboto Mono', monospace"]
+    }
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+    function ({ addVariant }) {
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    }
+  ],
 };
