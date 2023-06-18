@@ -65,20 +65,35 @@ model Lesson {
 }
 
 model Activity {
-  id       Int     @id @default(autoincrement())
-  title    String
-  model    String
+  id Int @id @default(autoincrement())
+
+  itemId Int
+  model  String
+
   Lesson   Lesson? @relation(fields: [lessonId], references: [id])
   lessonId Int?
 }
 
 model Article {
-  id Int @id
+  id Int @id @default(autoincrement())
 
   title  String @unique
   author String
 
-  content String
+  content String @default("[]")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Assignment {
+  id Int @id @default(autoincrement())
+
+  title  String
+  author String
+
+  prompt   String
+  skeleton String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -87,19 +102,27 @@ model Article {
 model Question {
   id Int @id @default(autoincrement())
 
-  context String
   prompt  String
 
-  // FRQ or MCQ or MULTISELECT or CODE (code output)
+  // FRQ or MCQ or MULTISELECT
   type String
 
   // (only for MCQ or MULTISELECT)
-  // choices    String[]
+  choices String //json array
 
   // acceptable responses.
-  answers String
+  answers String //json array of int indices of correct answer(s) in choices (for mcq or multiselect)
+
+
+  quiz   Quiz? @relation(fields: [quizId], references: [id])
+  quizId Int?
 }
 
 model Quiz {
   id Int @id @default(autoincrement())
+
+  title  String
+  author String
+
+  questions Question[]
 }

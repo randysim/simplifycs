@@ -25,6 +25,4 @@ export async function middleware(req) {
 }
 */
 
-export default function middlware(req) {
-  
-}
+export default function middlware(req) {}

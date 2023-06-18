@@ -10,14 +10,14 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      code: ["'Roboto Mono', monospace"]
-    }
+      code: ["'Roboto Mono', monospace"],
+    },
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    require("@tailwindcss/typography"),
     function ({ addVariant }) {
-      addVariant('child', '& > *');
-      addVariant('child-hover', '& > *:hover');
-    }
+      addVariant("child", "& > *");
+      addVariant("child-hover", "& > *:hover");
+    },
   ],
 };

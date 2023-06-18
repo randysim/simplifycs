@@ -12,13 +12,19 @@ export default function renderArticleComponent(component) {
       return <h1>{component.Value}</h1>;
     }
     case "Code": {
-      return <CodeComponent runnable={component.Runnable == "True"} language={component.Language} initialCode={component.Code} />;
+      return (
+        <CodeComponent
+          runnable={component.Runnable == "True"}
+          language={component.Language}
+          initialCode={component.Code}
+        />
+      );
     }
     case "Image": {
-      return <img src={component.src} />
+      return <img src={component.src} />;
     }
     case "Custom Component": {
-      return <iframe srcdoc={component.Code} />
+      return <iframe srcdoc={component.Code} />;
     }
   }
 }

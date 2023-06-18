@@ -7,7 +7,7 @@ export async function getServerSideProps(context) {
 
   let article = await prisma.article.findUnique({
     where: {
-      title: articleTitle
+      title: articleTitle,
     },
   });
 
@@ -32,15 +32,18 @@ export async function getServerSideProps(context) {
 export default function Article({ items }) {
   return (
     <div className="flex justify-center">
-      <div className="prose prose-invert max-w-none w-1/2 prose-h1:text-center" style={{width: "50vw", padding: "20px"}}>
-        {
-          items.map((item, i) => (
-            <div className="child:m-0" key={Math.random()}>
-              {renderArticleComponent(item)}
-              <br />
-            </div>
-          ))
-        }
+      <div
+        className="prose prose-invert max-w-none w-1/2 prose-h1:text-center"
+        style={{ width: "50vw", padding: "20px" }}
+      >
+        {items.map((item, i) => (
+          <div className="child:m-0" key={Math.random()}>
+            {" "}
+            {/*need random key so components actually rerender*/}
+            {renderArticleComponent(item)}
+            <br />
+          </div>
+        ))}
       </div>
     </div>
   );

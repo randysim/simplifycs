@@ -31,86 +31,71 @@ function useKey(key, cb) {
 }
 
 export async function getServerSideProps(context) {
-  let articleId = parseInt(context.query.article);
+  let quizId = parseInt(context.query.quiz);
 
-  let article = await prisma.article.findUnique({
+  let quiz = await prisma.quiz.findUnique({
     where: {
-      id: articleId,
+      id: quizId,
     },
   });
 
-  if (!article) {
+  if (!quiz) {
     return {
       redirect: {
-        destination: "/admin/articles/editor",
+        destination: "/admin/quizes/editor",
       },
     };
   }
 
-  //parsing hack
-  article.createdAt = article.createdAt.toString();
-  article.updatedAt = article.updatedAt.toString();
-  article.content = JSON.parse(article.content);
-
   return {
     props: {
-      article: article,
+      quiz: quiz,
     },
   };
 }
 
-export default function ArticleEditor({ article }) {
-  const [title, setTitle] = useState(article.title);
-  const [items, setItems] = useState(article.content);
+export default function QuizEditor({ quiz }) {
+  const [title, setTitle] = useState(quiz.title);
+  const [items, setItems] = useState([]);
   const [message, setMessage] = useState("");
-  const id = article.id;
+  const id = quiz.id;
 
   useKey("ctrls", (e) => {
     e.preventDefault();
-    saveArticle();
+    saveQuiz();
   });
 
   const router = useRouter();
 
-  async function saveArticle() {
-    let articles = await axios
-      .get("/api/articles/editor/getArticles")
-      .then((res) => res.data.items);
-
-    if (
-      articles.some((article) => article.title == newTitle && article.id != id)
-    ) {
-      setMessage("Title must be unique.");
-    } else {
-      await axios.post(`/api/articles/editor/${id}/update`, {
-        content: JSON.stringify(items),
-        title: title,
-      });
-      setMessage("Article Saved!");
-    }
+  async function saveQuiz() {
+    await axios.post(`/api/quizes/editor/${id}/update`, {
+      content: JSON.stringify(items),
+      title: title,
+    });
+    setMessage("Quiz Saved!");
   }
 
-  async function deleteArticle() {
-    axios.post(`/api/articles/editor/${id}/delete`);
-    router.push("/admin/articles/editor");
+  async function deleteQuiz() {
+    axios.post(`/api/quizes/editor/${id}/delete`);
+    router.push("/admin/quizes/editor");
   }
 
   return (
     <>
       <button
         onClick={() => {
-          router.push("/admin/articles/editor");
+          router.push("/admin/quizes/editor");
         }}
         className={styles.backButton}
       >
         Back
       </button>
 
-      <button onClick={saveArticle} className={styles.saveButton}>
+      <button onClick={saveQuiz} className={styles.saveButton}>
         Save
       </button>
 
-      <button onClick={deleteArticle} className={styles.deleteButton}>
+      <button onClick={deleteQuiz} className={styles.deleteButton}>
         Delete
       </button>
 
