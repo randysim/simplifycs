@@ -7,7 +7,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 import axios from "axios";
 
-import styles from "@/styles/Article.module.css";
+import styles from "@/styles/ArticleEditor.module.css";
 import RenderMDX from "@/components/articles/RenderMDX.js";
 
 import LessonSidebar from "@/components/course/LessonSidebar";
