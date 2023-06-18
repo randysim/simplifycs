@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
       article: article,
     },
   };
-});
+}
 
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
@@ -170,7 +170,13 @@ export default function ArticleEditor({ article }) {
       </div>
 
       <div className={styles.render}>
-        <iframe style={{width: "100%", height: "100%"}} src={`/admin/articles/editor/preview?source=${encodeURIComponent(btoa(content))}`} frameBorder="0" />
+        <iframe
+          style={{ width: "100%", height: "100%" }}
+          src={`/admin/articles/editor/preview?source=${encodeURIComponent(
+            btoa(content)
+          )}`}
+          frameBorder="0"
+        />
       </div>
 
       <Snackbar

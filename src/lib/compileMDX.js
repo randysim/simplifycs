@@ -38,7 +38,7 @@ ${mdxSource}
   const result = await bundleMDX({
     source: mdxSource,
     files: { ...files },
-    globals: {"CodeComponent": "myCodeComponent"}
+    globals: { CodeComponent: "myCodeComponent" },
   });
 
   return result;
