@@ -11,6 +11,7 @@ export default function GenericAdminEditorDashboard({
   title,
   getItemsAPI,
   createNewItemAPI,
+  itemBasePath
 }) {
   const { data, mutate } = useSWR(getItemsAPI, fetcher);
   const router = useRouter();
@@ -36,8 +37,7 @@ export default function GenericAdminEditorDashboard({
           <Box sx={{ width: "100%", marginBottom: "10px" }}>
             <Button
               onClick={() => {
-                router.push(`/admin/articles/editor/${article.id}`);
-                //router.push(`/admin/quizes/editor/${article.id}`);
+                router.push(`${itemBasePath}${article.id}`);
               }}
             >
               {article.title}

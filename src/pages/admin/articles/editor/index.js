@@ -6,6 +6,7 @@ export default function ArticleEditor() {
       title="Articles"
       getItemsAPI="/api/articles/editor/getArticles"
       createNewItemAPI="/api/articles/editor/create"
+      itemBasePath="/admin/articles/editor/"
     />
   );
 }

@@ -2,67 +2,12 @@ import { useState } from "react";
 import { List, arrayMove } from "react-movable";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-import renderArticleComponent from "@/lib/renderArticleComponent.js";
 import TextareaAutosize from "react-textarea-autosize";
 
-const componentTypes = [
-  "Paragraph",
-  "Section",
-  "Title",
-  "Code",
-  "Image",
-  "Custom Component",
-];
-
-const componentFields = {
-  Paragraph: [{ type: "text", name: "Content", default: "Hello World!" }],
-  Section: [{ type: "text", name: "Title", default: "Cool Section!" }],
-  Title: [{ type: "text", name: "Value", default: "Cool Article!" }],
-  Code: [
-    { type: "text", name: "Code", default: 'print("Hello World!")' },
-    { type: "text", name: "Language", default: "python" },
-    {
-      type: "dropdown",
-      name: "Runnable",
-      default: "True",
-      options: ["True", "False"],
-    },
-  ],
-  Image: [{ type: "text", name: "src", default: "/hello.png" }],
-  "Custom Component": [
-    { type: "text", name: "Code", default: "<button>hello</button>" },
-  ],
-};
-
-/*
-const componentTypes = ["MCQ", "FRQ", "MULTISELECT"];
-
-const componentFields = {
-  "MCQ": [
-    {type: "text", name: "Prompt", default: "Prompt"},
-    {type: "text", name: "Choice A", default: "A"},
-    {type: "text", name: "Choice B", default: "B"},
-    {type: "text", name: "Choice C", default: "C"},
-    {type: "text", name: "Choice D", default: "D"}
-  ],
-  "FRQ": [
-    {type: "text", name: "Prompt", default: "Prompt"},
-    {type: "text", name: "Skeleton", default: ""}
-  ],
-  "MULTISELECT": [
-    {type: "text", name: "Prompt", default: "Prompt"},
-    {type: "text", name: "Choice A", default: "A"},
-    {type: "text", name: "Choice B", default: "B"},
-    {type: "text", name: "Choice C", default: "C"},
-    {type: "text", name: "Choice D", default: "D"}
-  ]
-};
-*/
-
-function Component({ data, setData }) {
+function Component({ components, data, setData }) {
   return (
     <div>
-      {componentFields[data.type]?.map((option, i) => {
+      {components[data.type]?.map((option, i) => {
         if (option.type == "text") {
           return (
             <div key={i}>
@@ -102,7 +47,7 @@ function Component({ data, setData }) {
   );
 }
 
-export default function DragComponentEditor({ items, setItems }) {
+export default function DragComponentEditor({ components, renderComponent, items, setItems }) {
   function setData(index, newData) {
     setItems(
       items.map((item, i) => {
@@ -130,11 +75,11 @@ export default function DragComponentEditor({ items, setItems }) {
                 <div style={{ padding: "10px" }}>
                   <div style={{ background: "grey", width: "100%" }}>
                     <Dropdown
-                      options={componentTypes}
+                      options={Object.keys(components)}
                       onChange={({ value }) => {
                         let newData = { type: value };
 
-                        componentFields[value].forEach((field) => {
+                        components[value].forEach((field) => {
                           newData[field.name] = field.default;
                         });
 
@@ -144,21 +89,25 @@ export default function DragComponentEditor({ items, setItems }) {
                     />
 
                     <Component
+                      components={components}
                       data={value}
                       setData={(newData) => {
                         setData(props.key, newData);
                       }}
                     />
 
-                    <img
-                      width="20px"
-                      height="20px"
-                      src="/trash.svg"
-                      className="hover:scale-110"
+                    <button
                       onClick={() => {
                         setItems(items.filter((item, i) => i != props.key));
                       }}
-                    />
+                    >
+                      <img
+                        width="20px"
+                        height="20px"
+                        src="/trash.svg"
+                        className="hover:scale-110"
+                      />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -169,12 +118,17 @@ export default function DragComponentEditor({ items, setItems }) {
 
         <button
           onClick={() => {
+            let newItem = {
+              type: Object.keys(components)[0]
+            };
+
+            components[Object.keys(components)[0]].forEach((property) => {
+              newItem[property.name] = property.default;
+            });
+
             setItems([
               ...items,
-              {
-                type: "Paragraph",
-                Content: "Hello World",
-              } /*{type: "MCQ", Prompt: "Prompt", "Choice A": "A", "Choice B": "B", "Choice C": "C", "Choice D": "D"}*/,
+              newItem
             ]);
           }}
         >
@@ -188,7 +142,7 @@ export default function DragComponentEditor({ items, setItems }) {
       >
         {items.map((item, i) => (
           <div className="child:m-0" key={Math.random()}>
-            {renderArticleComponent(item)}
+            {renderComponent(item)}
             <br />
           </div>
         ))}

@@ -7,6 +7,7 @@ import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
 import DragComponentEditor from "@/components/admin/DragComponentEditor.js";
+import renderQuizComponent from "@/lib/renderQuizComponent.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -109,7 +110,31 @@ export default function QuizEditor({ quiz }) {
       />
 
       <div style={{ position: "absolute", top: "50px" }}>
-        <DragComponentEditor items={items} setItems={setItems} />
+        <DragComponentEditor
+          items={items}
+          setItems={setItems}
+          components={{
+            "MCQ": [
+              {type: "text", name: "Prompt", default: "Prompt"},
+              {type: "text", name: "Choice A", default: "A"},
+              {type: "text", name: "Choice B", default: "B"},
+              {type: "text", name: "Choice C", default: "C"},
+              {type: "text", name: "Choice D", default: "D"}
+            ],
+            "FRQ": [
+              {type: "text", name: "Prompt", default: "Prompt"},
+              {type: "text", name: "Skeleton", default: ""}
+            ],
+            "MULTISELECT": [
+              {type: "text", name: "Prompt", default: "Prompt"},
+              {type: "text", name: "Choice A", default: "A"},
+              {type: "text", name: "Choice B", default: "B"},
+              {type: "text", name: "Choice C", default: "C"},
+              {type: "text", name: "Choice D", default: "D"}
+            ]
+          }}
+          renderComponent={renderQuizComponent}
+        />
       </div>
 
       <Snackbar

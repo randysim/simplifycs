@@ -7,6 +7,7 @@ import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
 import DragComponentEditor from "@/components/admin/DragComponentEditor.js";
+import renderArticleComponent from "@/lib/renderArticleComponent.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -78,7 +79,7 @@ export default function ArticleEditor({ article }) {
       .then((res) => res.data.items);
 
     if (
-      articles.some((article) => article.title == newTitle && article.id != id)
+      articles.some((article) => article.title == title && article.id != id)
     ) {
       setMessage("Title must be unique.");
     } else {
@@ -124,7 +125,30 @@ export default function ArticleEditor({ article }) {
       />
 
       <div style={{ position: "absolute", top: "50px" }}>
-        <DragComponentEditor items={items} setItems={setItems} />
+        <DragComponentEditor
+          items={items}
+          setItems={setItems}
+          components={{
+            Paragraph: [{ type: "text", name: "Content", default: "Hello World!" }],
+            Section: [{ type: "text", name: "Title", default: "Cool Section!" }],
+            Title: [{ type: "text", name: "Value", default: "Cool Article!" }],
+            Code: [
+              { type: "text", name: "Code", default: 'print("Hello World!")' },
+              { type: "text", name: "Language", default: "python" },
+              {
+                type: "dropdown",
+                name: "Runnable",
+                default: "True",
+                options: ["True", "False"],
+              },
+            ],
+            Image: [{ type: "text", name: "src", default: "/hello.png" }],
+            "Custom Component": [
+              { type: "text", name: "Code", default: "<button>hello</button>" },
+            ],
+          }}
+          renderComponent={renderArticleComponent}
+        />
       </div>
 
       <Snackbar

@@ -6,6 +6,7 @@ export default function QuizEditor() {
       title="Quizes"
       getItemsAPI="/api/quizes/editor/getQuizes"
       createNewItemAPI="/api/quizes/editor/create"
+      itemBasePath="/admin/quizes/editor/"
     />
   );
 }
