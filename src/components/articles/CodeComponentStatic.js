@@ -2,11 +2,18 @@ import Editor from "@monaco-editor/react";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
-export default function CodeComponentStatic({ initialCode, language, height }) {
+export default function CodeComponentStatic({
+  initialCode,
+  editable = false,
+  language,
+  height,
+}) {
   return (
     <div className="font-code">
       <Editor
-        height={height || 20 * Math.min(code.split("\n").length, 15) + 40}
+        height={
+          height || 20 * Math.min(initialCode.split("\n").length, 15) + 40
+        }
         width="100%"
         language={language}
         theme="vs-dark"
@@ -24,7 +31,7 @@ export default function CodeComponentStatic({ initialCode, language, height }) {
             top: 10,
             bottom: 10,
           },
-          readOnly: true,
+          readOnly: !editable,
         }}
         onMount={(editor, monaco) => {
           //prevent "Cannot edit in read-only editor" message

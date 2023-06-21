@@ -6,7 +6,8 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
-import RenderMDX from "@/components/articles/RenderMDX.js";
+import DragComponentEditor from "@/components/admin/DragComponentEditor.js";
+import renderArticleComponent from "@/lib/renderArticleComponent.js";
 
 /* COPIED STUFF */
 function useKey(key, cb) {
@@ -47,8 +48,10 @@ export async function getServerSideProps(context) {
     };
   }
 
+  //parsing hack
   article.createdAt = article.createdAt.toString();
   article.updatedAt = article.updatedAt.toString();
+  article.content = JSON.parse(article.content);
 
   return {
     props: {
@@ -59,51 +62,33 @@ export async function getServerSideProps(context) {
 
 export default function ArticleEditor({ article }) {
   const [title, setTitle] = useState(article.title);
-  const [content, setContent] = useState(article.content);
+  const [items, setItems] = useState(article.content);
   const [message, setMessage] = useState("");
   const id = article.id;
 
-  const [savable, setSavable] = useState(false);
   useKey("ctrls", (e) => {
     e.preventDefault();
-    if (savable) {
-      saveArticle();
-    }
+    saveArticle();
   });
 
   const router = useRouter();
 
-  async function updateTitle(newTitle) {
+  async function saveArticle() {
     let articles = await axios
       .get("/api/articles/editor/getArticles")
-      .then((res) => res.data);
+      .then((res) => res.data.items);
 
     if (
-      articles.some((article) => article.title == newTitle && article.id != id)
+      articles.some((article) => article.title == title && article.id != id)
     ) {
-      let title = document.querySelector("#title");
-      title.style.color = "red";
-
-      setTimeout(() => {
-        title.style.color = "white";
-      }, 500);
-
-      title.focus();
-      setMessage("Title must be unique");
+      setMessage("Title must be unique.");
     } else {
-      axios.post(`/api/articles/editor/${id}/update`, {
-        title: newTitle,
+      await axios.post(`/api/articles/editor/${id}/update`, {
+        content: JSON.stringify(items),
+        title: title,
       });
+      setMessage("Article Saved!");
     }
-  }
-
-  async function saveArticle() {
-    await axios.post(`/api/articles/editor/${id}/update`, {
-      content: content,
-    });
-    await updateTitle(title);
-    setSavable(false);
-    setMessage("Article Saved!");
   }
 
   async function deleteArticle() {
@@ -122,11 +107,9 @@ export default function ArticleEditor({ article }) {
         Back
       </button>
 
-      {savable && (
-        <button onClick={saveArticle} className={styles.saveButton}>
-          Save
-        </button>
-      )}
+      <button onClick={saveArticle} className={styles.saveButton}>
+        Save
+      </button>
 
       <button onClick={deleteArticle} className={styles.deleteButton}>
         Delete
@@ -138,44 +121,37 @@ export default function ArticleEditor({ article }) {
         value={title}
         onChange={(e) => {
           setTitle(e.target.value);
-          setSavable(true);
         }}
       />
 
-      <div className={styles.editor}>
-        <Editor
-          height={500}
-          width="50vw"
-          language=""
-          theme="vs-dark"
-          value={content}
-          onChange={(val) => {
-            setContent(val);
-            setSavable(true);
+      <div style={{ position: "absolute", top: "50px" }}>
+        <DragComponentEditor
+          items={items}
+          setItems={setItems}
+          components={{
+            Paragraph: [
+              { type: "text", name: "Content", default: "Hello World!" },
+            ],
+            Section: [
+              { type: "text", name: "Title", default: "Cool Section!" },
+            ],
+            Title: [{ type: "text", name: "Value", default: "Cool Article!" }],
+            Code: [
+              { type: "text", name: "Code", default: 'print("Hello World!")' },
+              { type: "text", name: "Language", default: "python" },
+              {
+                type: "dropdown",
+                name: "Runnable",
+                default: "True",
+                options: ["True", "False"],
+              },
+            ],
+            Image: [{ type: "text", name: "src", default: "/hello.png" }],
+            "Custom Component": [
+              { type: "text", name: "Code", default: "<button>hello</button>" },
+            ],
           }}
-          options={{
-            fontSize: 16,
-            minimap: {
-              enabled: false,
-            },
-            contextmenu: false, //dont show weird thing on right click
-            copyWithSyntaxHighlighting: false, //text copies normally
-            lineHeight: 20,
-            padding: {
-              top: 10,
-              bottom: 10,
-            },
-          }}
-        />
-      </div>
-
-      <div className={styles.render}>
-        <iframe
-          style={{ width: "100%", height: "100%" }}
-          src={`/admin/articles/editor/preview?source=${encodeURIComponent(
-            btoa(content)
-          )}`}
-          frameBorder="0"
+          renderComponent={renderArticleComponent}
         />
       </div>
 

@@ -24,7 +24,7 @@ const WhatsNew = () => (
         <TitleText title = {<>What's new about Simplifycs?</>}/>
         <div className = "mt-[48px] flex flex-wrap justify-between gap-[24px]">
           {newFeatures.map((feature, index) => (
-            <NewFeatures 
+            <NewFeatures
               key = {feature.title}
               {...feature}
             />
@@ -38,7 +38,7 @@ const WhatsNew = () => (
         <img
           src = "/stuyvesant.png"
           alt = "temp stuy logo"
-          className = "w=[90%] h-[90%] object-contain"
+          className = "w=[90%] h-[90%] object-contain invert"
         />
       </motion.div>
     </motion.div>

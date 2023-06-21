@@ -78,8 +78,8 @@ export default function Signup() {
             verificationKey: input,
           });
 
-          if (resp.error) {
-            setError(resp["error"]);
+          if (resp.message != "Email verified.") {
+            setError(resp.message);
             return;
           }
 
