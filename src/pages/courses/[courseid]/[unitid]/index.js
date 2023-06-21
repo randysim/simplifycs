@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import useUser from "@/lib/useUser";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import CourseHeader from "@/components/course/CourseHeader";
+import CourseProgress from "@/components/course/CourseProgress";
 import UnitLesson from "@/components/course/UnitLesson";
 
 const getCourseData = async (id) => {
@@ -26,7 +27,6 @@ export default function Unit() {
   const [courseData, setCourseData] = useState(null);
 
   useEffect(() => {
-    console.log("COURSEID: " + courseid);
     getCourseData(courseid)
       .then((crs) => {
         setCourseData(crs?.course);
@@ -37,30 +37,44 @@ export default function Unit() {
   }, [router]);
 
   const renderUnitData = () => {
-    let unit = courseData.units[unitid];
+    let unit = courseData.units.find((u) => u.id == unitid);
 
     return (
-      <Box>
-        <CourseHeader title={unit.title} bgcolor="primary.main" />
-        <Box sx={{ width: "100%", height: "auto" }}>
-          <Box>
-            <Typography sx={{ fontSize: "20px", paddingLeft: "50px" }}>
-              Lessons:
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {unit.lessons.map((l, i) => {
-              return <UnitLesson router={router} data={l} key={i} />;
-            })}
-          </Box>
+      <Box
+        sx={{
+          width: "100%",
+          height: "auto",
+          display: "flex",
+          flexWrap: "wrap",
+          overflow: "hidden",
+        }}
+      >
+        <CourseHeader
+          title={courseData.title}
+          description={courseData.description}
+        />
+        <Box
+          sx={{
+            paddingTop: "20px",
+            paddingBottom: "20px",
+            width: "40%",
+            minWidth: "450px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "center",
+            flexWrap: "wrap",
+            height: "auto",
+            rowGap: "20px",
+          }}
+        >
+          <CourseProgress router={router} />
         </Box>
+        <Grid container spacing={0} width="60%">
+          {unit.lessons.map((l, i) => {
+            return <UnitLesson router={router} data={l} key={i} />;
+          })}
+        </Grid>
       </Box>
     );
   };

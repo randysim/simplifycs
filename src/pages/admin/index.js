@@ -111,6 +111,15 @@ export default function Admin() {
         >
           Edit Articles
         </Button>
+        <Button
+          variant="outlined"
+          sx={{ width: "80%", marginTop: "20px" }}
+          onClick={() => {
+            router.push("/admin/quizes/editor");
+          }}
+        >
+          Edit Quizes
+        </Button>
       </Box>
       <Snackbar
         open={message.length > 0}
