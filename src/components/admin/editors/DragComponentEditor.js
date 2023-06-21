@@ -47,7 +47,12 @@ function Component({ components, data, setData }) {
   );
 }
 
-export default function DragComponentEditor({ components, renderComponent, items, setItems }) {
+export default function DragComponentEditor({
+  components,
+  renderComponent,
+  items,
+  setItems,
+}) {
   function setData(index, newData) {
     setItems(
       items.map((item, i) => {
@@ -119,17 +124,14 @@ export default function DragComponentEditor({ components, renderComponent, items
         <button
           onClick={() => {
             let newItem = {
-              type: Object.keys(components)[0]
+              type: Object.keys(components)[0],
             };
 
             components[Object.keys(components)[0]].forEach((property) => {
               newItem[property.name] = property.default;
             });
 
-            setItems([
-              ...items,
-              newItem
-            ]);
+            setItems([...items, newItem]);
           }}
         >
           Add New Component
