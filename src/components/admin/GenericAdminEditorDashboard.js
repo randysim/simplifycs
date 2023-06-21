@@ -11,7 +11,7 @@ export default function GenericAdminEditorDashboard({
   title,
   getItemsAPI,
   createNewItemAPI,
-  itemBasePath
+  itemBasePath,
 }) {
   const { data, mutate } = useSWR(getItemsAPI, fetcher);
   const router = useRouter();

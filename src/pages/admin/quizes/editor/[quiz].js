@@ -114,24 +114,24 @@ export default function QuizEditor({ quiz }) {
           items={items}
           setItems={setItems}
           components={{
-            "MCQ": [
-              {type: "text", name: "Prompt", default: "Prompt"},
-              {type: "text", name: "Choice A", default: "A"},
-              {type: "text", name: "Choice B", default: "B"},
-              {type: "text", name: "Choice C", default: "C"},
-              {type: "text", name: "Choice D", default: "D"}
+            MCQ: [
+              { type: "text", name: "Prompt", default: "Prompt" },
+              { type: "text", name: "Choice A", default: "A" },
+              { type: "text", name: "Choice B", default: "B" },
+              { type: "text", name: "Choice C", default: "C" },
+              { type: "text", name: "Choice D", default: "D" },
             ],
-            "FRQ": [
-              {type: "text", name: "Prompt", default: "Prompt"},
-              {type: "text", name: "Skeleton", default: ""}
+            FRQ: [
+              { type: "text", name: "Prompt", default: "Prompt" },
+              { type: "text", name: "Skeleton", default: "" },
             ],
-            "MULTISELECT": [
-              {type: "text", name: "Prompt", default: "Prompt"},
-              {type: "text", name: "Choice A", default: "A"},
-              {type: "text", name: "Choice B", default: "B"},
-              {type: "text", name: "Choice C", default: "C"},
-              {type: "text", name: "Choice D", default: "D"}
-            ]
+            MULTISELECT: [
+              { type: "text", name: "Prompt", default: "Prompt" },
+              { type: "text", name: "Choice A", default: "A" },
+              { type: "text", name: "Choice B", default: "B" },
+              { type: "text", name: "Choice C", default: "C" },
+              { type: "text", name: "Choice D", default: "D" },
+            ],
           }}
           renderComponent={renderQuizComponent}
         />

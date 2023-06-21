@@ -2,7 +2,12 @@ import Editor from "@monaco-editor/react";
 
 //https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
 
-export default function CodeComponentStatic({ initialCode, editable = false, language, height }) {
+export default function CodeComponentStatic({
+  initialCode,
+  editable = false,
+  language,
+  height,
+}) {
   return (
     <div className="font-code">
       <Editor

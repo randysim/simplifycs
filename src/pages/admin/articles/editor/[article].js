@@ -129,8 +129,12 @@ export default function ArticleEditor({ article }) {
           items={items}
           setItems={setItems}
           components={{
-            Paragraph: [{ type: "text", name: "Content", default: "Hello World!" }],
-            Section: [{ type: "text", name: "Title", default: "Cool Section!" }],
+            Paragraph: [
+              { type: "text", name: "Content", default: "Hello World!" },
+            ],
+            Section: [
+              { type: "text", name: "Title", default: "Cool Section!" },
+            ],
             Title: [{ type: "text", name: "Value", default: "Cool Article!" }],
             Code: [
               { type: "text", name: "Code", default: 'print("Hello World!")' },

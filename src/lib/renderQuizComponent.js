@@ -8,11 +8,11 @@ export default function renderQuizComponent(component) {
           <p>{component.Prompt}</p>
 
           <button>{component["Choice A"]}</button>
-          <br/>
+          <br />
           <button>{component["Choice B"]}</button>
-          <br/>
+          <br />
           <button>{component["Choice C"]}</button>
-          <br/>
+          <br />
           <button>{component["Choice D"]}</button>
         </>
       );
