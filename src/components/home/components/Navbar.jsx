@@ -25,10 +25,10 @@ const Navbar = () => {
         />
       
         <h2 className = "font-extrabold text-[24px] leading-[30px] text-white">
-          simplifycs
+          SimplifyCS
         </h2>
         <h2 style={{ cursor: "pointer" }} className = "font-normal text-[24px] leading-[30px] text-white" onClick={() => { router.push("/login")}}>
-          sign in
+          Sign in
         </h2>
       </div>
     </motion.nav>

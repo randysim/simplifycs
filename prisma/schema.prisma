@@ -6,12 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 // For accounts pending verification
 model Verify {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   email String @unique
 
   verificationKey String
@@ -21,7 +23,7 @@ model Verify {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   email    String @unique
   username String @unique
@@ -36,7 +38,8 @@ model User {
 }
 
 model Course {
-  id          Int    @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   title       String @unique
   description String
 
@@ -45,37 +48,41 @@ model Course {
 }
 
 model Unit {
-  id          Int    @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   title       String @unique
   description String
 
   // will be in chronological order
   lessons  Lesson[]
   Course   Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId Int?
+  courseId String?
 }
 
 model Lesson {
-  id         Int        @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   title      String
+
   // will be in chronological order
   activities Activity[]
+
   Unit       Unit?      @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  unitId     Int?
+  unitId     String?
 }
 
 model Activity {
-  id Int @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   itemId Int
   model  String
 
   Lesson   Lesson? @relation(fields: [lessonId], references: [id])
-  lessonId Int?
+  lessonId String?
 }
 
 model Article {
-  id Int @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   title  String @unique
   author String
@@ -86,8 +93,20 @@ model Article {
   updatedAt DateTime @default(now())
 }
 
+model Quiz {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title  String
+  author String
+
+  content String @default("[]")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
 model Assignment {
-  id Int @id @default(autoincrement())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   title  String
   author String
@@ -97,32 +116,4 @@ model Assignment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-}
-
-model Question {
-  id Int @id @default(autoincrement())
-
-  prompt  String
-
-  // FRQ or MCQ or MULTISELECT
-  type String
-
-  // (only for MCQ or MULTISELECT)
-  choices String //json array
-
-  // acceptable responses.
-  answers String //json array of int indices of correct answer(s) in choices (for mcq or multiselect)
-
-
-  quiz   Quiz? @relation(fields: [quizId], references: [id])
-  quizId Int?
-}
-
-model Quiz {
-  id Int @id @default(autoincrement())
-
-  title  String
-  author String
-
-  questions Question[]
 }

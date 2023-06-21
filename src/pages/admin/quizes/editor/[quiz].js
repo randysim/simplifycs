@@ -6,7 +6,7 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
-import DragComponentEditor from "@/components/admin/DragComponentEditor.js";
+import DragComponentEditor from "@/components/admin/editors/DragComponentEditor.js";
 import renderQuizComponent from "@/lib/renderQuizComponent.js";
 
 /* COPIED STUFF */
@@ -71,7 +71,7 @@ export default function QuizEditor({ quiz }) {
   async function saveQuiz() {
     await axios.post(`/api/quizes/editor/${id}/update`, {
       content: JSON.stringify(items),
-      title: title,
+      id: id,
     });
     setMessage("Quiz Saved!");
   }

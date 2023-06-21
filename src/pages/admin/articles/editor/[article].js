@@ -6,7 +6,7 @@ import { getMDXComponent } from "mdx-bundler/client";
 import axios from "axios";
 import prisma from "@/lib/db.js";
 import { TextField, Snackbar } from "@mui/material";
-import DragComponentEditor from "@/components/admin/DragComponentEditor.js";
+import DragComponentEditor from "@/components/admin/editors/DragComponentEditor.js";
 import renderArticleComponent from "@/lib/renderArticleComponent.js";
 
 /* COPIED STUFF */
@@ -85,7 +85,7 @@ export default function ArticleEditor({ article }) {
     } else {
       await axios.post(`/api/articles/editor/${id}/update`, {
         content: JSON.stringify(items),
-        title: title,
+        id: id,
       });
       setMessage("Article Saved!");
     }
