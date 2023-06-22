@@ -3,7 +3,7 @@ import GenericAdminEditorDashboard from "@/components/admin/editors/GenericAdmin
 export default function QuizEditor() {
   return (
     <GenericAdminEditorDashboard
-      title="Quizes"
+      title="Quizzes"
       getItemsAPI="/api/quizes/editor/getQuizes"
       createNewItemAPI="/api/quizes/editor/create"
       itemBasePath="/admin/quizes/editor/"

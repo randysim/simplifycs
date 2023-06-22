@@ -79,9 +79,5 @@ export default function Course() {
     );
   };
 
-  return (
-    <Box paddingTop="50px">
-      {courseData && renderCourseData()}
-    </Box>
-  );
+  return <Box paddingTop="50px">{courseData && renderCourseData()}</Box>;
 }
