@@ -79,5 +79,5 @@ export default function Unit() {
     );
   };
 
-  return <Box>{courseData ? renderUnitData() : <p>{courseid}</p>}</Box>;
+  return <Box>{courseData && renderUnitData()}</Box>;
 }

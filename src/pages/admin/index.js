@@ -117,7 +117,7 @@ export default function Admin() {
             router.push("/admin/quizes/editor");
           }}
         >
-          Edit Quizes
+          Edit Quizzes
         </Button>
       </Box>
       <Snackbar
