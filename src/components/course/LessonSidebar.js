@@ -35,6 +35,7 @@ export default function LessonSidebar({
         Back
       </Box>
       {activities.map((activity, i) => {
+        console.log(activity);
         return (
           <Box
             sx={{

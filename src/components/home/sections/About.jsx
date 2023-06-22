@@ -22,7 +22,7 @@ const About = () => (
         variants = {fadeIn('up', 'tween', 0.2, 1)}
         className = "mt-[8px] font-normal sm:text-[32px] text-[20px] text-center text-secondary-white"
       >
-        There has always been a struggle in computer science education at <span className= "font-extrabold text-white">Stuyvesant</span> , regardless of the countless approaches teachers have taken to aid students. Resources, such as CSDojo, CodingBat, and static presentations have time and time again proven to be inadequate to help complete beginners feel comfortable with course topics. Even introductory courses such as “Intro to CS" have caused beginners to struggle, scaring them away from future CS courses/careers. As the forefront of technology, it's crucial that current and future CS students excel in the field. This is where SimplifyCS comes in.
+        Despite the countless approaches teachers take to aid students, there has always been a struggle in computer science education, even at <span className= "font-extrabold text-white">Stuyvesant</span>. Resources, such as CodingBat, static presentations, or csDojo, although helpful to many, leave some complete beginners lacking confidence with course topics. At the forefront of technology, it is crucial that current and future CS students excel in the field, so we need to make it a priority to provide resources that may help students struggling in computer science courses. This is where SimplifyCS comes in.
       </motion.p>
       <motion.img
         variants = {fadeIn('up', 'tween', 0.3, 1)}

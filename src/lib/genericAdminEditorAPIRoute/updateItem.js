@@ -14,6 +14,15 @@ export default async function updateItem(req, res, prismaClass) {
     return;
   }
 
+  await prisma.activity.update({ 
+    where: {
+      itemId: req.query.id,
+    }, 
+    data: {
+      title: req.body.title
+    }
+  })
+
   await prisma[prismaClass].update({
     where: {
       id: req.query.id,

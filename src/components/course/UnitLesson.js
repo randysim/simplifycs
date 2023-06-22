@@ -30,6 +30,7 @@ export default function UnitLesson({ router, data }) {
       <Divider variant="middle" />
       <Box sx={{ width: "100%", height: "80%" }}>
         {data.activities.map((activity) => {
+          console.log(activity);
           return (
             <Box
               sx={{
