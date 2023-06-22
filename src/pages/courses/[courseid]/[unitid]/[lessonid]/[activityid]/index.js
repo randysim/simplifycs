@@ -66,7 +66,9 @@ export default function Lesson() {
     let lesson = courseData.course.units
       .find((u) => u.id == unitid)
       .lessons.find((l) => l.id == lessonid);
-    let activityIndex = lesson.activities.findIndex((a) => a.id == activityid);
+    let activityIndex = lesson.activities.findIndex(
+      (a) => a.itemId == activityid
+    );
 
     return (
       <Box sx={{ display: "flex", width: "100%", height: "100%" }}>

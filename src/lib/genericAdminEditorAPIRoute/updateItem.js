@@ -14,14 +14,14 @@ export default async function updateItem(req, res, prismaClass) {
     return;
   }
 
-  await prisma.activity.update({ 
+  await prisma.activity.update({
     where: {
       itemId: req.query.id,
-    }, 
+    },
     data: {
-      title: req.body.title
-    }
-  })
+      title: req.body.title,
+    },
+  });
 
   await prisma[prismaClass].update({
     where: {
@@ -29,7 +29,7 @@ export default async function updateItem(req, res, prismaClass) {
     },
     data: {
       title: req.body.title,
-      content: req.body.content
-    }, 
+      content: req.body.content,
+    },
   });
 }

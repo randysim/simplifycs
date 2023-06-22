@@ -123,7 +123,9 @@ export default async function handler(req, res) {
       },
       data: {
         activities: {
-          set: newLesson.activities.map((activity) => ({ itemId: activity.id })),
+          set: newLesson.activities.map((activity) => ({
+            itemId: activity.id,
+          })),
         },
       },
     });

@@ -85,7 +85,7 @@ export default function ArticleEditor({ article }) {
     } else {
       await axios.post(`/api/articles/editor/${id}/update`, {
         title,
-        content: JSON.stringify(items)
+        content: JSON.stringify(items),
       });
       setMessage("Article Saved!");
     }
