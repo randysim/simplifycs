@@ -64,7 +64,6 @@ export default function Admin() {
         spacing={2}
         justifyContent="center"
         sx={{ width: "100%", height: "auto", padding: "50px" }}
-        bgcolor="#AF98B9"
       >
         {courses.map((c) => {
           return (
