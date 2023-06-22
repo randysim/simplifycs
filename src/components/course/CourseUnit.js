@@ -58,7 +58,7 @@ export default function CourseUnit({ router, id, data, index }) {
               <Link
                 href={`${courseid}${
                   l.activities.length
-                    ? `/${data.id}/${l.id}/${l.activities[0].id}`
+                    ? `/${data.id}/${l.id}/${l.activities[0].itemId}`
                     : ""
                 }`}
                 sx={{

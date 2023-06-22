@@ -42,6 +42,11 @@ export default function GenericAdminEditorDashboard({
             >
               {article.title}
             </Button>
+            <Button onClick={() => {
+              navigator.clipboard.writeText(article.id);
+            }}>
+              Copy ID
+            </Button>
           </Box>
         </div>
       ))}

@@ -16,13 +16,13 @@ export default async function deleteItem(req, res, prismaClass) {
 
   await prisma[prismaClass].delete({
     where: {
-      id: parseInt(req.query.id),
+      id: req.query.id,
     },
   });
 
   await prisma.activity.deleteMany({
     where: {
-      itemId: parseInt(req.query.id),
+      itemId: req.query.id,
     },
   });
 

@@ -42,7 +42,7 @@ export default function UnitLesson({ router, data }) {
               key={activity.id}
               onClick={() => {
                 router.push(
-                  `/courses/${courseid}/${unitid}/${data.id}/${activity.id}`
+                  `/courses/${courseid}/${unitid}/${data.id}/${activity.itemId}`
                 );
               }}
             >

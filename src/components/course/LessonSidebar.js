@@ -51,7 +51,7 @@ export default function LessonSidebar({
             }}
             onClick={() => {
               router.push(
-                `/courses/${courseid}/${unitid}/${lessonid}/${activity.id}`
+                `/courses/${courseid}/${unitid}/${lessonid}/${activity.itemId}`
               );
             }}
           >

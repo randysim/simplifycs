@@ -126,7 +126,7 @@ export default function AdminLessonCard({
               label="ActivityID"
               variant="outlined"
               value={query}
-              onChange={(e) => setQuery(parseInt(e.target.value) || "")}
+              onChange={(e) => setQuery(e.target.value || "")}
             />
           </Box>
           <Button

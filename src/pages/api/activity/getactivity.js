@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       .json({ success: false, message: "Missing Activity ID" });
   }
 
-  let activity = await prisma.activity.findUnique({ where: { id: id } });
+  let activity = await prisma.activity.findUnique({ where: { itemId: id } });
   if (!activity) {
     return res
       .status(200)
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   }
 
   activity = await prisma[activity.model].findUnique({
-    where: { id: activity.id },
+    where: { id: activity.itemId },
   });
 
   if (!activity) {

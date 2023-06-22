@@ -74,7 +74,7 @@ model Lesson {
 model Activity {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  itemId Int
+  itemId String @unique
   model  String
 
   Lesson   Lesson? @relation(fields: [lessonId], references: [id])

@@ -97,20 +97,20 @@ export default async function handler(req, res) {
             .find((l) => l.id == newLesson.id)
             .activities.filter(
               (activity) =>
-                !newLesson.activities.find((a) => a.id == activity.id)
+                !newLesson.activities.find((a) => a.id == activity.itemId)
             )
             .map((activity) => {
-              return { id: activity.id };
+              return { itemId: activity.itemId };
             }),
           connect: newLesson.activities // add activities that are not already in the lesson
             .filter(
               (activity) =>
                 !unit.lessons
                   .find((l) => l.id == newLesson.id)
-                  .activities.find((a) => a.id == activity.id)
+                  .activities.find((a) => a.itemId == activity.id)
             )
             .map((activity) => {
-              return { id: activity.id };
+              return { itemId: activity.id };
             }),
         },
       },
@@ -123,7 +123,7 @@ export default async function handler(req, res) {
       },
       data: {
         activities: {
-          set: newLesson.activities.map((activity) => ({ id: activity.id })),
+          set: newLesson.activities.map((activity) => ({ itemId: activity.id })),
         },
       },
     });

@@ -1,4 +1,4 @@
-import GenericAdminEditorDashboard from "@/components/admin/GenericAdminEditorDashboard.js";
+import GenericAdminEditorDashboard from "@/components/admin/editors/GenericAdminEditorDashboard.js";
 
 export default function ArticleEditor() {
   return (

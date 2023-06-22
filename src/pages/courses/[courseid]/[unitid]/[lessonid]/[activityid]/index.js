@@ -8,7 +8,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import axios from "axios";
 
 import styles from "@/styles/ArticleEditor.module.css";
-import RenderMDX from "@/components/articles/RenderMDX.js";
+import ArticleRenderer from "@/components/articles/ArticleRenderer";
 
 import LessonSidebar from "@/components/course/LessonSidebar";
 
@@ -84,9 +84,7 @@ export default function Lesson() {
             <Typography>By {activityData.author}</Typography>
             <Typography>Last Updated: {activityData.updatedAt}</Typography>
           </Box>
-          <RenderMDX className={styles.article}>
-            {activityData.compiledMDX}
-          </RenderMDX>
+          <ArticleRenderer items={activityData.content} />
         </Box>
       </Box>
     );
