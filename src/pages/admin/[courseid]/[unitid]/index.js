@@ -141,7 +141,6 @@ export default function AdminUnit() {
               marginTop: "40px",
               borderRadius: "10px",
             }}
-            bgcolor="#AF98B9"
           >
             {unitData.lessons.map((lesson, i) => {
               return (
