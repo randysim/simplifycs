@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const { courseid } = req.query;
 
   const course = await prisma.course.findUnique({
-    where: { id: parseInt(courseid) },
+    where: { id: courseid },
     include: {
       units: {
         include: {

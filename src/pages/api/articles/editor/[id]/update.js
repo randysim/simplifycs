@@ -1,5 +1,6 @@
 import updateItem from "@/lib/genericAdminEditorAPIRoute/updateItem.js";
 
 export default async function handler(req, res) {
-  updateItem(req, res, "article");
+  await updateItem(req, res, "article");
+  res.status(200).json({ success: true, message: "Item updated" });
 }

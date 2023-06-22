@@ -32,7 +32,7 @@ function useKey(key, cb) {
 }
 
 export async function getServerSideProps(context) {
-  let articleId = parseInt(context.query.article);
+  let articleId = context.query.article;
 
   let article = await prisma.article.findUnique({
     where: {
@@ -84,8 +84,8 @@ export default function ArticleEditor({ article }) {
       setMessage("Title must be unique.");
     } else {
       await axios.post(`/api/articles/editor/${id}/update`, {
-        content: JSON.stringify(items),
-        id: id,
+        title,
+        content: JSON.stringify(items)
       });
       setMessage("Article Saved!");
     }

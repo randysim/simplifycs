@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   if (!user.admin)
     return res.status(400).json({ message: "Unauthorized", success: false });
 
-  const id = parseInt(req.body.id);
+  const id = req.body.id;
   const data = req.body.data; // updated data
   if (!id)
     return res
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
           .map((unit) => {
             return {
               where: {
-                id: parseInt(unit.id || -1),
+                id: unit.id || "000000000000000000000000", // TEMP ID FOR DOESN'T EXIST
               },
               create: {
                 title: unit.title,

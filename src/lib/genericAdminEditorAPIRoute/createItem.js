@@ -24,7 +24,7 @@ export default async function createItem(req, res, prismaClass) {
 
   let activity = await prisma.activity.create({
     data: {
-      itemId: item.id,
+      itemId: parseInt(item.id),
       model: prismaClass,
     },
   });

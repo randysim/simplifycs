@@ -16,10 +16,11 @@ export default async function updateItem(req, res, prismaClass) {
 
   await prisma[prismaClass].update({
     where: {
-      id: parseInt(req.query.id),
+      id: req.query.id,
     },
-    data: req.body, //TODO: this is probably bad
+    data: {
+      title: req.body.title,
+      content: req.body.content
+    }, 
   });
-
-  res.status(200).json({ success: true, message: "Item updated" });
 }

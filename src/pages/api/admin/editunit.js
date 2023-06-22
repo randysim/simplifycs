@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   if (!user.admin)
     return res.status(400).json({ message: "Unauthorized", success: false });
 
-  let id = parseInt(req.body.id);
+  let id = req.body.id;
   if (!id)
     return res.status(400).json({ message: "Missing Unit ID", success: false });
 
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           .map((lesson) => {
             return {
               where: {
-                id: parseInt(lesson.id || -1),
+                id: lesson.id || "000000000000000000000000",
               },
               create: {
                 title: lesson.title,

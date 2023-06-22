@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       .json({ success: false, message: "Expected get request." });
   }
 
-  const id = parseInt(req.query.id);
+  const id = req.query.id;
   if (!id) {
     return res
       .status(400)
